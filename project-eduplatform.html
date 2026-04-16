@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title data-brand="Scalen">EduPlatform Student Acquisition — Scalen</title><!-- EDIT: page title -->
+  <link rel="icon" href="assets/img/favicon.webp"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Urbanist:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <link rel="stylesheet" href="assets/css/shared.css"/>
+  <style>
+    .proj-meta-sec{padding:44px 0;background:var(--bg-dark);border-bottom:1px solid var(--border);}
+    .proj-meta-bar{display:flex;flex-wrap:wrap;gap:36px 60px;}
+    .pm-item{display:flex;flex-direction:column;gap:5px;}
+    .pm-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.15em;color:var(--grey);}
+    .pm-value{font-family:var(--font-h);font-size:16px;font-weight:700;color:#fff;}
+    .proj-img-sec{padding:60px 0 0;background:var(--bg);}
+    .proj-img-wrap{border-radius:22px;overflow:hidden;border:1px solid var(--border);}
+    .proj-img-wrap img{width:100%;height:540px;object-fit:cover;display:block;}
+    .proj-content-sec{padding:80px 0 100px;background:var(--bg);}
+    .proj-layout{display:grid;grid-template-columns:1fr 340px;gap:60px;align-items:start;}
+    .proj-main h2{font-family:var(--font-h);font-size:28px;font-weight:800;margin:44px 0 16px;letter-spacing:-.02em;}
+    .proj-main h2:first-child{margin-top:0;}
+    .proj-main p{font-size:16px;color:var(--grey);line-height:1.85;margin-bottom:16px;}
+    .proj-main ul{list-style:none;padding:0;display:flex;flex-direction:column;gap:10px;margin-bottom:20px;}
+    .proj-main ul li{display:flex;align-items:flex-start;gap:10px;font-size:15px;color:var(--grey);line-height:1.7;}
+    .proj-main ul li::before{content:'◆';color:var(--blue);font-size:10px;margin-top:5px;flex-shrink:0;}
+    .results-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:28px 0;}
+    .res-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:24px 16px;text-align:center;}
+    .res-num{font-family:var(--font-h);font-size:38px;font-weight:800;color:var(--green);line-height:1;margin-bottom:6px;}
+    .res-lbl{font-size:12px;color:var(--grey);font-weight:600;}
+    .proj-sidebar{position:sticky;top:100px;display:flex;flex-direction:column;gap:18px;}
+    .ps-box{background:var(--bg-card);border:1px solid var(--border);border-radius:18px;padding:22px;}
+    .ps-box h4{font-family:var(--font-h);font-size:15px;font-weight:700;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border);}
+    .ps-list{display:flex;flex-direction:column;gap:12px;}
+    .ps-item{display:flex;justify-content:space-between;align-items:flex-start;font-size:14px;gap:12px;}
+    .ps-item .psi-label{color:var(--grey);flex-shrink:0;}
+    .ps-item .psi-val{font-weight:600;font-size:13px;text-align:right;}
+    .ps-tags{display:flex;flex-wrap:wrap;gap:8px;}
+    .ps-tag{padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;background:rgba(36,76,201,.1);border:1px solid rgba(36,76,201,.2);color:var(--blue-lt);}
+    .rel-links{display:flex;flex-direction:column;gap:8px;}
+    .rel-link{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid var(--border);font-size:13px;font-weight:600;color:#fff;text-decoration:none;transition:var(--trans);}
+    .rel-link:hover{border-color:rgba(36,76,201,.4);color:var(--blue-lt);background:rgba(36,76,201,.06);}
+    .rel-link i{color:var(--blue);font-size:11px;}
+    .proj-gallery{padding:0 0 80px;background:var(--bg);}
+    .gallery-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+    .gallery-img{border-radius:16px;overflow:hidden;border:1px solid var(--border);}
+    .gallery-img img{width:100%;height:260px;object-fit:cover;transition:transform .5s;display:block;}
+    .gallery-img:hover img{transform:scale(1.05);}
+    .proj-cta{padding:90px 0;background:var(--bg-dark);text-align:center;}
+    .proj-cta h2{font-family:var(--font-h);font-size:clamp(28px,3.5vw,44px);font-weight:800;letter-spacing:-.02em;margin-bottom:14px;}
+    .proj-cta h2 span{color:var(--blue);}
+    .proj-cta p{font-size:17px;color:var(--grey);margin-bottom:34px;}
+    .proj-cta-btns{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;}
+    @media(max-width:1024px){.proj-layout{grid-template-columns:1fr;}.proj-sidebar{position:static;}}
+    @media(max-width:600px){.results-row{grid-template-columns:1fr 1fr;}.gallery-grid{grid-template-columns:1fr;}.proj-img-wrap img{height:300px;}}
+  </style>
+  <!-- ============================================ -->
+  <!-- TRACKING CODES — HEAD (GTM / GA4 / Meta Pixel) -->
+  <!-- Paste your Google Tag Manager <script> snippet here -->
+  <!-- ============================================ -->
+  <script id="gtm-head-code">/* GTM head code will be injected here by CMS */</script>
+</head>
+<body>
+  <!-- ============================================ -->
+  <!-- TRACKING CODES — BODY (GTM noscript)        -->
+  <!-- Paste your GTM <noscript> snippet here      -->
+  <!-- ============================================ -->
+  <noscript id="gtm-body-code"><!-- GTM body code will be injected here by CMS --></noscript>
+<div id="loader"><div class="loader-ring"></div></div>
+<header id="header">
+  <div class="header-wrap">
+    <a href="index.html" class="logo"><img src="assets/img/logo.webp" alt="Scalen"/></a>
+    <nav class="nav-menu">
+      <a href="index.html">Home</a><a href="about.html">About</a><a href="services.html">Services</a>
+      <a href="portfolio.html" class="active">Portfolio</a>
+      <a href="blog.html">Blog</a><a href="contact.html">Contact</a>
+      <a href="contact.html" class="nav-cta">Free Consultation</a>
+    </nav>
+    <button class="hamburger" onclick="openNav()" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<div class="mob-overlay" id="mobOverlay" onclick="closeNav()"></div>
+<div class="mob-nav" id="mobNav">
+  <button class="mob-close" onclick="closeNav()"><i class="fa fa-times"></i></button>
+  <a href="index.html"><img src="assets/img/logo.webp" alt="Scalen" style="height:32px;margin-bottom:28px;display:block;"/></a>
+  <a href="index.html">Home</a><a href="about.html">About</a><a href="services.html">Services</a>
+  <a href="portfolio.html">Portfolio</a><a href="blog.html">Blog</a><a href="contact.html">Contact</a>
+  <a href="contact.html" class="btn btn-blue" style="margin-top:18px;text-align:center;border-radius:12px;">Free Consultation</a>
+</div>
+
+<section class="page-hero">
+  <div class="container">
+    <p class="page-label reveal">PPC Campaign</p>
+    <h1 class="reveal" style="transition-delay:.1s">EduPlatform <span>Student Acquisition</span></h1>
+    <nav class="breadcrumb reveal" style="transition-delay:.2s">
+      <a href="index.html">Home</a><span><i class="fa fa-chevron-right"></i></span>
+      <a href="portfolio.html">Portfolio</a><span><i class="fa fa-chevron-right"></i></span>
+      <span>EduPlatform PPC</span>
+    </nav>
+  </div>
+</section>
+
+<section class="proj-meta-sec">
+  <div class="container">
+    <div class="proj-meta-bar reveal">
+      <div class="pm-item"><span class="pm-label">Client</span><span class="pm-value">EduPlatform</span></div>
+      <div class="pm-item"><span class="pm-label">Category</span><span class="pm-value">PPC Campaign</span></div>
+      <div class="pm-item"><span class="pm-label">Completed</span><span class="pm-value">August 2024</span></div>
+      <div class="pm-item"><span class="pm-label">Duration</span><span class="pm-value">6 Months</span></div>
+      <div class="pm-item"><span class="pm-label">Services</span><span class="pm-value">Google Ads · YouTube · Funnel Optimisation</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="proj-img-sec">
+  <div class="container">
+    <div class="proj-img-wrap reveal">
+      <img src="assets/img/blg2.webp" alt="EduPlatform Acquisition Campaign"/>
+    </div>
+  </div>
+</section>
+
+<section class="proj-content-sec">
+  <div class="container">
+    <div class="proj-layout">
+      <div class="proj-main reveal">
+        <h2>The Challenge</h2>
+        <p>EduPlatform, an online learning marketplace offering professional certification courses, was running broad Google Ads campaigns that generated traffic but poor enrollment. Their cost per enrolled student had ballooned to $190 — well above the $80 target set by their finance team. YouTube ads were running untargeted, burning budget on irrelevant audiences.</p>
+        <p>The enrollment funnel itself was also broken: prospective students landing on course pages were abandoning at a 74% rate before completing sign-up. The platform needed both smarter acquisition and a better funnel experience.</p>
+
+        <h2>Our Strategy</h2>
+        <ul>
+          <li><strong>Intent-Based Campaign Architecture:</strong> Restructured Google Ads into course-category campaigns with exact-match, high-intent keywords. Created 14 tightly themed ad groups aligned to specific professional outcomes (e.g., "get PMP certified", "data analytics course online").</li>
+          <li><strong>YouTube Remarketing Sequences:</strong> Built a 3-video YouTube series targeting users who had visited course pages but not enrolled. Videos 1–3 followed a Problem → Solution → Proof narrative arc.</li>
+          <li><strong>Enrollment Funnel Redesign:</strong> Simplified the course sign-up flow from 8 steps to 4. Added progress indicators, social proof (enrolment counts, graduate outcomes), and urgency triggers (cohort close dates).</li>
+          <li><strong>Performance Max Integration:</strong> Deployed Performance Max campaigns fed with high-quality creative assets and first-party audience signals from enrolled students.</li>
+        </ul>
+
+        <h2>The Results</h2>
+        <div class="results-row">
+          <div class="res-card"><div class="res-num">8,500</div><div class="res-lbl">New Students Enrolled</div></div>
+          <div class="res-card"><div class="res-num">45%</div><div class="res-lbl">Lower CPA</div></div>
+          <div class="res-card"><div class="res-num">580%</div><div class="res-lbl">ROAS</div></div>
+        </div>
+        <p>8,500 new students enrolled over 6 months — a 3.4x increase on the same period prior year. Cost per enrolled student dropped from $190 to $104. The YouTube remarketing sequences alone recovered 2,200 students who had previously abandoned.</p>
+      </div>
+
+      <div class="proj-sidebar">
+        <div class="ps-box">
+          <h4>Project Info</h4>
+          <div class="ps-list">
+            <div class="ps-item"><span class="psi-label">Client</span><span class="psi-val">EduPlatform</span></div>
+            <div class="ps-item"><span class="psi-label">Industry</span><span class="psi-val">Online Education</span></div>
+            <div class="ps-item"><span class="psi-label">Monthly Budget</span><span class="psi-val">$25,000</span></div>
+            <div class="ps-item"><span class="psi-label">Timeline</span><span class="psi-val">6 months</span></div>
+          </div>
+        </div>
+        <div class="ps-box">
+          <h4>Services Used</h4>
+          <div class="ps-tags">
+            <span class="ps-tag">Google Ads</span>
+            <span class="ps-tag">YouTube Ads</span>
+            <span class="ps-tag">Performance Max</span>
+            <span class="ps-tag">Funnel Design</span>
+            <span class="ps-tag">CRO</span>
+          </div>
+        </div>
+        <a href="contact.html" class="btn btn-blue" style="text-align:center;justify-content:center;width:100%;box-sizing:border-box;">Start Your Project</a>
+        <div class="ps-box">
+          <h4>Related Projects</h4>
+          <div class="rel-links">
+            <a href="project-financehub.html" class="rel-link"><i class="fa fa-arrow-right"></i>FinanceHub Lead Gen</a>
+            <a href="project-saas.html" class="rel-link"><i class="fa fa-arrow-right"></i>SaaS Landing Pages</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="proj-gallery">
+  <div class="container">
+    <div class="gallery-grid">
+      <div class="gallery-img reveal"><img src="assets/img/ab-ft1.webp" alt="Campaign dashboard"/></div>
+      <div class="gallery-img reveal" style="transition-delay:.15s"><img src="assets/img/wc5.webp" alt="Enrollment funnel"/></div>
+    </div>
+  </div>
+</section>
+
+<section class="proj-cta">
+  <div class="container">
+    <div class="label-tag" style="justify-content:center;">Scale Your Acquisition</div>
+    <h2>Turn Ad Spend Into <span>Paying Customers</span></h2>
+    <p>Precision-targeted PPC campaigns combined with a high-converting funnel — that's how you get more customers for less spend.</p>
+    <div class="proj-cta-btns">
+      <a href="contact.html" class="btn btn-blue"><i class="fa fa-bullseye"></i> Start My PPC Campaign</a>
+      <a href="portfolio.html" class="btn btn-ghost"><i class="fa fa-arrow-left"></i> Back to Portfolio</a>
+    </div>
+  </div>
+</section>
+
+<footer id="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand"><a href="index.html" class="logo"><img src="assets/img/logo.webp" alt="Scalen"/></a><p>Award-winning digital marketing agency helping businesses grow through data-driven strategies.</p><div class="footer-socs"><a href="#" class="fsoc"><i class="fab fa-linkedin-in"></i></a><a href="#" class="fsoc"><i class="fab fa-twitter"></i></a><a href="#" class="fsoc"><i class="fab fa-instagram"></i></a><a href="#" class="fsoc"><i class="fab fa-facebook-f"></i></a></div></div>
+      <div class="footer-col"><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="about.html">About Us</a></li><li><a href="services.html">Services</a></li><li><a href="portfolio.html">Portfolio</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+      <div class="footer-col"><h4>Our Services</h4><ul><li><a href="services.html">SEO Optimization</a></li><li><a href="services.html">Content Marketing</a></li><li><a href="services.html">Social Media</a></li><li><a href="services.html">PPC Advertising</a></li><li><a href="services.html">Brand Strategy</a></li><li><a href="services.html">Web Design</a></li></ul></div>
+      <div class="footer-col"><h4>Contact Info</h4><ul><li><a href="contact.html">123 Marketing Street, NY 10001</a></li><li><a href="tel:+15552349823">+1 (555) 234-9823</a></li><li><a href="mailto:hello@reliableagency.com">hello@reliableagency.com</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><p>&copy; 2026 <a href="index.html">Scalen</a>. All rights reserved.</p><p><a href="#" style="color:var(--grey);margin-right:16px;">Privacy Policy</a><a href="#" style="color:var(--grey);">Terms</a></p></div>
+  </div>
+</footer>
+<button id="scrollTop"><i class="fas fa-arrow-up"></i></button>
+<script src="assets/js/shared.js"></script>
+</body>
+</html>

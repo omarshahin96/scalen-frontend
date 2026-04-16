@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title data-brand="Scalen">TechCorp Organic Growth — Scalen</title><!-- EDIT: page title -->
+  <link rel="icon" href="assets/img/favicon.webp"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Urbanist:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <link rel="stylesheet" href="assets/css/shared.css"/>
+  <style>
+    .proj-meta-sec{padding:44px 0;background:var(--bg-dark);border-bottom:1px solid var(--border);}
+    .proj-meta-bar{display:flex;flex-wrap:wrap;gap:36px 60px;}
+    .pm-item{display:flex;flex-direction:column;gap:5px;}
+    .pm-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.15em;color:var(--grey);}
+    .pm-value{font-family:var(--font-h);font-size:16px;font-weight:700;color:#fff;}
+    .proj-img-sec{padding:60px 0 0;background:var(--bg);}
+    .proj-img-wrap{border-radius:22px;overflow:hidden;border:1px solid var(--border);}
+    .proj-img-wrap img{width:100%;height:540px;object-fit:cover;display:block;}
+    .proj-content-sec{padding:80px 0 100px;background:var(--bg);}
+    .proj-layout{display:grid;grid-template-columns:1fr 340px;gap:60px;align-items:start;}
+    .proj-main h2{font-family:var(--font-h);font-size:28px;font-weight:800;margin:44px 0 16px;letter-spacing:-.02em;}
+    .proj-main h2:first-child{margin-top:0;}
+    .proj-main p{font-size:16px;color:var(--grey);line-height:1.85;margin-bottom:16px;}
+    .proj-main ul{list-style:none;padding:0;display:flex;flex-direction:column;gap:10px;margin-bottom:20px;}
+    .proj-main ul li{display:flex;align-items:flex-start;gap:10px;font-size:15px;color:var(--grey);line-height:1.7;}
+    .proj-main ul li::before{content:'◆';color:var(--blue);font-size:10px;margin-top:5px;flex-shrink:0;}
+    .results-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:28px 0;}
+    .res-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:24px 16px;text-align:center;}
+    .res-num{font-family:var(--font-h);font-size:38px;font-weight:800;color:var(--green);line-height:1;margin-bottom:6px;}
+    .res-lbl{font-size:12px;color:var(--grey);font-weight:600;}
+    .proj-sidebar{position:sticky;top:100px;display:flex;flex-direction:column;gap:18px;}
+    .ps-box{background:var(--bg-card);border:1px solid var(--border);border-radius:18px;padding:22px;}
+    .ps-box h4{font-family:var(--font-h);font-size:15px;font-weight:700;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border);}
+    .ps-list{display:flex;flex-direction:column;gap:12px;}
+    .ps-item{display:flex;justify-content:space-between;align-items:flex-start;font-size:14px;gap:12px;}
+    .ps-item .psi-label{color:var(--grey);flex-shrink:0;}
+    .ps-item .psi-val{font-weight:600;font-size:13px;text-align:right;}
+    .ps-tags{display:flex;flex-wrap:wrap;gap:8px;}
+    .ps-tag{padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;background:rgba(36,76,201,.1);border:1px solid rgba(36,76,201,.2);color:var(--blue-lt);}
+    .rel-links{display:flex;flex-direction:column;gap:8px;}
+    .rel-link{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid var(--border);font-size:13px;font-weight:600;color:#fff;text-decoration:none;transition:var(--trans);}
+    .rel-link:hover{border-color:rgba(36,76,201,.4);color:var(--blue-lt);background:rgba(36,76,201,.06);}
+    .rel-link i{color:var(--blue);font-size:11px;}
+    .proj-gallery{padding:0 0 80px;background:var(--bg);}
+    .gallery-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+    .gallery-img{border-radius:16px;overflow:hidden;border:1px solid var(--border);}
+    .gallery-img img{width:100%;height:260px;object-fit:cover;transition:transform .5s;display:block;}
+    .gallery-img:hover img{transform:scale(1.05);}
+    .proj-cta{padding:90px 0;background:var(--bg-dark);text-align:center;}
+    .proj-cta h2{font-family:var(--font-h);font-size:clamp(28px,3.5vw,44px);font-weight:800;letter-spacing:-.02em;margin-bottom:14px;}
+    .proj-cta h2 span{color:var(--blue);}
+    .proj-cta p{font-size:17px;color:var(--grey);margin-bottom:34px;}
+    .proj-cta-btns{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;}
+    @media(max-width:1024px){.proj-layout{grid-template-columns:1fr;}.proj-sidebar{position:static;}}
+    @media(max-width:600px){.results-row{grid-template-columns:1fr 1fr;}.gallery-grid{grid-template-columns:1fr;}.proj-meta-bar{gap:16px 30px;}.proj-img-wrap img{height:300px;}}
+  </style>
+  <!-- ============================================ -->
+  <!-- TRACKING CODES — HEAD (GTM / GA4 / Meta Pixel) -->
+  <!-- Paste your Google Tag Manager <script> snippet here -->
+  <!-- ============================================ -->
+  <script id="gtm-head-code">/* GTM head code will be injected here by CMS */</script>
+</head>
+<body>
+  <!-- ============================================ -->
+  <!-- TRACKING CODES — BODY (GTM noscript)        -->
+  <!-- Paste your GTM <noscript> snippet here      -->
+  <!-- ============================================ -->
+  <noscript id="gtm-body-code"><!-- GTM body code will be injected here by CMS --></noscript>
+<div id="loader"><div class="loader-ring"></div></div>
+<header id="header">
+  <div class="header-wrap">
+    <a href="index.html" class="logo"><img src="assets/img/logo.webp" alt="Scalen"/></a>
+    <nav class="nav-menu">
+      <a href="index.html">Home</a><a href="about.html">About</a><a href="services.html">Services</a>
+      <a href="portfolio.html" class="active">Portfolio</a>
+      <a href="blog.html">Blog</a><a href="contact.html">Contact</a>
+      <a href="contact.html" class="nav-cta">Free Consultation</a>
+    </nav>
+    <button class="hamburger" onclick="openNav()" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<div class="mob-overlay" id="mobOverlay" onclick="closeNav()"></div>
+<div class="mob-nav" id="mobNav">
+  <button class="mob-close" onclick="closeNav()"><i class="fa fa-times"></i></button>
+  <a href="index.html"><img src="assets/img/logo.webp" alt="Scalen" style="height:32px;margin-bottom:28px;display:block;"/></a>
+  <a href="index.html">Home</a><a href="about.html">About</a><a href="services.html">Services</a>
+  <a href="portfolio.html">Portfolio</a><a href="blog.html">Blog</a><a href="contact.html">Contact</a>
+  <a href="contact.html" class="btn btn-blue" style="margin-top:18px;text-align:center;border-radius:12px;">Free Consultation</a>
+</div>
+
+<section class="page-hero">
+  <div class="container">
+    <p class="page-label reveal"><!-- EDIT: category -->SEO Campaign</p>
+    <h1 class="reveal" style="transition-delay:.1s"><!-- EDIT: project title -->TechCorp <span>Organic Growth</span> Strategy</h1>
+    <nav class="breadcrumb reveal" style="transition-delay:.2s" aria-label="Breadcrumb">
+      <a href="index.html">Home</a><span><i class="fa fa-chevron-right"></i></span>
+      <a href="portfolio.html">Portfolio</a><span><i class="fa fa-chevron-right"></i></span>
+      <span>TechCorp SEO</span>
+    </nav>
+  </div>
+</section>
+
+<section class="proj-meta-sec">
+  <div class="container">
+    <div class="proj-meta-bar reveal">
+      <!-- EDIT: project meta -->
+      <div class="pm-item"><span class="pm-label">Client</span><span class="pm-value">TechCorp Inc.</span></div>
+      <div class="pm-item"><span class="pm-label">Category</span><span class="pm-value">SEO Campaign</span></div>
+      <div class="pm-item"><span class="pm-label">Completed</span><span class="pm-value">March 2025</span></div>
+      <div class="pm-item"><span class="pm-label">Duration</span><span class="pm-value">6 Months</span></div>
+      <div class="pm-item"><span class="pm-label">Services</span><span class="pm-value">Technical SEO · Content · Link Building</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="proj-img-sec">
+  <div class="container">
+    <div class="proj-img-wrap reveal">
+      <img src="assets/img/wc1.webp" alt="TechCorp SEO Campaign"/><!-- EDIT: hero image -->
+    </div>
+  </div>
+</section>
+
+<section class="proj-content-sec">
+  <div class="container">
+    <div class="proj-layout">
+      <div class="proj-main reveal">
+        <!-- EDIT: challenge, strategy, results content -->
+        <h2>The Challenge</h2>
+        <p>TechCorp Inc., a B2B SaaS company offering project management tools, came to us with a critical problem: despite having an excellent product, their website was virtually invisible in organic search. A technical audit uncovered 340+ crawl errors, duplicate content issues, and a site architecture that search engines couldn't properly index.</p>
+        <p>Their domain authority sat at 18 — far below competitors averaging DA 45+. They had no structured content strategy and were missing out on high-intent keywords that their buyers were actively searching for. Paid channels were cannibalizing budget with diminishing returns, and leadership needed a sustainable long-term traffic engine.</p>
+
+        <h2>Our Strategy</h2>
+        <p>We approached TechCorp's SEO overhaul in three distinct phases, each building on the last to create compounding momentum:</p>
+        <ul>
+          <li><strong>Phase 1 — Technical Foundation:</strong> Fixed all crawl errors, implemented canonical tags, optimised site speed to sub-2s load times, and restructured URL architecture for clarity and crawlability.</li>
+          <li><strong>Phase 2 — Content Cluster Strategy:</strong> Built 8 topical content clusters around buyer-intent keywords. Produced 24 long-form pillar pages and 96 supporting blog articles over the campaign period.</li>
+          <li><strong>Phase 3 — Authority Link Acquisition:</strong> Secured 140+ editorial backlinks from industry publications, SaaS review sites, and partner content programmes — growing DA from 18 to 46.</li>
+        </ul>
+        <p>Monthly reporting with keyword position tracking, content performance reviews, and competitive gap analysis kept the strategy agile and results-focused throughout.</p>
+
+        <h2>The Results</h2>
+        <div class="results-row">
+          <div class="res-card"><div class="res-num">340%</div><div class="res-lbl">Organic Traffic Growth</div></div>
+          <div class="res-card"><div class="res-num">#1</div><div class="res-lbl">Rankings — 12 Keywords</div></div>
+          <div class="res-card"><div class="res-num">5x</div><div class="res-lbl">Qualified Lead Volume</div></div>
+        </div>
+        <p>Within 6 months, TechCorp's organic traffic grew from 8,200 to 36,100 monthly sessions. Trial sign-ups from organic channels increased by 5x, and the sales team reported a measurable improvement in lead quality. The domain authority climbed from 18 to 46, permanently strengthening their competitive positioning.</p>
+      </div>
+
+      <div class="proj-sidebar">
+        <div class="ps-box">
+          <h4>Project Info</h4>
+          <!-- EDIT: sidebar meta -->
+          <div class="ps-list">
+            <div class="ps-item"><span class="psi-label">Client</span><span class="psi-val">TechCorp Inc.</span></div>
+            <div class="ps-item"><span class="psi-label">Industry</span><span class="psi-val">B2B SaaS</span></div>
+            <div class="ps-item"><span class="psi-label">Timeline</span><span class="psi-val">6 months</span></div>
+            <div class="ps-item"><span class="psi-label">Team Size</span><span class="psi-val">4 Specialists</span></div>
+            <div class="ps-item"><span class="psi-label">Budget</span><span class="psi-val">$5,000/mo</span></div>
+          </div>
+        </div>
+        <div class="ps-box">
+          <h4>Services Used</h4>
+          <div class="ps-tags">
+            <span class="ps-tag">Technical SEO</span>
+            <span class="ps-tag">Content Strategy</span>
+            <span class="ps-tag">Link Building</span>
+            <span class="ps-tag">Analytics</span>
+            <span class="ps-tag">Keyword Research</span>
+          </div>
+        </div>
+        <a href="contact.html" class="btn btn-blue" style="text-align:center;justify-content:center;width:100%;box-sizing:border-box;">Start Your Project</a>
+        <div class="ps-box">
+          <h4>Related Projects</h4>
+          <div class="rel-links">
+            <a href="project-retailchain.html" class="rel-link"><i class="fa fa-arrow-right"></i>RetailChain Local SEO</a>
+            <a href="project-healthbrand.html" class="rel-link"><i class="fa fa-arrow-right"></i>HealthBrand Authority</a>
+            <a href="case-techcorp.html" class="rel-link"><i class="fa fa-file-lines"></i>Read Full Case Study</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="proj-gallery">
+  <div class="container">
+    <div class="gallery-grid">
+      <div class="gallery-img reveal"><img src="assets/img/wc2.webp" alt="Campaign analytics dashboard"/></div>
+      <div class="gallery-img reveal" style="transition-delay:.15s"><img src="assets/img/blg1.webp" alt="Content performance results"/></div>
+    </div>
+  </div>
+</section>
+
+<section class="proj-cta">
+  <div class="container">
+    <div class="label-tag" style="justify-content:center;">Your Project</div>
+    <h2>Ready to <span>Dominate Search?</span></h2>
+    <p>Let's build an SEO strategy that turns your website into your most powerful lead-generation asset.</p>
+    <div class="proj-cta-btns">
+      <a href="contact.html" class="btn btn-blue"><i class="fa fa-rocket"></i> Get a Free SEO Audit</a>
+      <a href="portfolio.html" class="btn btn-ghost"><i class="fa fa-arrow-left"></i> Back to Portfolio</a>
+    </div>
+  </div>
+</section>
+
+<footer id="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand"><a href="index.html" class="logo"><img src="assets/img/logo.webp" alt="Scalen"/></a><p>Award-winning digital marketing agency helping businesses grow through data-driven strategies.</p><div class="footer-socs"><a href="#" class="fsoc"><i class="fab fa-linkedin-in"></i></a><a href="#" class="fsoc"><i class="fab fa-twitter"></i></a><a href="#" class="fsoc"><i class="fab fa-instagram"></i></a><a href="#" class="fsoc"><i class="fab fa-facebook-f"></i></a></div></div>
+      <div class="footer-col"><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="about.html">About Us</a></li><li><a href="services.html">Services</a></li><li><a href="portfolio.html">Portfolio</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+      <div class="footer-col"><h4>Our Services</h4><ul><li><a href="services.html">SEO Optimization</a></li><li><a href="services.html">Content Marketing</a></li><li><a href="services.html">Social Media</a></li><li><a href="services.html">PPC Advertising</a></li><li><a href="services.html">Brand Strategy</a></li><li><a href="services.html">Web Design</a></li></ul></div>
+      <div class="footer-col"><h4>Contact Info</h4><ul><li><a href="contact.html">123 Marketing Street, NY 10001</a></li><li><a href="tel:+15552349823">+1 (555) 234-9823</a></li><li><a href="mailto:hello@reliableagency.com">hello@reliableagency.com</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><p>&copy; 2026 <a href="index.html">Scalen</a>. All rights reserved.</p><p><a href="#" style="color:var(--grey);margin-right:16px;">Privacy Policy</a><a href="#" style="color:var(--grey);">Terms</a></p></div>
+  </div>
+</footer>
+<button id="scrollTop"><i class="fas fa-arrow-up"></i></button>
+<script src="assets/js/shared.js"></script>
+</body>
+</html>

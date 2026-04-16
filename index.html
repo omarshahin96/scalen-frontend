@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-brand="Scalen.">Scalen. — Award-Winning Digital Marketing Agency</title><!-- EDIT: page title -->
+  <link rel="icon" href="assets/img/favicon.webp" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Urbanist:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="assets/css/shared.css" />
+  <link rel="stylesheet" href="assets/css/swiper.min.css" />
+  <style>
+    /* ── HERO ───────────────────────────────── */
+    #hero {
+      min-height:100vh; display:flex; align-items:center;
+      padding:130px 0 90px; position:relative; overflow:hidden;
+    }
+    .hero-bg {
+      position:absolute; inset:0;
+      background:url('assets/img/hr-bg.webp') center/cover no-repeat;
+      opacity:0.3;
+    }
+    .hero-bg::after {
+      content:''; position:absolute; inset:0;
+      background:linear-gradient(135deg,rgba(7,7,26,.9) 0%,rgba(7,7,26,.55) 60%,rgba(7,7,26,.85) 100%);
+    }
+    .hero-dots {
+      position:absolute; inset:0;
+      background-image:radial-gradient(rgba(36,76,201,.1) 1px, transparent 1px);
+      background-size:34px 34px; pointer-events:none;
+    }
+    .hero-glow-1 {
+      position:absolute; top:-80px; left:-80px; width:520px; height:520px;
+      border-radius:50%;
+      background:radial-gradient(circle,rgba(36,76,201,.2) 0%,transparent 70%);
+      pointer-events:none;
+    }
+    .hero-glow-2 {
+      position:absolute; bottom:-120px; right:-60px; width:440px; height:440px;
+      border-radius:50%;
+      background:radial-gradient(circle,rgba(133,238,0,.1) 0%,transparent 70%);
+      pointer-events:none;
+    }
+    .hero-inner {
+      position:relative; z-index:1;
+      display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center;
+    }
+    .hero-badge {
+      display:inline-flex; align-items:center; gap:8px;
+      background:rgba(36,76,201,.15); border:1px solid rgba(36,76,201,.35);
+      border-radius:50px; padding:6px 18px; margin-bottom:26px;
+      font-size:11px; font-weight:700; letter-spacing:.18em;
+      text-transform:uppercase; color:#2DA9FF;
+    }
+    .hero-badge i { font-size:8px; animation:blink 1.8s ease infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+    .hero-title {
+      font-family:var(--font-h); font-size:clamp(40px,5.5vw,74px);
+      font-weight:800; line-height:1.04; letter-spacing:-.03em;
+      color:#fff; margin-bottom:22px;
+    }
+    .hero-title .gr  { color:var(--green); }
+    .hero-title .bl  { color:var(--blue); }
+    .hero-sub { font-size:17px; color:var(--grey); line-height:1.75; max-width:480px; margin-bottom:36px; }
+    .hero-btns { display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin-bottom:42px; }
+
+    .hero-clients { display:flex; align-items:center; gap:16px; }
+    .hero-avatars { display:flex; }
+    .hero-av {
+      width:44px; height:44px; border-radius:50%;
+      border:2.5px solid var(--bg); margin-left:-13px; overflow:hidden; flex-shrink:0;
+    }
+    .hero-av:first-child { margin-left:0; }
+    .hero-av img { width:100%; height:100%; object-fit:cover; }
+    .client-txt { font-size:14px; color:var(--grey); }
+    .client-txt strong { display:block; font-size:16px; font-weight:700; color:#fff; }
+
+    /* Hero right */
+    .hero-right { position:relative; height:560px; display:flex; align-items:center; justify-content:center; }
+    .hero-img-wrap {
+      width:340px; height:470px; border-radius:24px; overflow:hidden;
+      border:1px solid rgba(255,255,255,.1); box-shadow:var(--shadow-c);
+    }
+    .hero-img-wrap img { width:100%; height:100%; object-fit:cover; transition:transform 7s ease; }
+    .hero-img-wrap:hover img { transform:scale(1.06); }
+
+    /* Floating cards */
+    .fl-card {
+      position:absolute;
+      background:rgba(11,12,30,.95); backdrop-filter:blur(18px);
+      border:1px solid rgba(255,255,255,.1); border-radius:18px;
+      padding:18px 22px; box-shadow:var(--shadow-c);
+    }
+    .fl-card-1 { bottom:60px; left:-65px; width:215px; animation:floatY 5s ease-in-out infinite; }
+    .fl-card-2 { top:50px; right:-55px; width:195px; animation:floatY 5s ease-in-out infinite 2.5s; }
+    @keyframes floatY { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+    .fc-lbl  { font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--grey); margin-bottom:6px; }
+    .fc-ttl  { font-family:var(--font-h); font-size:14px; font-weight:700; color:#fff; line-height:1.35; margin-bottom:10px; }
+    .fc-stars { display:flex; gap:3px; margin-bottom:8px; }
+    .fc-stars i { font-size:10px; color:var(--orange); }
+    .fc-stat { display:flex; align-items:center; gap:8px; margin-top:8px; }
+    .fc-num  { font-family:var(--font-h); font-size:30px; font-weight:800; color:var(--green); line-height:1; }
+    .fc-sub  { font-size:11px; color:var(--grey); line-height:1.4; }
+    .fc-icon { width:38px; height:38px; border-radius:10px; background:linear-gradient(135deg,var(--blue),#2DA9FF); display:flex; align-items:center; justify-content:center; margin-bottom:10px; }
+    .fc-icon i { color:#fff; font-size:15px; }
+
+    /* ── SERVICES ────────────────────────────── */
+    #services { padding:120px 0; background:var(--bg); }
+    .svc-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+
+    /* ── ABOUT ───────────────────────────────── */
+    #about { padding:120px 0; background:var(--bg-dark); position:relative; overflow:hidden; }
+    #about::before {
+      content:''; position:absolute; top:0; right:0; width:500px; height:500px; border-radius:50%;
+      background:radial-gradient(circle,rgba(36,76,201,.07) 0%,transparent 70%); pointer-events:none;
+    }
+    .about-grid { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; }
+    .about-imgs { position:relative; height:540px; }
+    .ab-main {
+      position:absolute; top:0; left:0; width:310px; height:420px;
+      border-radius:22px; overflow:hidden; box-shadow:var(--shadow-c); border:1px solid var(--border);
+    }
+    .ab-main img { width:100%; height:100%; object-fit:cover; }
+    .ab-sub {
+      position:absolute; bottom:0; right:0; width:210px; height:270px;
+      border-radius:20px; overflow:hidden; box-shadow:var(--shadow-c); border:1px solid var(--border);
+    }
+    .ab-sub img { width:100%; height:100%; object-fit:cover; }
+    .ab-badge {
+      position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+      background:var(--blue); border-radius:18px; padding:18px 22px; text-align:center;
+      box-shadow:0 12px 44px rgba(36,76,201,.55); z-index:2;
+    }
+    .ab-badge-n { font-family:var(--font-h); font-size:38px; font-weight:800; line-height:1; }
+    .ab-badge-t { font-size:11px; color:rgba(255,255,255,.75); font-weight:600; margin-top:4px; }
+
+    .about-text p { font-size:16px; color:var(--grey); line-height:1.8; margin-bottom:26px; }
+    .skill-list { margin-bottom:34px; display:flex; flex-direction:column; gap:18px; }
+    .skill-top  { display:flex; justify-content:space-between; margin-bottom:7px; }
+    .skill-name { font-size:14px; font-weight:700; }
+    .skill-pct  { font-size:14px; font-weight:800; color:var(--blue-lt); }
+    .skill-bg   { height:5px; background:rgba(255,255,255,.07); border-radius:10px; overflow:hidden; }
+    .skill-fill {
+      height:100%; border-radius:10px;
+      background:linear-gradient(90deg,var(--blue),#2DA9FF);
+      width:0; transition:width 1.3s cubic-bezier(0.25,1,0.5,1);
+    }
+
+    /* ── STATS ───────────────────────────────── */
+    #stats { padding:100px 0; background:var(--bg-card); position:relative; overflow:hidden; }
+    .stats-bg { position:absolute; inset:0; background:url('assets/img/count-bg.webp') center/cover; opacity:.1; }
+    .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); position:relative; z-index:1; }
+    .stat-box { text-align:center; padding:40px 16px; border-right:1px solid var(--border); }
+    .stat-box:last-child { border-right:none; }
+    .stat-num {
+      font-family:var(--font-h); font-size:clamp(46px,5vw,70px);
+      font-weight:800; line-height:1; color:#fff;
+      display:flex; align-items:flex-start; justify-content:center; gap:2px; margin-bottom:12px;
+    }
+    .stat-num .sfx { font-size:.55em; color:var(--green); margin-top:8px; font-weight:800; }
+    .stat-lbl { font-size:14px; color:var(--grey); font-weight:600; }
+
+    /* ── PORTFOLIO ───────────────────────────── */
+    #portfolio { padding:120px 0; background:var(--bg); }
+    .pf-filters { display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin-bottom:44px; }
+    .pf-btn {
+      padding:10px 24px; border-radius:50px; font-size:14px; font-weight:700;
+      color:var(--grey); border:1.5px solid var(--border); transition:var(--trans);
+    }
+    .pf-btn:hover, .pf-btn.active { background:var(--blue); color:#fff; border-color:var(--blue); }
+    .pf-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+    .pf-card { display:block; text-decoration:none; color:inherit; border-radius:20px; overflow:hidden; transition:var(--trans); }
+    .pf-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-b); }
+    .pf-img { height:270px; overflow:hidden; position:relative; }
+    .pf-img img { width:100%; height:100%; object-fit:cover; transition:transform .6s ease; }
+    .pf-card:hover .pf-img img { transform:scale(1.07); }
+    .pf-overlay {
+      position:absolute; inset:0; background:rgba(7,7,26,.82);
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      opacity:0; transition:opacity .35s;
+    }
+    .pf-card:hover .pf-overlay { opacity:1; }
+    .pf-view {
+      width:52px; height:52px; border-radius:50%; background:var(--blue);
+      display:flex; align-items:center; justify-content:center; font-size:18px; color:#fff;
+      margin-bottom:12px; transform:scale(.6); transition:transform .38s cubic-bezier(.25,1,.5,1);
+    }
+    .pf-card:hover .pf-view { transform:scale(1); }
+    .pf-overlay span { font-size:13px; font-weight:700; color:#fff; }
+    .pf-info {
+      padding:20px 22px 24px; background:var(--bg-card);
+      border:1px solid var(--border); border-top:none; border-radius:0 0 20px 20px;
+    }
+    .pf-tag  { font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--blue-lt); margin-bottom:5px; }
+    .pf-name { font-family:var(--font-h); font-size:17px; font-weight:700; transition:color .25s; }
+    .pf-card:hover .pf-name { color:var(--blue-lt); }
+
+    /* ── TESTIMONIALS ────────────────────────── */
+    #testimonials { padding:120px 0; background:var(--bg-dark); }
+    .tst-swiper { padding-bottom:50px !important; }
+    .tst-card {
+      background:var(--bg-card); border:1px solid var(--border); border-radius:20px;
+      padding:34px 30px; transition:var(--trans);
+    }
+    .tst-card:hover { border-color:rgba(36,76,201,.4); box-shadow:var(--shadow-b); }
+    .tst-q     { font-size:44px; line-height:1; color:var(--blue); opacity:.35; font-family:Georgia,serif; margin-bottom:12px; }
+    .tst-stars { display:flex; gap:3px; margin-bottom:12px; }
+    .tst-stars i { font-size:13px; color:var(--orange); }
+    .tst-txt   { font-size:14px; color:var(--grey-lt); line-height:1.8; font-style:italic; margin-bottom:22px; }
+    .tst-auth  { display:flex; align-items:center; gap:13px; }
+    .tst-av    { width:50px; height:50px; border-radius:50%; overflow:hidden; flex-shrink:0; border:2px solid var(--border); }
+    .tst-av img { width:100%; height:100%; object-fit:cover; }
+    .tst-name  { font-family:var(--font-h); font-size:15px; font-weight:700; }
+    .tst-role  { font-size:12px; color:var(--grey); }
+    .swiper-pagination-bullet { background:var(--grey) !important; opacity:.5 !important; }
+    .swiper-pagination-bullet-active { background:var(--blue) !important; opacity:1 !important; }
+
+    /* ── TEAM ────────────────────────────────── */
+    #team { padding:120px 0; background:var(--bg); }
+    .team-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:22px; }
+    .team-card {
+      background:var(--bg-card); border:1px solid var(--border);
+      border-radius:20px; overflow:hidden; text-align:center; transition:var(--trans);
+    }
+    .team-card:hover { border-color:rgba(36,76,201,.4); transform:translateY(-6px); box-shadow:var(--shadow-b); }
+    .team-photo { height:240px; overflow:hidden; }
+    .team-photo img { width:100%; height:100%; object-fit:cover; object-position:top; transition:transform .55s ease; }
+    .team-card:hover .team-photo img { transform:scale(1.06); }
+    .team-info  { padding:22px 18px; }
+    .team-name  { font-family:var(--font-h); font-size:17px; font-weight:700; margin-bottom:4px; }
+    .team-role  { font-size:12px; color:var(--grey); font-weight:600; margin-bottom:14px; }
+    .team-socs  { display:flex; justify-content:center; gap:10px; }
+    .tsoc {
+      width:34px; height:34px; border-radius:50%; background:rgba(255,255,255,.05);
+      border:1px solid var(--border); display:flex; align-items:center; justify-content:center;
+      font-size:12px; color:var(--grey); transition:var(--trans);
+    }
+    .tsoc:hover { background:var(--blue); border-color:var(--blue); color:#fff; transform:translateY(-2px); }
+
+    /* ── BLOG ────────────────────────────────── */
+    #blog { padding:120px 0; background:var(--bg-dark); }
+    .blog-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+    .blog-card {
+      background:var(--bg-card); border:1px solid var(--border); border-radius:20px;
+      overflow:hidden; transition:var(--trans);
+    }
+    .blog-card:hover { border-color:rgba(36,76,201,.4); transform:translateY(-4px); box-shadow:var(--shadow-b); }
+    .blog-img { height:220px; overflow:hidden; }
+    .blog-img img { width:100%; height:100%; object-fit:cover; transition:transform .55s ease; }
+    .blog-card:hover .blog-img img { transform:scale(1.06); }
+    .blog-body  { padding:26px 26px 30px; }
+    .blog-meta  { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+    .blog-cat   { font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; background:var(--blue); color:#fff; padding:4px 12px; border-radius:20px; }
+    .blog-date  { font-size:12px; color:var(--grey); display:flex; align-items:center; gap:5px; }
+    .blog-ttl   { font-family:var(--font-h); font-size:19px; font-weight:700; margin-bottom:10px; line-height:1.3; transition:color .25s; }
+    .blog-card:hover .blog-ttl { color:var(--blue-lt); }
+    .blog-exc   { font-size:14px; color:var(--grey); line-height:1.75; margin-bottom:18px; }
+    .blog-lnk   { display:inline-flex; align-items:center; gap:7px; font-size:13px; font-weight:700; color:var(--blue-lt); transition:gap .25s, color .25s; }
+    .blog-lnk:hover { gap:13px; color:#2DA9FF; }
+
+    /* ── CONTACT ─────────────────────────────── */
+    #contact { padding:120px 0; background:var(--bg); position:relative; overflow:hidden; }
+    #contact::before {
+      content:''; position:absolute; bottom:-150px; left:-80px; width:480px; height:480px; border-radius:50%;
+      background:radial-gradient(circle,rgba(36,76,201,.09) 0%,transparent 70%); pointer-events:none;
+    }
+    .contact-grid { display:grid; grid-template-columns:1fr 1.55fr; gap:80px; align-items:start; }
+    .contact-info-p { font-size:16px; color:var(--grey); line-height:1.8; margin:14px 0 32px; }
+    .cinfo-list  { display:flex; flex-direction:column; gap:22px; }
+    .cinfo-item  { display:flex; align-items:flex-start; gap:16px; }
+    .cinfo-icon  {
+      width:48px; height:48px; border-radius:14px;
+      background:rgba(36,76,201,.13); border:1px solid rgba(36,76,201,.28);
+      display:flex; align-items:center; justify-content:center; font-size:17px; color:var(--blue-lt); flex-shrink:0;
+    }
+    .cinfo-lbl { font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--grey); margin-bottom:3px; }
+    .cinfo-val { font-size:15px; font-weight:600; }
+    .contact-form {
+      background:var(--bg-card); border:1px solid var(--border); border-radius:22px; padding:42px 38px;
+    }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+    .fg { margin-bottom:18px; }
+    .fg label { display:block; font-size:12px; font-weight:700; color:var(--grey-lt); letter-spacing:.06em; margin-bottom:7px; }
+    .fg input, .fg select, .fg textarea {
+      width:100%; background:rgba(255,255,255,.04); border:1.5px solid var(--border);
+      border-radius:12px; padding:13px 17px; font-size:14px; font-family:var(--font-b); color:#fff;
+      outline:none; transition:border-color .25s, box-shadow .25s;
+    }
+    .fg input::placeholder, .fg textarea::placeholder { color:var(--grey); }
+    .fg input:focus, .fg select:focus, .fg textarea:focus { border-color:var(--blue); box-shadow:0 0 0 3px rgba(36,76,201,.14); }
+    .fg textarea { height:120px; resize:vertical; }
+    .fg select option { background:var(--bg-card); color:#fff; }
+    .form-submit {
+      width:100%; padding:16px; border-radius:13px; background:var(--blue); color:#fff;
+      font-size:15px; font-weight:700; font-family:var(--font-b);
+      display:flex; align-items:center; justify-content:center; gap:10px; transition:var(--trans);
+    }
+    .form-submit:hover { background:var(--blue-lt); transform:translateY(-2px); box-shadow:var(--shadow-b); }
+
+    /* ── RESPONSIVE ──────────────────────────── */
+    @media(max-width:1100px){ .team-grid{grid-template-columns:repeat(2,1fr);} }
+    @media(max-width:1024px){
+      .hero-inner{grid-template-columns:1fr;text-align:center;}
+      .hero-right{display:none;}
+      .hero-btns,.hero-clients{justify-content:center;}
+      .hero-sub{max-width:100%;}
+      .about-grid{grid-template-columns:1fr;gap:60px;}
+      .about-imgs{order:-1;height:380px;}
+      .ab-main{width:235px;height:300px;}
+      .ab-sub{width:175px;height:210px;}
+      .svc-grid{grid-template-columns:repeat(2,1fr);}
+      .contact-grid{grid-template-columns:1fr;gap:50px;}
+    }
+    @media(max-width:768px){
+      .svc-grid,.pf-grid,.blog-grid{grid-template-columns:1fr;}
+      .stats-grid{grid-template-columns:repeat(2,1fr);}
+      .stat-box{border-right:none;border-bottom:1px solid var(--border);}
+      .stat-box:last-child{border-bottom:none;}
+      .contact-form{padding:28px 20px;}
+      .form-row{grid-template-columns:1fr;}
+    }
+    @media(max-width:480px){ .team-grid{grid-template-columns:1fr;} }
+  </style>
+  <!-- ============================================ -->
+  <!-- TRACKING CODES — HEAD (GTM / GA4 / Meta Pixel) -->
+  <!-- Paste your Google Tag Manager <script> snippet here -->
+  <!-- ============================================ -->
+  <script id="gtm-head-code">/* GTM head code will be injected here by CMS */</script>
+</head>
+<body>
+  <!-- ============================================ -->
+  <!-- TRACKING CODES — BODY (GTM noscript)        -->
+  <!-- Paste your GTM <noscript> snippet here      -->
+  <!-- ============================================ -->
+  <noscript id="gtm-body-code"><!-- GTM body code will be injected here by CMS --></noscript>
+
+<div id="loader"><div class="loader-ring"></div></div>
+
+<!-- ═══════ HEADER ═══════ -->
+<header id="header">
+  <div class="header-wrap">
+    <a href="index.html" class="logo"><img src="assets/img/logo.webp" alt="Scalen" /></a>
+    <nav class="nav-menu">
+      <!-- EDIT: nav links -->
+      <a href="index.html"      class="active">Home</a>
+      <a href="about.html">About</a>
+      <a href="services.html">Services</a>
+      <a href="portfolio.html">Portfolio</a>
+      <a href="blog.html">Blog</a>
+      <a href="contact.html">Contact</a>
+      <a href="contact.html" class="nav-cta">Free Consultation</a>
+    </nav>
+    <button class="ham" id="ham"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<div class="mob-overlay" id="mobOverlay"></div>
+<nav class="mob-nav" id="mobNav">
+  <a href="index.html"    onclick="closeNav()">Home</a>
+  <a href="about.html"    onclick="closeNav()">About</a>
+  <a href="services.html" onclick="closeNav()">Services</a>
+  <a href="portfolio.html"onclick="closeNav()">Portfolio</a>
+  <a href="blog.html"     onclick="closeNav()">Blog</a>
+  <a href="contact.html"  onclick="closeNav()">Contact</a>
+  <a href="contact.html"  onclick="closeNav()" class="btn btn-blue" style="border-radius:12px;margin-top:8px;">Free Consultation</a>
+</nav>
+
+<!-- ═══════ HERO ═══════ -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-dots"></div>
+  <div class="hero-glow-1"></div>
+  <div class="hero-glow-2"></div>
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-left">
+        <!-- EDIT: hero badge -->
+        <div class="hero-badge"><i class="fas fa-circle-dot"></i> Award Winning Agency</div>
+        <!-- EDIT: hero headline -->
+        <h1 class="hero-title">
+          Award-Winning<br>
+          <span class="gr">Digital Marketing</span><br>
+          Agency defined by<br>
+          <span class="bl">Results</span>
+        </h1>
+        <!-- EDIT: hero description -->
+        <p class="hero-sub">We transform brands through data-driven strategies, compelling content, and innovative digital solutions that deliver measurable growth.</p>
+        <div class="hero-btns">
+          <!-- EDIT: hero buttons -->
+          <a href="services.html" class="btn btn-blue"><i class="fas fa-rocket"></i> Our Services</a>
+          <a href="portfolio.html" class="btn btn-ghost"><i class="fas fa-play-circle"></i> View Portfolio</a>
+        </div>
+        <!-- EDIT: client avatars / count -->
+        <div class="hero-clients">
+          <div class="hero-avatars">
+            <div class="hero-av"><img src="assets/img/cl1.webp" alt="" /></div>
+            <div class="hero-av"><img src="assets/img/cl2.webp" alt="" /></div>
+            <div class="hero-av"><img src="assets/img/cl3.webp" alt="" /></div>
+            <div class="hero-av"><img src="assets/img/cl4.webp" alt="" /></div>
+          </div>
+          <div class="client-txt">
+            <strong>+4K Happy Clients</strong>& Counting
+          </div>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="hero-img-wrap">
+          <!-- EDIT: hero main image -->
+          <img src="assets/img/ab6.webp" alt="Agency team" />
+        </div>
+        <div class="fl-card fl-card-1">
+          <!-- EDIT: floating card 1 -->
+          <div class="fc-lbl">Customer Support</div>
+          <div class="fc-ttl">Complete Customer Assistance</div>
+          <div class="fc-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+          <div class="fc-stat"><div class="fc-num">4.9</div><div class="fc-sub">Average<br>Rating Score</div></div>
+        </div>
+        <div class="fl-card fl-card-2">
+          <!-- EDIT: floating card 2 -->
+          <div class="fc-icon"><i class="fas fa-lightbulb"></i></div>
+          <div class="fc-ttl">Generation Cutting Edge Digital Creative</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ MARQUEE ═══════ -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <!-- EDIT: marquee items -->
+    <div class="marquee-item">SEO Optimization <span class="dot">◆</span></div>
+    <div class="marquee-item">Content Marketing <span class="dot">◆</span></div>
+    <div class="marquee-item">Social Media <span class="dot">◆</span></div>
+    <div class="marquee-item">PPC Advertising <span class="dot">◆</span></div>
+    <div class="marquee-item">Brand Strategy <span class="dot">◆</span></div>
+    <div class="marquee-item">Web Design <span class="dot">◆</span></div>
+    <div class="marquee-item">Email Marketing <span class="dot">◆</span></div>
+    <div class="marquee-item">Analytics & Reporting <span class="dot">◆</span></div>
+    <div class="marquee-item">SEO Optimization <span class="dot">◆</span></div>
+    <div class="marquee-item">Content Marketing <span class="dot">◆</span></div>
+    <div class="marquee-item">Social Media <span class="dot">◆</span></div>
+    <div class="marquee-item">PPC Advertising <span class="dot">◆</span></div>
+    <div class="marquee-item">Brand Strategy <span class="dot">◆</span></div>
+    <div class="marquee-item">Web Design <span class="dot">◆</span></div>
+    <div class="marquee-item">Email Marketing <span class="dot">◆</span></div>
+    <div class="marquee-item">Analytics & Reporting <span class="dot">◆</span></div>
+  </div>
+</div>
+
+<!-- ═══════ SERVICES ═══════ -->
+<section id="services">
+  <div class="container">
+    <div class="sec-head">
+      <div class="label-tag">What We Do</div>
+      <!-- EDIT: section title -->
+      <h2 class="sec-title">What We Do <span>Best</span></h2>
+      <p>From strategy to execution — end-to-end digital marketing solutions that drive measurable business growth.</p>
+    </div>
+    <div class="svc-grid">
+      <!-- EDIT: service cards -->
+      <div class="svc-card reveal d1"><div class="svc-icon si-1"><i class="fas fa-search"></i></div><h3>SEO Optimization</h3><p>Dominate search rankings with data-driven strategies that bring qualified organic traffic to your business.</p><a href="services.html" class="svc-link">Learn More <i class="fas fa-arrow-right"></i></a></div>
+      <div class="svc-card reveal d2"><div class="svc-icon si-2"><i class="fas fa-pen-nib"></i></div><h3>Content Marketing</h3><p>Compelling, conversion-focused content that tells your brand story and engages your audience at every touchpoint.</p><a href="services.html" class="svc-link">Learn More <i class="fas fa-arrow-right"></i></a></div>
+      <div class="svc-card reveal d3"><div class="svc-icon si-3"><i class="fas fa-hashtag"></i></div><h3>Social Media Marketing</h3><p>Build an engaged community and amplify your brand across all social platforms with strategic campaigns.</p><a href="services.html" class="svc-link">Learn More <i class="fas fa-arrow-right"></i></a></div>
+      <div class="svc-card reveal d1"><div class="svc-icon si-4"><i class="fas fa-ad"></i></div><h3>PPC Advertising</h3><p>Maximize ROI with precision-targeted paid campaigns across Google, Meta, and beyond — every dollar optimized.</p><a href="services.html" class="svc-link">Learn More <i class="fas fa-arrow-right"></i></a></div>
+      <div class="svc-card reveal d2"><div class="svc-icon si-5"><i class="fas fa-palette"></i></div><h3>Brand Strategy</h3><p>Craft a compelling brand identity that resonates with your audience and sets you apart from competition.</p><a href="services.html" class="svc-link">Learn More <i class="fas fa-arrow-right"></i></a></div>
+      <div class="svc-card reveal d3"><div class="svc-icon si-6"><i class="fas fa-code"></i></div><h3>Web Design & Dev</h3><p>Beautiful, high-performance websites and landing pages engineered to convert visitors into loyal customers.</p><a href="services.html" class="svc-link">Learn More <i class="fas fa-arrow-right"></i></a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ ABOUT ═══════ -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-imgs reveal from-left">
+        <div class="ab-main"><img src="assets/img/ab6.webp" alt="Team" /></div><!-- EDIT: about main image -->
+        <div class="ab-sub"><img src="assets/img/ab7.webp" alt="Office" /></div><!-- EDIT: about secondary image -->
+        <div class="ab-badge"><div class="ab-badge-n">12+</div><div class="ab-badge-t">Years of<br>Experience</div></div><!-- EDIT: years badge -->
+      </div>
+      <div class="about-text reveal from-right">
+        <div class="label-tag">About Us</div>
+        <!-- EDIT: about headline + body -->
+        <h2 class="sec-title" style="margin-bottom:20px;">About Our <span>Agency</span></h2>
+        <p>We are a full-service digital marketing agency with over 12 years of experience helping businesses grow online. Our team of strategists, creatives, and technologists work together to deliver campaigns that generate real, measurable results.</p>
+        <p>From startups to Fortune 500 companies, we've helped brands across all industries build powerful digital presences and achieve ambitious growth goals.</p>
+        <div class="skill-list">
+          <!-- EDIT: skill bars — change name and --w percentage -->
+          <div class="skill-item"><div class="skill-top"><span class="skill-name">SEO Optimization</span><span class="skill-pct">92%</span></div><div class="skill-bg"><div class="skill-fill" style="--w:92%"></div></div></div>
+          <div class="skill-item"><div class="skill-top"><span class="skill-name">Content Marketing</span><span class="skill-pct">88%</span></div><div class="skill-bg"><div class="skill-fill" style="--w:88%"></div></div></div>
+          <div class="skill-item"><div class="skill-top"><span class="skill-name">Social Media Growth</span><span class="skill-pct">85%</span></div><div class="skill-bg"><div class="skill-fill" style="--w:85%"></div></div></div>
+        </div>
+        <!-- EDIT: about CTA -->
+        <a href="about.html" class="btn btn-blue"><i class="fas fa-arrow-right"></i> Read More About Us</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ STATS ═══════ -->
+<section id="stats">
+  <div class="stats-bg"></div>
+  <div class="container">
+    <div class="stats-grid">
+      <!-- EDIT: stats — change data-target and label -->
+      <div class="stat-box reveal d1"><div class="stat-num"><span class="counter" data-target="4">0</span>K<span class="sfx">+</span></div><div class="stat-lbl">Happy Clients</div></div>
+      <div class="stat-box reveal d2"><div class="stat-num"><span class="counter" data-target="98">0</span>%</div><div class="stat-lbl">Success Rate</div></div>
+      <div class="stat-box reveal d3"><div class="stat-num"><span class="counter" data-target="12">0</span><span class="sfx">+</span></div><div class="stat-lbl">Years Experience</div></div>
+      <div class="stat-box reveal d4"><div class="stat-num"><span class="counter" data-target="500">0</span><span class="sfx">+</span></div><div class="stat-lbl">Projects Completed</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ PORTFOLIO ═══════ -->
+<section id="portfolio">
+  <div class="container">
+    <div class="sec-head">
+      <div class="label-tag">Our Work</div>
+      <!-- EDIT: portfolio section title -->
+      <h2 class="sec-title">Our Recent <span>Works</span></h2>
+      <p>A curated selection of projects showcasing our expertise and the results we've delivered.</p>
+    </div>
+    <div class="pf-filters">
+      <!-- EDIT: filter tab labels -->
+      <button class="pf-btn active" data-filter="all">All</button>
+      <button class="pf-btn" data-filter="seo">SEO</button>
+      <button class="pf-btn" data-filter="social">Social Media</button>
+      <button class="pf-btn" data-filter="web">Web Design</button>
+    </div>
+    <div class="pf-grid">
+      <!-- EDIT: portfolio cards — change image, tag, name, data-filter -->
+      <a href="project-techcorp.html" class="pf-card reveal d1" data-filter="seo"><div class="pf-img"><img src="assets/img/wc1.webp" alt="SEO" /><div class="pf-overlay"><div class="pf-view"><i class="fas fa-arrow-right"></i></div><span>View Project</span></div></div><div class="pf-info"><div class="pf-tag">SEO Campaign</div><div class="pf-name">TechCorp Organic Growth Strategy</div></div></a>
+      <a href="project-financehub.html" class="pf-card reveal d2" data-filter="seo"><div class="pf-img"><img src="assets/img/wc2.webp" alt="SEO" /><div class="pf-overlay"><div class="pf-view"><i class="fas fa-arrow-right"></i></div><span>View Project</span></div></div><div class="pf-info"><div class="pf-tag">SEO + PPC</div><div class="pf-name">FinanceHub Lead Generation</div></div></a>
+      <a href="project-fashionbrand.html" class="pf-card reveal d3" data-filter="social"><div class="pf-img"><img src="assets/img/wc4.webp" alt="Social" /><div class="pf-overlay"><div class="pf-view"><i class="fas fa-arrow-right"></i></div><span>View Project</span></div></div><div class="pf-info"><div class="pf-tag">Social Media</div><div class="pf-name">FashionBrand Viral Campaign</div></div></a>
+      <a href="project-ecommerce.html" class="pf-card reveal d1" data-filter="web"><div class="pf-img"><img src="assets/img/wc5.webp" alt="Web" /><div class="pf-overlay"><div class="pf-view"><i class="fas fa-arrow-right"></i></div><span>View Project</span></div></div><div class="pf-info"><div class="pf-tag">Web Design</div><div class="pf-name">E-Commerce Platform Redesign</div></div></a>
+      <a href="project-foodbrand.html" class="pf-card reveal d2" data-filter="social"><div class="pf-img"><img src="assets/img/ab-ft1.webp" alt="Social" /><div class="pf-overlay"><div class="pf-view"><i class="fas fa-arrow-right"></i></div><span>View Project</span></div></div><div class="pf-info"><div class="pf-tag">Social Media</div><div class="pf-name">FoodBrand Community Build</div></div></a>
+      <a href="project-saas.html" class="pf-card reveal d3" data-filter="web"><div class="pf-img"><img src="assets/img/ab-ft2.webp" alt="Web" /><div class="pf-overlay"><div class="pf-view"><i class="fas fa-arrow-right"></i></div><span>View Project</span></div></div><div class="pf-info"><div class="pf-tag">Web Design</div><div class="pf-name">SaaS Landing Page Suite</div></div></a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ TESTIMONIALS ═══════ -->
+<section id="testimonials">
+  <div class="container">
+    <div class="sec-head">
+      <div class="label-tag">Client Love</div>
+      <h2 class="sec-title">What Clients <span>Say</span></h2>
+      <p>Don't just take our word for it — here's what our clients say about working with us.</p>
+    </div>
+    <div class="swiper tst-swiper">
+      <div class="swiper-wrapper">
+        <!-- EDIT: testimonial cards -->
+        <div class="swiper-slide"><div class="tst-card"><div class="tst-q">"</div><div class="tst-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div><p class="tst-txt">"Working with Scalen transformed our online presence completely. Our organic traffic grew by 340% in just 6 months. Incredibly professional and results-driven."</p><div class="tst-auth"><div class="tst-av"><img src="assets/img/tst1.webp" alt="James" /></div><div><div class="tst-name">James Davidson</div><div class="tst-role">CEO, TechCorp Inc.</div></div></div></div></div>
+        <div class="swiper-slide"><div class="tst-card"><div class="tst-q">"</div><div class="tst-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div><p class="tst-txt">"The social media campaigns exceeded every expectation. We saw a 5x increase in engagement and our follower count doubled in 3 months. Outstanding work!"</p><div class="tst-auth"><div class="tst-av"><img src="assets/img/tst2.webp" alt="Kira" /></div><div><div class="tst-name">Kira Langley</div><div class="tst-role">Marketing Director, FashionBrand</div></div></div></div></div>
+        <div class="swiper-slide"><div class="tst-card"><div class="tst-q">"</div><div class="tst-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div><p class="tst-txt">"Their PPC campaigns cut our cost-per-acquisition by 60% while doubling our conversion rate. The best investment we've ever made in digital marketing."</p><div class="tst-auth"><div class="tst-av"><img src="assets/img/tst3.webp" alt="Marcus" /></div><div><div class="tst-name">Marcus Rivera</div><div class="tst-role">Founder, FinanceHub</div></div></div></div></div>
+        <div class="swiper-slide"><div class="tst-card"><div class="tst-q">"</div><div class="tst-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div><p class="tst-txt">"Scalen's content strategy completely revamped how we communicate. Our newsletter open rates went from 18% to 47% in just two months. Incredible results!"</p><div class="tst-auth"><div class="tst-av"><img src="assets/img/cl3.webp" alt="Priya" /></div><div><div class="tst-name">Priya Shah</div><div class="tst-role">Head of Marketing, GrowthLab</div></div></div></div></div>
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ TEAM ═══════ -->
+<section id="team">
+  <div class="container">
+    <div class="sec-head">
+      <div class="label-tag">Our People</div>
+      <h2 class="sec-title">Meet Our <span>Experts</span></h2>
+      <p>Passionate professionals dedicated to growing your business through innovative digital strategies.</p>
+    </div>
+    <div class="team-grid">
+      <!-- EDIT: team cards — change image, name, role, links -->
+      <div class="team-card reveal d1"><div class="team-photo"><img src="assets/img/tm1.webp" alt="Alex" /></div><div class="team-info"><div class="team-name">Alex Thompson</div><div class="team-role">CEO & Founder</div><div class="team-socs"><a href="#" class="tsoc"><i class="fab fa-linkedin-in"></i></a><a href="#" class="tsoc"><i class="fab fa-twitter"></i></a><a href="#" class="tsoc"><i class="fab fa-instagram"></i></a></div></div></div>
+      <div class="team-card reveal d2"><div class="team-photo"><img src="assets/img/tm2.webp" alt="Sarah" /></div><div class="team-info"><div class="team-name">Sarah Chen</div><div class="team-role">Head of SEO</div><div class="team-socs"><a href="#" class="tsoc"><i class="fab fa-linkedin-in"></i></a><a href="#" class="tsoc"><i class="fab fa-twitter"></i></a><a href="#" class="tsoc"><i class="fab fa-instagram"></i></a></div></div></div>
+      <div class="team-card reveal d3"><div class="team-photo"><img src="assets/img/tm3.webp" alt="Marcus" /></div><div class="team-info"><div class="team-name">Marcus Williams</div><div class="team-role">Creative Director</div><div class="team-socs"><a href="#" class="tsoc"><i class="fab fa-linkedin-in"></i></a><a href="#" class="tsoc"><i class="fab fa-twitter"></i></a><a href="#" class="tsoc"><i class="fab fa-instagram"></i></a></div></div></div>
+      <div class="team-card reveal d4"><div class="team-photo"><img src="assets/img/tm4.webp" alt="Priya" /></div><div class="team-info"><div class="team-name">Priya Patel</div><div class="team-role">Social Media Lead</div><div class="team-socs"><a href="#" class="tsoc"><i class="fab fa-linkedin-in"></i></a><a href="#" class="tsoc"><i class="fab fa-twitter"></i></a><a href="#" class="tsoc"><i class="fab fa-instagram"></i></a></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ BLOG ═══════ -->
+<section id="blog">
+  <div class="container">
+    <div class="sec-head">
+      <div class="label-tag">Our Blog</div>
+      <h2 class="sec-title">Latest <span>Insights</span></h2>
+      <p>Stay ahead with expert insights, industry trends, and actionable digital marketing tips.</p>
+    </div>
+    <div class="blog-grid">
+      <!-- EDIT: blog cards -->
+      <div class="blog-card reveal d1"><div class="blog-img"><img src="assets/img/blg1.webp" alt="" /></div><div class="blog-body"><div class="blog-meta"><span class="blog-cat">SEO</span><span class="blog-date"><i class="far fa-calendar-alt"></i> Jan 15, 2026</span></div><h3 class="blog-ttl">10 SEO Strategies That Will Dominate in 2026</h3><p class="blog-exc">Discover the cutting-edge SEO techniques reshaping search rankings and how to implement them for maximum impact.</p><a href="post-seo-2026.html" class="blog-lnk">Read More <i class="fas fa-arrow-right"></i></a></div></div>
+      <div class="blog-card reveal d2"><div class="blog-img"><img src="assets/img/blg2.webp" alt="" /></div><div class="blog-body"><div class="blog-meta"><span class="blog-cat">Social Media</span><span class="blog-date"><i class="far fa-calendar-alt"></i> Feb 3, 2026</span></div><h3 class="blog-ttl">The Ultimate Guide to Social Media Advertising ROI</h3><p class="blog-exc">Learn how to measure, optimize, and scale your social media ad campaigns for maximum return on investment.</p><a href="post-social-roi.html" class="blog-lnk">Read More <i class="fas fa-arrow-right"></i></a></div></div>
+      <div class="blog-card reveal d3"><div class="blog-img"><img src="assets/img/blg3.webp" alt="" /></div><div class="blog-body"><div class="blog-meta"><span class="blog-cat">Content</span><span class="blog-date"><i class="far fa-calendar-alt"></i> Feb 18, 2026</span></div><h3 class="blog-ttl">Content Marketing That Converts: A Complete Blueprint</h3><p class="blog-exc">Build a content strategy that doesn't just attract visitors — it turns them into paying customers with proven frameworks.</p><a href="post-content-blueprint.html" class="blog-lnk">Read More <i class="fas fa-arrow-right"></i></a></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ CONTACT ═══════ -->
+<section id="contact">
+  <div class="container">
+    <div class="sec-head">
+      <div class="label-tag">Contact Us</div>
+      <h2 class="sec-title">Get In <span>Touch</span></h2>
+      <p>Ready to grow? Let's talk about your goals and how we can help you achieve them.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="reveal from-left">
+        <div class="label-tag">Let's Connect</div>
+        <h3 class="sec-title" style="font-size:32px;margin-bottom:12px;">We'd Love to<br>Hear From You</h3>
+        <!-- EDIT: contact intro text -->
+        <p class="contact-info-p">Fill out the form or reach us directly — our team responds within 24 hours.</p>
+        <div class="cinfo-list">
+          <!-- EDIT: contact details -->
+          <div class="cinfo-item"><div class="cinfo-icon"><i class="fas fa-map-marker-alt"></i></div><div><div class="cinfo-lbl">Our Office</div><div class="cinfo-val">123 Marketing Street, New York, NY 10001</div></div></div>
+          <div class="cinfo-item"><div class="cinfo-icon"><i class="fas fa-phone-alt"></i></div><div><div class="cinfo-lbl">Call Us</div><div class="cinfo-val">+1 (555) 234-9823</div></div></div>
+          <div class="cinfo-item"><div class="cinfo-icon"><i class="fas fa-envelope"></i></div><div><div class="cinfo-lbl">Email Us</div><div class="cinfo-val">hello@reliableagency.com</div></div></div>
+          <div class="cinfo-item"><div class="cinfo-icon"><i class="fas fa-clock"></i></div><div><div class="cinfo-lbl">Business Hours</div><div class="cinfo-val">Mon – Fri: 9:00 AM – 6:00 PM</div></div></div>
+        </div>
+      </div>
+      <div class="contact-form reveal from-right">
+        <form id="contactForm">
+          <div class="form-row">
+            <div class="fg"><label>Your Name</label><input type="text" placeholder="John Smith" required /></div>
+            <div class="fg"><label>Email Address</label><input type="email" placeholder="john@example.com" required /></div>
+          </div>
+          <div class="fg"><label>Service Interested In</label><select><option value="">Select a service…</option><option>SEO Optimization</option><option>Content Marketing</option><option>Social Media Marketing</option><option>PPC Advertising</option><option>Brand Strategy</option><option>Web Design & Development</option></select></div>
+          <div class="fg"><label>Your Message</label><textarea placeholder="Tell us about your project and goals…"></textarea></div>
+          <!-- EDIT: submit button text -->
+          <button type="submit" class="form-submit">Send Message <i class="fas fa-paper-plane"></i></button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ FOOTER ═══════ -->
+<footer id="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo"><img src="assets/img/logo.webp" alt="Scalen" /></a>
+        <!-- EDIT: footer tagline -->
+        <p>Award-winning digital marketing agency helping businesses grow through data-driven strategies and creative excellence.</p>
+        <div class="footer-socs">
+          <!-- EDIT: social links -->
+          <a href="#" class="fsoc"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#" class="fsoc"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="fsoc"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="fsoc"><i class="fab fa-facebook-f"></i></a>
+        </div>
+      </div>
+      <div class="footer-col"><h4>Quick Links</h4><ul>
+        <!-- EDIT: footer links -->
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul></div>
+      <div class="footer-col"><h4>Our Services</h4><ul>
+        <li><a href="services.html">SEO Optimization</a></li>
+        <li><a href="services.html">Content Marketing</a></li>
+        <li><a href="services.html">Social Media</a></li>
+        <li><a href="services.html">PPC Advertising</a></li>
+        <li><a href="services.html">Brand Strategy</a></li>
+        <li><a href="services.html">Web Design</a></li>
+      </ul></div>
+      <div class="footer-col"><h4>Contact Info</h4><ul>
+        <!-- EDIT: footer contact -->
+        <li><a href="contact.html">123 Marketing Street, NY 10001</a></li>
+        <li><a href="tel:+15552349823">+1 (555) 234-9823</a></li>
+        <li><a href="mailto:hello@reliableagency.com">hello@reliableagency.com</a></li>
+        <li><a href="contact.html">Mon–Fri: 9AM – 6PM</a></li>
+      </ul></div>
+    </div>
+    <div class="footer-bottom">
+      <!-- EDIT: copyright -->
+      <p>&copy; 2026 <a href="index.html">Scalen</a>. All rights reserved.</p>
+      <p><a href="#" style="color:var(--grey);margin-right:16px;">Privacy Policy</a><a href="#" style="color:var(--grey);">Terms of Service</a></p>
+    </div>
+  </div>
+</footer>
+
+<button id="scrollTop"><i class="fas fa-arrow-up"></i></button>
+
+<script src="assets/js/swiper.min.js"></script>
+<script src="assets/js/shared.js"></script>
+<script>
+  /* Skill bars triggered by IntersectionObserver in shared.js */
+  document.querySelectorAll('.skill-fill').forEach(el => {
+    const w = el.style.getPropertyValue('--w');
+    el.dataset.w = w;
+  });
+
+  /* Swiper */
+  new Swiper('.tst-swiper', {
+    slidesPerView:1, spaceBetween:24, loop:true,
+    autoplay:{ delay:4500, disableOnInteraction:false },
+    pagination:{ el:'.swiper-pagination', clickable:true },
+    breakpoints:{ 768:{ slidesPerView:2 }, 1024:{ slidesPerView:3 } }
+  });
+</script>
+<script src="assets/js/cms-config.js"></script>
+<script src="assets/js/cms-content.js"></script>
+</body>
+</html>

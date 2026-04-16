@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-brand="Scalen">Services — Scalen</title>
+  <link rel="icon" href="assets/img/favicon.webp" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Urbanist:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="assets/css/shared.css" />
+  <style>
+    .svc-main  { padding:100px 0; background:var(--bg); }
+    .svc-grid  { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+
+    /* Featured service — full-width card */
+    .svc-feature { padding:100px 0; background:var(--bg-dark); }
+    .sf-grid     { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; margin-bottom:70px; }
+    .sf-grid:last-child { margin-bottom:0; }
+    .sf-grid.reverse .sf-img { order:2; }
+    .sf-grid.reverse .sf-text { order:1; }
+    .sf-img      { border-radius:22px; overflow:hidden; box-shadow:var(--shadow-c); border:1px solid var(--border); }
+    .sf-img img  { width:100%; height:380px; object-fit:cover; transition:transform .55s; }
+    .sf-img:hover img { transform:scale(1.05); }
+    .sf-text h3  { font-family:var(--font-h); font-size:clamp(26px,3vw,38px); font-weight:800; margin-bottom:16px; letter-spacing:-.02em; }
+    .sf-text h3 span { color:var(--blue); }
+    .sf-text p   { font-size:16px; color:var(--grey); line-height:1.8; margin-bottom:20px; }
+    .sf-list     { display:flex; flex-direction:column; gap:12px; margin-bottom:28px; }
+    .sf-li       { display:flex; align-items:center; gap:12px; font-size:15px; font-weight:600; }
+    .sf-li i     { color:var(--green); font-size:13px; }
+
+    .pricing-sec { padding:100px 0; background:var(--bg); }
+    .pricing-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+    .price-card  { background:var(--bg-card); border:1px solid var(--border); border-radius:22px; padding:40px 32px; text-align:center; transition:var(--trans); position:relative; overflow:hidden; }
+    .price-card.popular { border-color:var(--blue); }
+    .price-card.popular::before { content:'Most Popular'; position:absolute; top:18px; right:-28px; background:var(--blue); color:#fff; font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; padding:5px 40px; transform:rotate(45deg); }
+    .price-card:hover { transform:translateY(-6px); box-shadow:var(--shadow-b); }
+    .price-plan  { font-size:12px; font-weight:700; letter-spacing:.15em; text-transform:uppercase; color:var(--grey); margin-bottom:12px; }
+    .price-amt   { font-family:var(--font-h); font-size:52px; font-weight:800; line-height:1; margin-bottom:6px; }
+    .price-amt span { font-size:.4em; color:var(--grey); vertical-align:super; }
+    .price-per   { font-size:13px; color:var(--grey); margin-bottom:28px; }
+    .price-list  { display:flex; flex-direction:column; gap:12px; margin-bottom:32px; text-align:left; }
+    .price-li    { display:flex; align-items:center; gap:10px; font-size:14px; color:var(--grey-lt); }
+    .price-li i  { color:var(--green); font-size:12px; flex-shrink:0; }
+    .price-li.off i { color:var(--grey); }
+    .price-li.off  { opacity:.45; }
+
+    .cta-sec     { padding:100px 0; background:var(--bg-dark); text-align:center; }
+    .cta-inner   { max-width:640px; margin:0 auto; }
+    .cta-inner h2{ font-family:var(--font-h); font-size:clamp(32px,4vw,50px); font-weight:800; margin-bottom:18px; letter-spacing:-.02em; }
+    .cta-inner h2 span{ color:var(--blue); }
+    .cta-inner p { font-size:17px; color:var(--grey); line-height:1.75; margin-bottom:34px; }
+    .cta-btns    { display:flex; justify-content:center; gap:14px; flex-wrap:wrap; }
+
+    @media(max-width:1024px){ .svc-grid{grid-template-columns:repeat(2,1fr);} .sf-grid{grid-template-columns:1fr; gap:40px;} .sf-grid.reverse .sf-img,.sf-grid.reverse .sf-text{order:unset;} .pricing-grid{grid-template-columns:1fr;max-width:420px;margin:0 auto;} }
+    @media(max-width:768px){ .svc-grid{grid-template-columns:1fr;} }
+  </style>
+  <!-- ============================================ -->
+  <!-- TRACKING CODES — HEAD (GTM / GA4 / Meta Pixel) -->
+  <!-- Paste your Google Tag Manager <script> snippet here -->
+  <!-- ============================================ -->
+  <script id="gtm-head-code">/* GTM head code will be injected here by CMS */</script>
+</head>
+<body>
+  <!-- ============================================ -->
+  <!-- TRACKING CODES — BODY (GTM noscript)        -->
+  <!-- Paste your GTM <noscript> snippet here      -->
+  <!-- ============================================ -->
+  <noscript id="gtm-body-code"><!-- GTM body code will be injected here by CMS --></noscript>
+<div id="loader"><div class="loader-ring"></div></div>
+
+<header id="header">
+  <div class="header-wrap">
+    <a href="index.html" class="logo"><img src="assets/img/logo.webp" alt="Scalen" /></a>
+    <nav class="nav-menu">
+      <a href="index.html">Home</a><a href="about.html">About</a>
+      <a href="services.html" class="active">Services</a>
+      <a href="portfolio.html">Portfolio</a><a href="blog.html">Blog</a><a href="contact.html">Contact</a>
+      <a href="contact.html" class="nav-cta">Free Consultation</a>
+    </nav>
+    <button class="ham" id="ham"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<div class="mob-overlay" id="mobOverlay"></div>
+<nav class="mob-nav" id="mobNav">
+  <a href="index.html" onclick="closeNav()">Home</a><a href="about.html" onclick="closeNav()">About</a>
+  <a href="services.html" onclick="closeNav()">Services</a><a href="portfolio.html" onclick="closeNav()">Portfolio</a>
+  <a href="blog.html" onclick="closeNav()">Blog</a><a href="contact.html" onclick="closeNav()">Contact</a>
+  <a href="contact.html" onclick="closeNav()" class="btn btn-blue" style="border-radius:12px;margin-top:8px;">Free Consultation</a>
+</nav>
+
+<div class="page-hero">
+  <div class="page-hero-glow"></div>
+  <div class="container page-hero-inner">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><span>Services</span></div>
+    <!-- EDIT: page title + desc -->
+    <h1>Our <span>Services</span></h1>
+    <p>Comprehensive digital marketing solutions tailored to your unique business goals and growth targets.</p>
+  </div>
+</div>
+
+<div class="marquee-wrap"><div class="marquee-track"><div class="marquee-item">SEO Optimization <span class="dot">◆</span></div><div class="marquee-item">Content Marketing <span class="dot">◆</span></div><div class="marquee-item">Social Media <span class="dot">◆</span></div><div class="marquee-item">PPC Advertising <span class="dot">◆</span></div><div class="marquee-item">Brand Strategy <span class="dot">◆</span></div><div class="marquee-item">Web Design <span class="dot">◆</span></div><div class="marquee-item">SEO Optimization <span class="dot">◆</span></div><div class="marquee-item">Content Marketing <span class="dot">◆</span></div><div class="marquee-item">Social Media <span class="dot">◆</span></div><div class="marquee-item">PPC Advertising <span class="dot">◆</span></div><div class="marquee-item">Brand Strategy <span class="dot">◆</span></div><div class="marquee-item">Web Design <span class="dot">◆</span></div></div></div>
+
+<!-- ALL SERVICES GRID -->
+<section class="svc-main">
+  <div class="container">
+    <div class="sec-head">
+      <div class="label-tag">What We Offer</div>
+      <h2 class="sec-title">Full-Suite Digital <span>Marketing</span></h2>
+      <p>Every service designed to work together — delivering compounding results across your entire digital presence.</p>
+    </div>
+    <div class="svc-grid">
+      <!-- EDIT: service cards -->
+      <div class="svc-card reveal d1"><div class="svc-icon si-1"><i class="fas fa-search"></i></div><h3>SEO Optimization</h3><p>Dominate search rankings with technical SEO, on-page optimization, link building, and content strategies that drive qualified organic traffic.</p><a href="contact.html" class="svc-link">Get Started <i class="fas fa-arrow-right"></i></a></div>
+      <div class="svc-card reveal d2"><div class="svc-icon si-2"><i class="fas fa-pen-nib"></i></div><h3>Content Marketing</h3><p>Compelling blogs, whitepapers, videos, and infographics that position you as an industry authority and convert readers into customers.</p><a href="contact.html" class="svc-link">Get Started <i class="fas fa-arrow-right"></i></a></div>
+      <div class="svc-card reveal d3"><div class="svc-icon si-3"><i class="fas fa-hashtag"></i></div><h3>Social Media Marketing</h3><p>Strategic content calendars, community management, and paid social campaigns that build your brand and drive measurable ROI.</p><a href="contact.html" class="svc-link">Get Started <i class="fas fa-arrow-right"></i></a></div>
+      <div class="svc-card reveal d1"><div class="svc-icon si-4"><i class="fas fa-ad"></i></div><h3>PPC Advertising</h3><p>Google Ads, Meta Ads, and display campaigns precision-engineered to maximize your return on ad spend from day one.</p><a href="contact.html" class="svc-link">Get Started <i class="fas fa-arrow-right"></i></a></div>
+      <div class="svc-card reveal d2"><div class="svc-icon si-5"><i class="fas fa-palette"></i></div><h3>Brand Strategy</h3><p>Visual identity, brand voice, positioning, and messaging frameworks that make your brand instantly recognizable and memorable.</p><a href="contact.html" class="svc-link">Get Started <i class="fas fa-arrow-right"></i></a></div>
+      <div class="svc-card reveal d3"><div class="svc-icon si-6"><i class="fas fa-code"></i></div><h3>Web Design & Dev</h3><p>Conversion-optimized websites and landing pages built for speed, UX, and measurable performance — not just aesthetics.</p><a href="contact.html" class="svc-link">Get Started <i class="fas fa-arrow-right"></i></a></div>
+      <div class="svc-card reveal d1"><div class="svc-icon si-1"><i class="fas fa-envelope-open-text"></i></div><h3>Email Marketing</h3><p>Automated sequences, newsletters, and drip campaigns that nurture leads and turn one-time buyers into loyal brand advocates.</p><a href="contact.html" class="svc-link">Get Started <i class="fas fa-arrow-right"></i></a></div>
+      <div class="svc-card reveal d2"><div class="svc-icon si-2"><i class="fas fa-chart-bar"></i></div><h3>Analytics & Reporting</h3><p>Custom dashboards, monthly reports, and actionable insights that keep you in control of every marketing dollar you spend.</p><a href="contact.html" class="svc-link">Get Started <i class="fas fa-arrow-right"></i></a></div>
+      <div class="svc-card reveal d3"><div class="svc-icon si-3"><i class="fas fa-video"></i></div><h3>Video Production</h3><p>Brand films, explainer videos, social reels, and product demos that tell your story in the format audiences consume most.</p><a href="contact.html" class="svc-link">Get Started <i class="fas fa-arrow-right"></i></a></div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED SERVICES DEEP-DIVE -->
+<section class="svc-feature">
+  <div class="container">
+    <!-- EDIT: featured service 1 -->
+    <div class="sf-grid">
+      <div class="sf-img reveal from-left"><img src="assets/img/wc2.webp" alt="SEO" /></div>
+      <div class="sf-text reveal from-right">
+        <div class="label-tag">SEO Services</div>
+        <h3>Rank Higher, <span>Grow Faster</span></h3>
+        <p>Our SEO service is built on a foundation of technical excellence, content strategy, and authoritative link acquisition. We don't chase algorithm tricks — we build sustainable rankings that compound over time.</p>
+        <div class="sf-list">
+          <div class="sf-li"><i class="fas fa-check-circle"></i> Full technical SEO audit & implementation</div>
+          <div class="sf-li"><i class="fas fa-check-circle"></i> Keyword research & competitive gap analysis</div>
+          <div class="sf-li"><i class="fas fa-check-circle"></i> On-page & content optimization</div>
+          <div class="sf-li"><i class="fas fa-check-circle"></i> High-authority link building campaigns</div>
+          <div class="sf-li"><i class="fas fa-check-circle"></i> Local SEO & Google Business optimization</div>
+        </div>
+        <a href="contact.html" class="btn btn-blue"><i class="fas fa-rocket"></i> Start SEO Campaign</a>
+      </div>
+    </div>
+    <!-- EDIT: featured service 2 -->
+    <div class="sf-grid reverse" style="margin-top:80px;">
+      <div class="sf-img reveal from-right"><img src="assets/img/wc4.webp" alt="Social Media" /></div>
+      <div class="sf-text reveal from-left">
+        <div class="label-tag">Social Media</div>
+        <h3>Build Community, <span>Drive Sales</span></h3>
+        <p>Social media is more than posting — it's about building a loyal community that amplifies your brand organically while your paid campaigns convert at scale. We manage both sides flawlessly.</p>
+        <div class="sf-list">
+          <div class="sf-li"><i class="fas fa-check-circle"></i> Platform strategy & content calendar creation</div>
+          <div class="sf-li"><i class="fas fa-check-circle"></i> Daily content creation & community management</div>
+          <div class="sf-li"><i class="fas fa-check-circle"></i> Paid social campaigns (Meta, TikTok, LinkedIn)</div>
+          <div class="sf-li"><i class="fas fa-check-circle"></i> Influencer partnership management</div>
+          <div class="sf-li"><i class="fas fa-check-circle"></i> Monthly analytics & optimization reports</div>
+        </div>
+        <a href="contact.html" class="btn btn-blue"><i class="fas fa-rocket"></i> Grow My Social</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-sec">
+  <div class="container">
+    <div class="sec-head">
+      <div class="label-tag">Pricing Plans</div>
+      <h2 class="sec-title">Simple, <span>Transparent</span> Pricing</h2>
+      <p>No hidden fees, no lock-in contracts. Pick the plan that fits your growth stage.</p>
+    </div>
+    <div class="pricing-grid">
+      <!-- EDIT: pricing cards -->
+      <div class="price-card reveal d1">
+        <div class="price-plan">Starter</div>
+        <div class="price-amt"><span>$</span>999</div>
+        <div class="price-per">per month</div>
+        <div class="price-list">
+          <div class="price-li"><i class="fas fa-check"></i> SEO Audit & Strategy</div>
+          <div class="price-li"><i class="fas fa-check"></i> 4 Blog Posts / Month</div>
+          <div class="price-li"><i class="fas fa-check"></i> Social Media (2 platforms)</div>
+          <div class="price-li"><i class="fas fa-check"></i> Monthly Report</div>
+          <div class="price-li off"><i class="fas fa-times"></i> PPC Management</div>
+          <div class="price-li off"><i class="fas fa-times"></i> Dedicated Account Manager</div>
+        </div>
+        <a href="contact.html" class="btn btn-ghost" style="width:100%;justify-content:center;">Get Started</a>
+      </div>
+      <div class="price-card popular reveal d2">
+        <div class="price-plan">Growth</div>
+        <div class="price-amt"><span>$</span>2,499</div>
+        <div class="price-per">per month</div>
+        <div class="price-list">
+          <div class="price-li"><i class="fas fa-check"></i> Full SEO Campaign</div>
+          <div class="price-li"><i class="fas fa-check"></i> 8 Blog Posts / Month</div>
+          <div class="price-li"><i class="fas fa-check"></i> Social Media (4 platforms)</div>
+          <div class="price-li"><i class="fas fa-check"></i> PPC Management (up to $10K)</div>
+          <div class="price-li"><i class="fas fa-check"></i> Bi-weekly Reports</div>
+          <div class="price-li"><i class="fas fa-check"></i> Dedicated Account Manager</div>
+        </div>
+        <a href="contact.html" class="btn btn-blue" style="width:100%;justify-content:center;">Get Started</a>
+      </div>
+      <div class="price-card reveal d3">
+        <div class="price-plan">Enterprise</div>
+        <div class="price-amt" style="font-size:36px;padding-top:8px;">Custom</div>
+        <div class="price-per">tailored to you</div>
+        <div class="price-list">
+          <div class="price-li"><i class="fas fa-check"></i> Everything in Growth</div>
+          <div class="price-li"><i class="fas fa-check"></i> Unlimited Content</div>
+          <div class="price-li"><i class="fas fa-check"></i> All Platforms Managed</div>
+          <div class="price-li"><i class="fas fa-check"></i> Unlimited PPC Budget</div>
+          <div class="price-li"><i class="fas fa-check"></i> Weekly Strategy Calls</div>
+          <div class="price-li"><i class="fas fa-check"></i> Priority 24/7 Support</div>
+        </div>
+        <a href="contact.html" class="btn btn-ghost" style="width:100%;justify-content:center;">Talk to Us</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-sec">
+  <div class="container">
+    <div class="cta-inner reveal">
+      <div class="label-tag" style="justify-content:center;">Let's Talk</div>
+      <h2>Not Sure Which <span>Plan Fits?</span></h2>
+      <p>Book a free 30-minute strategy call. We'll audit your current presence and recommend the exact services you need.</p>
+      <div class="cta-btns">
+        <a href="contact.html" class="btn btn-blue"><i class="fas fa-calendar-check"></i> Book Free Strategy Call</a>
+        <a href="portfolio.html" class="btn btn-ghost"><i class="fas fa-eye"></i> See Our Results</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="footer"><div class="container"><div class="footer-grid"><div class="footer-brand"><a href="index.html" class="logo"><img src="assets/img/logo.webp" alt="Scalen" /></a><p>Award-winning digital marketing agency helping businesses grow through data-driven strategies.</p><div class="footer-socs"><a href="#" class="fsoc"><i class="fab fa-linkedin-in"></i></a><a href="#" class="fsoc"><i class="fab fa-twitter"></i></a><a href="#" class="fsoc"><i class="fab fa-instagram"></i></a><a href="#" class="fsoc"><i class="fab fa-facebook-f"></i></a></div></div><div class="footer-col"><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="about.html">About Us</a></li><li><a href="services.html">Services</a></li><li><a href="portfolio.html">Portfolio</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact</a></li></ul></div><div class="footer-col"><h4>Our Services</h4><ul><li><a href="services.html">SEO Optimization</a></li><li><a href="services.html">Content Marketing</a></li><li><a href="services.html">Social Media</a></li><li><a href="services.html">PPC Advertising</a></li><li><a href="services.html">Brand Strategy</a></li><li><a href="services.html">Web Design</a></li></ul></div><div class="footer-col"><h4>Contact Info</h4><ul><li><a href="contact.html">123 Marketing Street, NY 10001</a></li><li><a href="tel:+15552349823">+1 (555) 234-9823</a></li><li><a href="mailto:hello@reliableagency.com">hello@reliableagency.com</a></li><li><a href="contact.html">Mon–Fri: 9AM – 6PM</a></li></ul></div></div><div class="footer-bottom"><p>&copy; 2026 <a href="index.html">Scalen</a>. All rights reserved.</p><p><a href="#" style="color:var(--grey);margin-right:16px;">Privacy Policy</a><a href="#" style="color:var(--grey);">Terms</a></p></div></div></footer>
+<button id="scrollTop"><i class="fas fa-arrow-up"></i></button>
+<script src="assets/js/shared.js"></script>
+<script src="assets/js/cms-config.js"></script>
+<script src="assets/js/cms-content.js"></script>
+</body>
+</html>

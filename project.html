@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-brand="Scalen">Project — Scalen</title>
+  <link rel="icon" href="assets/img/favicon.webp" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Urbanist:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="assets/css/shared.css" />
+  <style>
+    /* ── Hero ── */
+    .proj-hero { padding:120px 0 80px; background:var(--bg); border-bottom:1px solid var(--border); }
+    .proj-hero-inner { display:grid; grid-template-columns:1fr 420px; gap:60px; align-items:center; }
+    .proj-category { display:inline-flex; align-items:center; gap:8px; font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--blue-lt); margin-bottom:18px; }
+    .proj-category::before { content:''; display:block; width:28px; height:2px; background:var(--blue); }
+    .proj-hero h1 { font-family:var(--font-h); font-size:clamp(32px,4vw,56px); font-weight:800; line-height:1.1; letter-spacing:-.02em; margin-bottom:18px; }
+    .proj-hero h1 span { color:var(--blue); }
+    .proj-subtitle { font-size:17px; color:var(--grey-lt); line-height:1.7; margin-bottom:32px; }
+    .proj-meta { display:flex; gap:28px; flex-wrap:wrap; }
+    .proj-meta-item { display:flex; flex-direction:column; gap:4px; }
+    .proj-meta-label { font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--grey); }
+    .proj-meta-value { font-size:15px; font-weight:700; color:#fff; }
+    .proj-hero-img { border-radius:20px; overflow:hidden; border:1px solid var(--border); aspect-ratio:16/10; background:linear-gradient(135deg,#0d1b4b,#244cc9); }
+    .proj-hero-img img { width:100%; height:100%; object-fit:cover; display:block; }
+
+    /* ── Stats bar ── */
+    .stats-bar { background:var(--bg-card); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:48px 0; }
+    .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:0; }
+    .stat-item { text-align:center; padding:0 24px; border-right:1px solid var(--border); }
+    .stat-item:last-child { border-right:none; }
+    .stat-num { font-family:var(--font-h); font-size:48px; font-weight:800; color:var(--green); line-height:1; margin-bottom:8px; }
+    .stat-lbl { font-size:13px; color:var(--grey); font-weight:600; }
+
+    /* ── Challenge / Solution ── */
+    .proj-body { padding:100px 0; background:var(--bg); }
+    .proj-body-grid { display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:start; }
+    .section-tag { font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--blue-lt); margin-bottom:10px; display:block; }
+    .proj-body h2 { font-family:var(--font-h); font-size:clamp(24px,2.5vw,36px); font-weight:800; margin-bottom:18px; letter-spacing:-.02em; }
+    .proj-body p  { font-size:15px; color:var(--grey-lt); line-height:1.85; }
+
+    /* ── Gallery ── */
+    .gallery-sec { padding:0 0 100px; background:var(--bg); }
+    .gallery-grid { display:grid; grid-template-columns:2fr 1fr; grid-template-rows:1fr 1fr; gap:16px; border-radius:20px; overflow:hidden; }
+    .gallery-main { grid-row:1/-1; border-radius:16px; overflow:hidden; background:linear-gradient(135deg,#0d1b4b,#244cc9); aspect-ratio:4/3; }
+    .gallery-side { border-radius:16px; overflow:hidden; background:linear-gradient(135deg,#1a2040,#8215FF); aspect-ratio:16/9; }
+    .gallery-main img, .gallery-side img { width:100%; height:100%; object-fit:cover; display:block; }
+
+    /* ── Process ── */
+    .process-sec { padding:100px 0; background:rgba(255,255,255,.015); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+    .process-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .proc-card { background:var(--bg-card); border:1px solid var(--border); border-radius:16px; padding:28px 24px; transition:var(--trans); }
+    .proc-card:hover { border-color:rgba(36,76,201,.4); transform:translateY(-4px); box-shadow:var(--shadow-b); }
+    .proc-step { font-family:var(--font-h); font-size:38px; font-weight:800; color:rgba(36,76,201,.2); line-height:1; margin-bottom:16px; }
+    .proc-title { font-family:var(--font-h); font-size:16px; font-weight:700; margin-bottom:10px; }
+    .proc-desc { font-size:13px; color:var(--grey); line-height:1.75; }
+
+    /* ── Testimonial ── */
+    .tst-sec { padding:100px 0; background:var(--bg); }
+    .tst-wrap { max-width:760px; margin:0 auto; background:var(--bg-card); border:1px solid var(--border); border-radius:24px; padding:52px 52px 44px; text-align:center; }
+    .tst-icon { font-size:52px; line-height:1; color:var(--blue); opacity:.3; font-family:Georgia,serif; margin-bottom:8px; }
+    .tst-quote { font-size:20px; font-style:italic; color:var(--grey-lt); line-height:1.75; margin-bottom:32px; }
+    .tst-stars { display:flex; gap:5px; justify-content:center; margin-bottom:24px; }
+    .tst-stars i { color:var(--orange); font-size:14px; }
+    .tst-av { width:60px; height:60px; border-radius:50%; overflow:hidden; margin:0 auto 12px; border:2px solid var(--border); background:linear-gradient(135deg,#244cc9,#8215FF); }
+    .tst-av img { width:100%; height:100%; object-fit:cover; }
+    .tst-name { font-family:var(--font-h); font-size:16px; font-weight:700; }
+    .tst-role { font-size:13px; color:var(--grey); margin-top:4px; }
+
+    /* ── CTA ── */
+    .proj-cta { padding:100px 0; background:var(--bg); text-align:center; border-top:1px solid var(--border); }
+    .proj-cta h2 { font-family:var(--font-h); font-size:clamp(28px,3.5vw,48px); font-weight:800; letter-spacing:-.02em; margin-bottom:18px; }
+    .proj-cta p  { font-size:17px; color:var(--grey); line-height:1.75; max-width:560px; margin:0 auto 36px; }
+
+    /* Responsive */
+    @media(max-width:1024px){ .proj-hero-inner{grid-template-columns:1fr} .proj-hero-img{display:none} .stats-grid{grid-template-columns:repeat(2,1fr)} .proj-body-grid{grid-template-columns:1fr} .process-grid{grid-template-columns:repeat(2,1fr)} }
+    @media(max-width:600px){ .stats-grid{grid-template-columns:1fr 1fr} .gallery-grid{grid-template-columns:1fr;grid-template-rows:auto} .gallery-main{grid-row:auto} .tst-wrap{padding:32px 24px} }
+  </style>
+  <!-- ============================================ -->
+  <!-- TRACKING CODES — HEAD (GTM / GA4 / Meta Pixel) -->
+  <!-- Paste your Google Tag Manager <script> snippet here -->
+  <!-- ============================================ -->
+  <script id="gtm-head-code">/* GTM head code will be injected here by CMS */</script>
+</head>
+<body>
+  <!-- ============================================ -->
+  <!-- TRACKING CODES — BODY (GTM noscript)        -->
+  <!-- Paste your GTM <noscript> snippet here      -->
+  <!-- ============================================ -->
+  <noscript id="gtm-body-code"><!-- GTM body code will be injected here by CMS --></noscript>
+<div id="loader"><div class="loader-ring"></div></div>
+
+<header id="header">
+  <div class="header-wrap">
+    <a href="index.html" class="logo"><img src="assets/img/logo.webp" alt="Scalen" /></a>
+    <nav class="nav-menu">
+      <a href="index.html">Home</a><a href="about.html">About</a><a href="services.html">Services</a>
+      <a href="portfolio.html" class="active">Portfolio</a>
+      <a href="blog.html">Blog</a><a href="contact.html">Contact</a>
+      <a href="contact.html" class="nav-cta">Free Consultation</a>
+    </nav>
+    <button class="ham" id="ham"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<div class="mob-overlay" id="mobOverlay"></div>
+<nav class="mob-nav" id="mobNav">
+  <a href="index.html" onclick="closeNav()">Home</a><a href="about.html" onclick="closeNav()">About</a>
+  <a href="services.html" onclick="closeNav()">Services</a><a href="portfolio.html" onclick="closeNav()">Portfolio</a>
+  <a href="blog.html" onclick="closeNav()">Blog</a><a href="contact.html" onclick="closeNav()">Contact</a>
+  <a href="contact.html" onclick="closeNav()" class="btn btn-blue" style="border-radius:12px;margin-top:8px;">Free Consultation</a>
+</nav>
+
+<!-- ── PROJECT HERO ────────────────────────────────────────────────── -->
+<section class="proj-hero">
+  <div class="container">
+    <div class="breadcrumb" style="margin-bottom:32px">
+      <a href="index.html">Home</a><span>/</span>
+      <a href="portfolio.html">Portfolio</a><span>/</span>
+      <span id="bc-title">Project</span>
+    </div>
+    <div class="proj-hero-inner">
+      <div>
+        <div class="proj-category" id="proj-category">Loading…</div>
+        <h1 id="proj-title"><span>Loading</span> project…</h1>
+        <p class="proj-subtitle" id="proj-subtitle"></p>
+        <div class="proj-meta">
+          <div class="proj-meta-item">
+            <span class="proj-meta-label">Client</span>
+            <span class="proj-meta-value" id="proj-client">—</span>
+          </div>
+          <div class="proj-meta-item">
+            <span class="proj-meta-label">Year</span>
+            <span class="proj-meta-value" id="proj-year">—</span>
+          </div>
+          <div class="proj-meta-item">
+            <span class="proj-meta-label">Category</span>
+            <span class="proj-meta-value" id="proj-cat2">—</span>
+          </div>
+        </div>
+      </div>
+      <div class="proj-hero-img" id="proj-img-wrap">
+        <img id="proj-img" src="" alt="" style="display:none">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STATS BAR ───────────────────────────────────────────────────── -->
+<div class="stats-bar" id="stats-bar" style="display:none">
+  <div class="container">
+    <div class="stats-grid" id="stats-grid"></div>
+  </div>
+</div>
+
+<!-- ── CHALLENGE + SOLUTION ───────────────────────────────────────── -->
+<section class="proj-body" id="body-sec" style="display:none">
+  <div class="container">
+    <div class="proj-body-grid">
+      <div>
+        <span class="section-tag">The Challenge</span>
+        <h2>What We Were<br>Up Against</h2>
+        <p id="proj-challenge"></p>
+      </div>
+      <div>
+        <span class="section-tag">Our Solution</span>
+        <h2>How We<br>Delivered Results</h2>
+        <p id="proj-solution"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── GALLERY ─────────────────────────────────────────────────────── -->
+<section class="gallery-sec" id="gallery-sec" style="display:none">
+  <div class="container">
+    <div class="gallery-grid" id="gallery-grid"></div>
+  </div>
+</section>
+
+<!-- ── PROCESS ─────────────────────────────────────────────────────── -->
+<section class="process-sec" id="process-sec" style="display:none">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:56px">
+      <span class="section-tag" style="display:block;text-align:center;margin-bottom:12px">Our Approach</span>
+      <h2 style="font-family:var(--font-h);font-size:clamp(28px,3vw,42px);font-weight:800;letter-spacing:-.02em">How We Got There</h2>
+    </div>
+    <div class="process-grid" id="process-grid"></div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIAL ──────────────────────────────────────────────────── -->
+<section class="tst-sec" id="tst-sec" style="display:none">
+  <div class="container">
+    <div class="tst-wrap">
+      <div class="tst-icon">"</div>
+      <div class="tst-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+      <p class="tst-quote" id="tst-quote"></p>
+      <div class="tst-av"><img id="tst-av" src="" alt="" style="display:none"></div>
+      <div class="tst-name" id="tst-name"></div>
+      <div class="tst-role" id="tst-role"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ──────────────────────────────────────────────────────────── -->
+<section class="proj-cta">
+  <div class="container">
+    <h2>Ready to Achieve<br><span style="color:var(--blue)">Similar Results?</span></h2>
+    <p>Let's talk about your goals and build a strategy that delivers real, measurable growth for your business.</p>
+    <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap">
+      <a href="contact.html" class="btn btn-blue"><i class="fas fa-rocket"></i> Start Your Project</a>
+      <a href="portfolio.html" class="btn btn-ghost"><i class="fas fa-arrow-left"></i> Back to Portfolio</a>
+    </div>
+  </div>
+</section>
+
+<footer id="footer"><div class="container"><div class="footer-grid"><div class="footer-brand"><a href="index.html" class="logo"><img src="assets/img/logo.webp" alt="Scalen" /></a><p>Award-winning digital marketing agency helping businesses grow through data-driven strategies.</p><div class="footer-socs"><a href="#" class="fsoc"><i class="fab fa-linkedin-in"></i></a><a href="#" class="fsoc"><i class="fab fa-twitter"></i></a><a href="#" class="fsoc"><i class="fab fa-instagram"></i></a><a href="#" class="fsoc"><i class="fab fa-facebook-f"></i></a></div></div><div class="footer-col"><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="about.html">About Us</a></li><li><a href="services.html">Services</a></li><li><a href="portfolio.html">Portfolio</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact</a></li></ul></div><div class="footer-col"><h4>Our Services</h4><ul><li><a href="services.html">SEO Optimization</a></li><li><a href="services.html">Content Marketing</a></li><li><a href="services.html">Social Media</a></li><li><a href="services.html">PPC Advertising</a></li><li><a href="services.html">Brand Strategy</a></li><li><a href="services.html">Web Design</a></li></ul></div><div class="footer-col"><h4>Contact Info</h4><ul><li><a href="contact.html">123 Marketing Street, NY 10001</a></li><li><a href="tel:+15552349823">+1 (555) 234-9823</a></li><li><a href="mailto:hello@reliableagency.com">hello@reliableagency.com</a></li><li><a href="contact.html">Mon–Fri: 9AM – 6PM</a></li></ul></div></div><div class="footer-bottom"><p>&copy; 2026 <a href="index.html">Scalen</a>. All rights reserved.</p></div></div></footer>
+<button id="scrollTop"><i class="fas fa-arrow-up"></i></button>
+
+<script src="assets/js/shared.js"></script>
+<script>
+(function() {
+  const CMS = 'http://localhost:3000';
+  const params = new URLSearchParams(location.search);
+  const id = params.get('id');
+  if (!id) { document.getElementById('proj-title').textContent = 'Project not found.'; return; }
+
+  function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function show(id) { const el=document.getElementById(id); if(el) el.style.display=''; }
+
+  fetch(CMS + '/api/portfolio/' + id)
+    .then(r => { if(!r.ok) throw new Error('not found'); return r.json(); })
+    .then(p => {
+      const d = p.detail || {};
+
+      // Page title
+      document.title = p.title + ' — Scalen';
+
+      // Breadcrumb
+      const bc = document.getElementById('bc-title');
+      if (bc) bc.textContent = p.title;
+
+      // Hero
+      const catEl = document.getElementById('proj-category');
+      if (catEl) catEl.innerHTML = esc(p.category || 'Project');
+
+      const h1 = document.getElementById('proj-title');
+      if (h1) h1.innerHTML = esc(p.title).replace(/—/, '<span>—</span>');
+
+      const sub = document.getElementById('proj-subtitle');
+      if (sub && d.hero_subtitle) sub.textContent = d.hero_subtitle;
+
+      document.getElementById('proj-client').textContent = p.client || '—';
+      document.getElementById('proj-year').textContent   = p.year   || '—';
+      document.getElementById('proj-cat2').textContent   = p.category || '—';
+
+      if (p.image) {
+        const img = document.getElementById('proj-img');
+        if (img) { img.src = p.image.startsWith('/') ? CMS+p.image : p.image; img.alt = p.title; img.style.display = 'block'; }
+      }
+
+      // Stats
+      if (d.stats && d.stats.length) {
+        const grid = document.getElementById('stats-grid');
+        if (grid) {
+          grid.innerHTML = d.stats.map(s => `<div class="stat-item"><div class="stat-num">${esc(s.num)}</div><div class="stat-lbl">${esc(s.label)}</div></div>`).join('');
+          show('stats-bar');
+        }
+      }
+
+      // Challenge + Solution
+      if (d.challenge || d.solution) {
+        const ch = document.getElementById('proj-challenge');
+        const sl = document.getElementById('proj-solution');
+        if (ch) ch.textContent = d.challenge || '';
+        if (sl) sl.textContent = d.solution  || '';
+        show('body-sec');
+      }
+
+      // Gallery
+      const imgs = (d.gallery || []).filter(Boolean);
+      if (imgs.length) {
+        const gg = document.getElementById('gallery-grid');
+        if (gg) {
+          const [main, s1, s2] = imgs;
+          gg.innerHTML = `
+            <div class="gallery-main">${main ? `<img src="${main.startsWith('/')?CMS+main:main}" alt="">` : ''}</div>
+            ${s1 ? `<div class="gallery-side"><img src="${s1.startsWith('/')?CMS+s1:s1}" alt=""></div>` : ''}
+            ${s2 ? `<div class="gallery-side"><img src="${s2.startsWith('/')?CMS+s2:s2}" alt=""></div>` : ''}
+          `;
+          show('gallery-sec');
+        }
+      }
+
+      // Process steps
+      const steps = (d.process || []).filter(s => s.title || s.desc);
+      if (steps.length) {
+        const pg = document.getElementById('process-grid');
+        if (pg) {
+          pg.innerHTML = steps.map(s => `
+            <div class="proc-card reveal">
+              <div class="proc-step">${esc(s.step)}</div>
+              <div class="proc-title">${esc(s.title)}</div>
+              <p class="proc-desc">${esc(s.desc)}</p>
+            </div>
+          `).join('');
+          show('process-sec');
+        }
+      }
+
+      // Testimonial
+      const tst = d.testimonial || {};
+      if (tst.quote) {
+        document.getElementById('tst-quote').textContent = tst.quote;
+        document.getElementById('tst-name').textContent  = tst.name || '';
+        document.getElementById('tst-role').textContent  = (tst.role||'') + (tst.company ? ', '+tst.company : '');
+        if (tst.avatar) {
+          const av = document.getElementById('tst-av');
+          if (av) { av.src = tst.avatar.startsWith('/') ? CMS+tst.avatar : tst.avatar; av.style.display='block'; }
+        }
+        show('tst-sec');
+      }
+    })
+    .catch(() => {
+      document.getElementById('proj-title').textContent = 'Project not found.';
+    });
+})();
+</script>
+<script src="assets/js/cms-config.js"></script>
+<script src="assets/js/cms-content.js"></script>
+</body>
+</html>

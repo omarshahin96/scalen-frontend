@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-brand="Scalen">Portfolio — Scalen</title>
+  <link rel="icon" href="assets/img/favicon.webp" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Urbanist:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="assets/css/shared.css" />
+  <style>
+    .portfolio-sec { padding:100px 0; background:var(--bg); }
+    .pf-filters { display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin-bottom:50px; }
+    .pf-btn { padding:10px 24px; border-radius:50px; font-size:14px; font-weight:700; color:var(--grey); border:1.5px solid var(--border); transition:var(--trans); }
+    .pf-btn:hover, .pf-btn.active { background:var(--blue); color:#fff; border-color:var(--blue); }
+    .pf-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+    .pf-card { display:block; text-decoration:none; color:inherit; border-radius:20px; overflow:hidden; transition:var(--trans); }
+    .pf-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-b); }
+    .pf-img  { height:270px; overflow:hidden; position:relative; }
+    .pf-img img { width:100%; height:100%; object-fit:cover; transition:transform .6s; }
+    .pf-card:hover .pf-img img { transform:scale(1.07); }
+    .pf-overlay { position:absolute; inset:0; background:rgba(7,7,26,.82); display:flex; flex-direction:column; align-items:center; justify-content:center; opacity:0; transition:opacity .35s; }
+    .pf-card:hover .pf-overlay { opacity:1; }
+    .pf-view { width:52px; height:52px; border-radius:50%; background:var(--blue); display:flex; align-items:center; justify-content:center; font-size:18px; color:#fff; margin-bottom:12px; transform:scale(.6); transition:transform .38s cubic-bezier(.25,1,.5,1); }
+    .pf-card:hover .pf-view { transform:scale(1); }
+    .pf-overlay span { font-size:13px; font-weight:700; color:#fff; }
+    .pf-info { padding:20px 22px 24px; background:var(--bg-card); border:1px solid var(--border); border-top:none; border-radius:0 0 20px 20px; }
+    .pf-tag  { font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--blue-lt); margin-bottom:5px; }
+    .pf-name { font-family:var(--font-h); font-size:17px; font-weight:700; transition:color .25s; }
+    .pf-card:hover .pf-name { color:var(--blue-lt); }
+
+    .results-sec { padding:100px 0; background:var(--bg-dark); }
+    .results-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+    .result-card { background:var(--bg-card); border:1px solid var(--border); border-radius:20px; padding:34px 28px; transition:var(--trans); }
+    .result-card:hover { border-color:rgba(36,76,201,.4); transform:translateY(-4px); box-shadow:var(--shadow-b); }
+    .result-img  { height:200px; overflow:hidden; border-radius:14px; margin-bottom:22px; }
+    .result-img img{ width:100%; height:100%; object-fit:cover; }
+    .result-tag  { font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--blue-lt); margin-bottom:8px; }
+    .result-ttl  { font-family:var(--font-h); font-size:19px; font-weight:700; margin-bottom:12px; line-height:1.3; }
+    .result-desc { font-size:14px; color:var(--grey); line-height:1.75; margin-bottom:20px; }
+    .result-stats{ display:flex; gap:20px; flex-wrap:wrap; }
+    .rs-item     { text-align:center; }
+    .rs-num      { font-family:var(--font-h); font-size:26px; font-weight:800; color:var(--green); line-height:1; }
+    .rs-lbl      { font-size:11px; color:var(--grey); }
+
+    .cta-sec     { padding:100px 0; background:var(--bg); text-align:center; }
+    .cta-inner   { max-width:640px; margin:0 auto; }
+    .cta-inner h2{ font-family:var(--font-h); font-size:clamp(32px,4vw,50px); font-weight:800; margin-bottom:18px; letter-spacing:-.02em; }
+    .cta-inner h2 span{ color:var(--blue); }
+    .cta-inner p { font-size:17px; color:var(--grey); line-height:1.75; margin-bottom:34px; }
+    .cta-btns    { display:flex; justify-content:center; gap:14px; flex-wrap:wrap; }
+
+    @media(max-width:1024px){ .pf-grid,.results-grid{grid-template-columns:repeat(2,1fr);} }
+    @media(max-width:768px) { .pf-grid,.results-grid{grid-template-columns:1fr;} }
+  </style>
+  <!-- ============================================ -->
+  <!-- TRACKING CODES — HEAD (GTM / GA4 / Meta Pixel) -->
+  <!-- Paste your Google Tag Manager <script> snippet here -->
+  <!-- ============================================ -->
+  <script id="gtm-head-code">/* GTM head code will be injected here by CMS */</script>
+</head>
+<body>
+  <!-- ============================================ -->
+  <!-- TRACKING CODES — BODY (GTM noscript)        -->
+  <!-- Paste your GTM <noscript> snippet here      -->
+  <!-- ============================================ -->
+  <noscript id="gtm-body-code"><!-- GTM body code will be injected here by CMS --></noscript>
+<div id="loader"><div class="loader-ring"></div></div>
+
+<header id="header">
+  <div class="header-wrap">
+    <a href="index.html" class="logo"><img src="assets/img/logo.webp" alt="Scalen" /></a>
+    <nav class="nav-menu">
+      <a href="index.html">Home</a><a href="about.html">About</a><a href="services.html">Services</a>
+      <a href="portfolio.html" class="active">Portfolio</a>
+      <a href="blog.html">Blog</a><a href="contact.html">Contact</a>
+      <a href="contact.html" class="nav-cta">Free Consultation</a>
+    </nav>
+    <button class="ham" id="ham"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<div class="mob-overlay" id="mobOverlay"></div>
+<nav class="mob-nav" id="mobNav">
+  <a href="index.html" onclick="closeNav()">Home</a><a href="about.html" onclick="closeNav()">About</a>
+  <a href="services.html" onclick="closeNav()">Services</a><a href="portfolio.html" onclick="closeNav()">Portfolio</a>
+  <a href="blog.html" onclick="closeNav()">Blog</a><a href="contact.html" onclick="closeNav()">Contact</a>
+  <a href="contact.html" onclick="closeNav()" class="btn btn-blue" style="border-radius:12px;margin-top:8px;">Free Consultation</a>
+</nav>
+
+<div class="page-hero">
+  <div class="page-hero-glow"></div>
+  <div class="container page-hero-inner">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><span>Portfolio</span></div>
+    <!-- EDIT: page title + desc -->
+    <h1>Our <span>Portfolio</span></h1>
+    <p>A curated showcase of the campaigns, websites, and strategies we've delivered for our clients.</p>
+  </div>
+</div>
+
+<div class="marquee-wrap"><div class="marquee-track"><div class="marquee-item">SEO Campaigns <span class="dot">◆</span></div><div class="marquee-item">Social Media <span class="dot">◆</span></div><div class="marquee-item">Web Design <span class="dot">◆</span></div><div class="marquee-item">PPC Results <span class="dot">◆</span></div><div class="marquee-item">Brand Identity <span class="dot">◆</span></div><div class="marquee-item">Content Strategy <span class="dot">◆</span></div><div class="marquee-item">SEO Campaigns <span class="dot">◆</span></div><div class="marquee-item">Social Media <span class="dot">◆</span></div><div class="marquee-item">Web Design <span class="dot">◆</span></div><div class="marquee-item">PPC Results <span class="dot">◆</span></div><div class="marquee-item">Brand Identity <span class="dot">◆</span></div><div class="marquee-item">Content Strategy <span class="dot">◆</span></div></div></div>
+
+<!-- PORTFOLIO GRID -->
+<section class="portfolio-sec">
+  <div class="container">
+    <div class="pf-filters">
+      <!-- EDIT: filter buttons -->
+      <button class="pf-btn active" data-filter="all">All Projects</button>
+      <button class="pf-btn" data-filter="seo">SEO</button>
+      <button class="pf-btn" data-filter="social">Social Media</button>
+      <button class="pf-btn" data-filter="web">Web Design</button>
+      <button class="pf-btn" data-filter="ppc">PPC</button>
+    </div>
+    <div class="pf-grid">
+      <!-- EDIT: portfolio cards — change image, tag, name, data-filter -->
+      <a href="project.html?id=1" class="pf-card reveal d1" data-filter="seo"><div class="pf-img"><img src="assets/img/wc1.webp" alt="" /><div class="pf-overlay"><div class="pf-view"><i class="fas fa-arrow-right"></i></div><span>View Project</span></div></div><div class="pf-info"><div class="pf-tag">SEO Campaign</div><div class="pf-name">TechCorp Organic Growth Strategy</div></div></a>
+      <a href="project.html?id=2" class="pf-card reveal d2" data-filter="seo"><div class="pf-img"><img src="assets/img/wc2.webp" alt="" /><div class="pf-overlay"><div class="pf-view"><i class="fas fa-arrow-right"></i></div><span>View Project</span></div></div><div class="pf-info"><div class="pf-tag">SEO + Local</div><div class="pf-name">RetailChain Local SEO Domination</div></div></a>
+      <a href="project.html?id=3" class="pf-card reveal d3" data-filter="social"><div class="pf-img"><img src="assets/img/wc4.webp" alt="" /><div class="pf-overlay"><div class="pf-view"><i class="fas fa-arrow-right"></i></div><span>View Project</span></div></div><div class="pf-info"><div class="pf-tag">Social Media</div><div class="pf-name">FashionBrand Viral Campaign</div></div></a>
+      <a href="project.html?id=4" class="pf-card reveal d1" data-filter="web"><div class="pf-img"><img src="assets/img/wc5.webp" alt="" /><div class="pf-overlay"><div class="pf-view"><i class="fas fa-arrow-right"></i></div><span>View Project</span></div></div><div class="pf-info"><div class="pf-tag">Web Design</div><div class="pf-name">E-Commerce Platform Redesign</div></div></a>
+      <a href="project.html?id=5" class="pf-card reveal d2" data-filter="social"><div class="pf-img"><img src="assets/img/ab-ft1.webp" alt="" /><div class="pf-overlay"><div class="pf-view"><i class="fas fa-arrow-right"></i></div><span>View Project</span></div></div><div class="pf-info"><div class="pf-tag">Social Media</div><div class="pf-name">FoodBrand Community Build</div></div></a>
+      <a href="project.html?id=6" class="pf-card reveal d3" data-filter="web"><div class="pf-img"><img src="assets/img/ab-ft2.webp" alt="" /><div class="pf-overlay"><div class="pf-view"><i class="fas fa-arrow-right"></i></div><span>View Project</span></div></div><div class="pf-info"><div class="pf-tag">Web Design</div><div class="pf-name">SaaS Landing Page Suite</div></div></a>
+      <a href="project.html?id=7" class="pf-card reveal d1" data-filter="ppc"><div class="pf-img"><img src="assets/img/ab6.webp" alt="" /><div class="pf-overlay"><div class="pf-view"><i class="fas fa-arrow-right"></i></div><span>View Project</span></div></div><div class="pf-info"><div class="pf-tag">PPC Advertising</div><div class="pf-name">FinanceHub Lead Generation</div></div></a>
+      <a href="project.html?id=8" class="pf-card reveal d2" data-filter="seo"><div class="pf-img"><img src="assets/img/blg1.webp" alt="" /><div class="pf-overlay"><div class="pf-view"><i class="fas fa-arrow-right"></i></div><span>View Project</span></div></div><div class="pf-info"><div class="pf-tag">SEO + Content</div><div class="pf-name">HealthBrand Authority Building</div></div></a>
+      <a href="project.html?id=9" class="pf-card reveal d3" data-filter="ppc"><div class="pf-img"><img src="assets/img/blg2.webp" alt="" /><div class="pf-overlay"><div class="pf-view"><i class="fas fa-arrow-right"></i></div><span>View Project</span></div></div><div class="pf-info"><div class="pf-tag">PPC Campaign</div><div class="pf-name">EduPlatform Student Acquisition</div></div></a>
+    </div>
+  </div>
+</section>
+
+<!-- CASE STUDY RESULTS -->
+<section class="results-sec">
+  <div class="container">
+    <div class="sec-head">
+      <div class="label-tag">Real Results</div>
+      <h2 class="sec-title">Case Study <span>Highlights</span></h2>
+      <p>Numbers that tell the story of campaigns that actually worked.</p>
+    </div>
+    <div class="results-grid">
+      <!-- EDIT: case study cards -->
+      <div class="result-card reveal d1">
+        <div class="result-img"><img src="assets/img/wc2.webp" alt="" /></div>
+        <div class="result-tag">SEO Campaign</div>
+        <div class="result-ttl">TechCorp — 340% Organic Traffic Growth</div>
+        <div class="result-desc">A 6-month SEO overhaul for a B2B SaaS company. Complete technical rebuild, content strategy, and link acquisition.</div>
+        <div class="result-stats">
+          <div class="rs-item"><div class="rs-num">340%</div><div class="rs-lbl">Traffic Growth</div></div>
+          <div class="rs-item"><div class="rs-num">#1</div><div class="rs-lbl">Rankings for 12 Keywords</div></div>
+          <div class="rs-item"><div class="rs-num">5x</div><div class="rs-lbl">Lead Volume</div></div>
+        </div>
+        <a href="case-study.html?slug=techcorp" class="btn btn-blue" style="margin-top:22px;width:100%;justify-content:center;">Read Full Case Study <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="result-card reveal d2">
+        <div class="result-img"><img src="assets/img/wc4.webp" alt="" /></div>
+        <div class="result-tag">Social Media</div>
+        <div class="result-ttl">FashionBrand — 200% Follower Growth in 90 Days</div>
+        <div class="result-desc">Viral content strategy and paid social campaigns that tripled their Instagram following and doubled online sales.</div>
+        <div class="result-stats">
+          <div class="rs-item"><div class="rs-num">200%</div><div class="rs-lbl">Follower Growth</div></div>
+          <div class="rs-item"><div class="rs-num">5x</div><div class="rs-lbl">Engagement Rate</div></div>
+          <div class="rs-item"><div class="rs-num">2x</div><div class="rs-lbl">Online Sales</div></div>
+        </div>
+        <a href="case-study.html?slug=fashionbrand" class="btn btn-blue" style="margin-top:22px;width:100%;justify-content:center;">Read Full Case Study <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="result-card reveal d3">
+        <div class="result-img"><img src="assets/img/wc5.webp" alt="" /></div>
+        <div class="result-tag">PPC + Web Design</div>
+        <div class="result-ttl">FinanceHub — 60% Lower Cost Per Lead</div>
+        <div class="result-desc">Combined landing page redesign with precision PPC targeting that slashed acquisition costs while tripling conversion rates.</div>
+        <div class="result-stats">
+          <div class="rs-item"><div class="rs-num">60%</div><div class="rs-lbl">Lower CPA</div></div>
+          <div class="rs-item"><div class="rs-num">3x</div><div class="rs-lbl">Conversions</div></div>
+          <div class="rs-item"><div class="rs-num">420%</div><div class="rs-lbl">ROAS</div></div>
+        </div>
+        <a href="case-study.html?slug=financehub" class="btn btn-blue" style="margin-top:22px;width:100%;justify-content:center;">Read Full Case Study <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-sec">
+  <div class="container">
+    <div class="cta-inner reveal">
+      <div class="label-tag" style="justify-content:center;">Your Turn</div>
+      <h2>Ready to Be Our <span>Next Success Story?</span></h2>
+      <p>Let's create a campaign that delivers results you'll be proud to talk about. Get your free strategy session today.</p>
+      <div class="cta-btns">
+        <a href="contact.html" class="btn btn-blue"><i class="fas fa-rocket"></i> Start Your Project</a>
+        <a href="services.html" class="btn btn-ghost"><i class="fas fa-list"></i> View All Services</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="footer"><div class="container"><div class="footer-grid"><div class="footer-brand"><a href="index.html" class="logo"><img src="assets/img/logo.webp" alt="Scalen" /></a><p>Award-winning digital marketing agency helping businesses grow through data-driven strategies.</p><div class="footer-socs"><a href="#" class="fsoc"><i class="fab fa-linkedin-in"></i></a><a href="#" class="fsoc"><i class="fab fa-twitter"></i></a><a href="#" class="fsoc"><i class="fab fa-instagram"></i></a><a href="#" class="fsoc"><i class="fab fa-facebook-f"></i></a></div></div><div class="footer-col"><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="about.html">About Us</a></li><li><a href="services.html">Services</a></li><li><a href="portfolio.html">Portfolio</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact</a></li></ul></div><div class="footer-col"><h4>Our Services</h4><ul><li><a href="services.html">SEO Optimization</a></li><li><a href="services.html">Content Marketing</a></li><li><a href="services.html">Social Media</a></li><li><a href="services.html">PPC Advertising</a></li><li><a href="services.html">Brand Strategy</a></li><li><a href="services.html">Web Design</a></li></ul></div><div class="footer-col"><h4>Contact Info</h4><ul><li><a href="contact.html">123 Marketing Street, NY 10001</a></li><li><a href="tel:+15552349823">+1 (555) 234-9823</a></li><li><a href="mailto:hello@reliableagency.com">hello@reliableagency.com</a></li><li><a href="contact.html">Mon–Fri: 9AM – 6PM</a></li></ul></div></div><div class="footer-bottom"><p>&copy; 2026 <a href="index.html">Scalen</a>. All rights reserved.</p><p><a href="#" style="color:var(--grey);margin-right:16px;">Privacy Policy</a><a href="#" style="color:var(--grey);">Terms</a></p></div></div></footer>
+<button id="scrollTop"><i class="fas fa-arrow-up"></i></button>
+<script src="assets/js/shared.js"></script>
+<script src="assets/js/cms-config.js"></script>
+<script src="assets/js/cms-content.js"></script>
+</body>
+</html>
