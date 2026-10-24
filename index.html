@@ -249,6 +249,9 @@
     .form-submit {
       width:100%;padding:16px;border-radius:8px;background:var(--blue);color:#fff;font-size:15px;font-weight:700;font-family:var(--font-b);display:flex;align-items:center;justify-content:center;gap:10px;transition:var(--trans);--ink:#fff;--ink-2:rgba(255,255,255,.92);--grey:rgba(255,255,255,.8);--grey-lt:rgba(255,255,255,.9);--label:#fff;--line:rgba(255,255,255,.22);--border:rgba(255,255,255,.22);--tint:rgba(255,255,255,.1);--tint-2:rgba(255,255,255,.15);--blue-lt:#fff;
     }
+    .form-note { margin-top:12px;font-size:14px;line-height:1.6;min-height:1px; }
+    .form-note.ok { color:var(--brand-blue); font-weight:600; }
+    .form-note.err { color:var(--brand-orange); }
     .form-submit:hover { background:var(--blue-lt);transform:translateY(-2px);box-shadow:var(--shadow-b); }
 
     /* ── RESPONSIVE ──────────────────────────── */
@@ -573,15 +576,17 @@
         </div>
       </div>
       <div class="contact-form reveal from-right">
-        <form id="contactForm">
+        <form id="contactForm" data-lead-form="homepage" novalidate>
           <div class="form-row">
-            <div class="fg"><label>Your Name</label><input type="text" placeholder="John Smith" required /></div>
-            <div class="fg"><label>Email Address</label><input type="email" placeholder="john@example.com" required /></div>
+            <div class="fg"><label for="hf-name">Your Name</label><input type="text" id="hf-name" name="name" autocomplete="name" placeholder="John Smith" required /></div>
+            <div class="fg"><label for="hf-email">Email Address</label><input type="email" id="hf-email" name="email" autocomplete="email" placeholder="john@example.com" required /></div>
           </div>
-          <div class="fg"><label>Service Interested In</label><select><option value="">Select a service…</option><option>SEO Optimization</option><option>Content Marketing</option><option>Social Media Marketing</option><option>PPC Advertising</option><option>Brand Strategy</option><option>Web Design & Development</option></select></div>
-          <div class="fg"><label>Your Message</label><textarea placeholder="Tell us about your project and goals…"></textarea></div>
+          <div class="fg"><label for="hf-phone">Phone / WhatsApp (optional)</label><input type="tel" id="hf-phone" name="phone" autocomplete="tel" placeholder="+90 5xx xxx xx xx" /></div>
+          <div class="fg"><label for="hf-service">Service Interested In</label><select id="hf-service" name="service"><option value="">Select a service…</option><option>SEO Optimization</option><option>Content Marketing</option><option>Social Media Marketing</option><option>PPC Advertising</option><option>Brand Strategy</option><option>Web Design & Development</option></select></div>
+          <div class="fg"><label for="hf-message">Your Message</label><textarea id="hf-message" name="message" placeholder="Tell us about your project and goals…"></textarea></div>
           <!-- EDIT: submit button text -->
           <button type="submit" class="form-submit">Send Message <i class="fas fa-paper-plane"></i></button>
+          <p class="form-note" role="status" aria-live="polite"></p>
         </form>
       </div>
     </div>

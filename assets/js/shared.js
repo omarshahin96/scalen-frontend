@@ -164,22 +164,52 @@ document.querySelectorAll('a[data-lang-switch]').forEach(a => {
   });
 })();
 
-/* --- Contact form --- */
+/* --- Lead form (homepage) — sends to the CMS → Dashboard → Leads ---
+   The contact page has its own form script; this one only handles forms marked data-lead-form. */
 (function () {
-  const form = document.getElementById('contactForm');
+  const form = document.querySelector('form[data-lead-form]');
   if (!form) return;
-  form.addEventListener('submit', e => {
+  const AR = /^ar\b/i.test(document.documentElement.lang || '');
+  const T = AR ? {
+    sending: 'جارٍ الإرسال…', sent: 'تم إرسال رسالتك. سنتواصل معك خلال 24 ساعة.',
+    required: 'يرجى كتابة اسمك وبريدك الإلكتروني.', failed: 'عذرًا، لم نتمكن من إرسال رسالتك. يرجى المحاولة مرة أخرى أو مراسلتنا على hello@scalen.marketing.'
+  } : {
+    sending: 'Sending…', sent: "Thanks — your message is in. We'll get back to you within 24 hours.",
+    required: 'Please enter your name and email.', failed: "Sorry, your message couldn't be sent. Please try again, or email us at hello@scalen.marketing."
+  };
+  const btn  = form.querySelector('button[type="submit"]');
+  const note = form.querySelector('.form-note');
+  const val  = n => ((form.elements[n] && form.elements[n].value) || '').trim();
+  const say  = (msg, cls) => { if (note) { note.textContent = msg; note.className = 'form-note ' + (cls || ''); } };
+
+  form.addEventListener('submit', async e => {
     e.preventDefault();
-    const btn  = form.querySelector('.form-submit');
+    const name = val('name'), email = val('email');
+    if (!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { say(T.required, 'err'); return; }
+    const sel = form.elements.service;
+    const service = sel && sel.value ? sel.options[sel.selectedIndex].text : '';
+    const extra = [service && 'Service: ' + service, AR && 'Language: Arabic'].filter(Boolean).join(' | ');
     const orig = btn.innerHTML;
-    btn.innerHTML = '<i class="fas fa-check"></i> Message Sent!';
-    btn.style.background = '#85EE00';
-    btn.style.color = '#000';
-    setTimeout(() => {
-      btn.innerHTML = orig;
-      btn.style.background = '';
-      btn.style.color = '';
+    btn.disabled = true; btn.textContent = T.sending; say('');
+    try {
+      const base = (window.CMS_BASE || '').replace(/\/$/, '');
+      const r = await fetch(base + '/leads/submit', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name, email, phone: val('phone'),
+          subject: 'Website enquiry (homepage)',
+          message: (extra ? extra + '\n\n' : '') + val('message')
+        })
+      });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(d.error || '');
       form.reset();
-    }, 3000);
+      say(T.sent, 'ok');
+      if (window.dataLayer) window.dataLayer.push({ event: 'generate_lead', form: 'homepage' });
+    } catch (err) {
+      say(err && err.message && !/fetch/i.test(err.message) ? err.message : T.failed, 'err');
+    } finally {
+      btn.disabled = false; btn.innerHTML = orig;
+    }
   });
 })();
