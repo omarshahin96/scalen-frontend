@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title data-brand="Scalen">Case Study — Scalen</title>
+  <link rel="alternate" hreflang="en" href="https://scalen.marketing/case-study.html" />
+  <link rel="alternate" hreflang="ar" href="https://scalen.marketing/ar/case-study.html" />
+  <link rel="alternate" hreflang="x-default" href="https://scalen.marketing/case-study.html" />
   <link rel="icon" type="image/svg+xml" href="assets/img/brand/favicon.svg" />
   <link rel="apple-touch-icon" href="assets/img/brand/apple-touch-icon.png" />
   <meta name="theme-color" content="#0F1FA8" />
@@ -65,7 +68,9 @@
       <a href="portfolio.html" class="active">Portfolio</a>
       <a href="blog.html">Blog</a><a href="contact.html">Contact</a>
       <a href="contact.html" class="nav-cta">Free Consultation</a>
+      <a data-lang-switch class="lang-switch" href="/ar/case-study.html" hreflang="ar" lang="ar">العربية</a>
     </nav>
+    <a data-lang-switch class="lang-switch lang-switch--mob" href="/ar/case-study.html" hreflang="ar" lang="ar">العربية</a>
     <button class="ham" id="ham"><span></span><span></span><span></span></button>
   </div>
 </header>
@@ -146,7 +151,7 @@
   function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
   function show(id) { const el=document.getElementById(id); if(el) el.style.display=''; }
 
-  fetch(CMS + '/api/case-study/' + slug)
+  fetch(CMS + '/api/case-study/' + slug + (document.documentElement.lang === 'ar' ? '?lang=ar' : ''))
     .then(r => { if(!r.ok) throw new Error('not found'); return r.json(); })
     .then(cs => {
       document.title = cs.title + ' — Scalen';

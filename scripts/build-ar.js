@@ -5,6 +5,7 @@
  *   node scripts/build-ar.js            → writes ar/*.html (used by the Dockerfile)
  *   node scripts/build-ar.js --check    → lists English text with no Arabic translation, exits 1 if any
  *   node scripts/build-ar.js --extract  → writes i18n/_strings.json (every translatable unit, for translators)
+ *   node scripts/build-ar.js --pseudo   → like build, but untranslated text becomes Arabic filler (RTL layout testing)
  *
  * Translations live in i18n/ar.json: { "<English text or inline HTML>": "<Arabic>" }.
  * A "unit" is a block whose content is text plus inline tags (a, strong, span, i, br…),
@@ -17,6 +18,7 @@
 const fs = require('fs');
 const path = require('path');
 const cheerio = require('cheerio');
+const rtlcss = require('rtlcss');
 
 const ROOT = path.join(__dirname, '..');
 const OUT = path.join(ROOT, 'ar');
@@ -24,6 +26,8 @@ const DICT_FILE = path.join(ROOT, 'i18n', 'ar.json');
 const SCRIPT_DICT_FILE = path.join(ROOT, 'i18n', 'ar-scripts.json');
 const SITE = 'https://scalen.marketing';
 const mode = process.argv.includes('--check') ? 'check' : process.argv.includes('--extract') ? 'extract' : 'build';
+// --pseudo: fill untranslated text with Arabic-looking filler of similar length (layout testing only)
+const PSEUDO = process.argv.includes('--pseudo');
 
 const INLINE = new Set(['a', 'abbr', 'b', 'br', 'code', 'em', 'i', 'mark', 'small', 'span', 'strong', 'sub', 'sup', 'u', 'time']);
 const SKIP = new Set(['script', 'style', 'noscript', 'svg', 'template', 'iframe', 'code', 'pre']);
@@ -49,8 +53,19 @@ function lookup(key, page) {
   if (Object.prototype.hasOwnProperty.call(dict, key) && dict[key] !== '') return dict[key];
   if (!missing.has(key)) missing.set(key, new Set());
   missing.get(key).add(page);
-  return null;
+  return PSEUDO ? pseudo(key) : null;
 }
+
+const FILL = 'هذا نص تجريبي عربي يملأ المساحة لاختبار اتجاه الصفحة من اليمين إلى اليسار في التصميم الجديد للموقع '.split(' ');
+function pseudoText(t) {
+  const lead = t.match(/^\s*/)[0], trail = t.match(/\s*$/)[0], core = t.trim();
+  if (!LATIN.test(core)) return t;
+  let out = '', i = 0;
+  while (out.length < core.length * 0.9) out += (out ? ' ' : '') + FILL[i++ % FILL.length];
+  return lead + out + trail;
+}
+// keep inline tags, replace only the text between them
+const pseudo = key => key.split(/(<[^>]+>)/).map(p => p.startsWith('<') ? p : pseudoText(p)).join('');
 
 // Is this element made only of text and inline tags (recursively)?
 function isInlineOnly($, el) {
@@ -62,7 +77,6 @@ function isInlineOnly($, el) {
     return isInlineOnly($, n);
   });
 }
-const hasLatinText = ($, el) => LATIN.test($(el).text());
 
 function translateText(node, page) {
   const raw = node.data;
@@ -81,8 +95,12 @@ function walk($, el, page) {
     if ($(n).attr('translate') === 'no' || $(n).hasClass('notranslate')) continue;
     translateAttrs($, n, page);
     // A block of text + inline tags is translated as one unit (keeps sentences whole)
+    // Unit = the block's own text continues inside inline tags (<p>We help <strong>brands</strong> grow</p>).
+    // Containers of links/spans with no text of their own (nav menus) and text + icon (<a><i></i> Go</a>) are walked instead.
     const kids = $(n).children().toArray();
-    if (kids.length && isInlineOnly($, n) && hasLatinText($, n) && !INLINE.has(n.name)) {
+    const ownText = $(n).contents().toArray().some(c => c.type === 'text' && LATIN.test(c.data));
+    const textyKids = kids.filter(k => LATIN.test($(k).text()));
+    if (ownText && textyKids.length && isInlineOnly($, n)) {
       const key = norm($(n).html());
       const ar = lookup(key, page);
       if (ar != null) { $(n).html(ar); continue; }
@@ -126,6 +144,21 @@ function rewriteUrls($) {
   $('style').each((_, s) => $(s).html($(s).html().replace(/url\((['"]?)(\.\.\/)?assets\//g, 'url($1/assets/')));
 }
 
+// Mirror left/right in page CSS: <style> blocks and style="" attributes (rtlcss also flips
+// margins, paddings, borders, radii, positions and translateX). Add /*rtl:ignore*/ before a
+// declaration in the English source to keep it as-is.
+function flipDecls(decls) {
+  const out = rtlcss.process('x{' + decls + '}');
+  return out.slice(out.indexOf('{') + 1, out.lastIndexOf('}'));
+}
+function mirrorStyles($) {
+  $('style').each((_, s) => { const css = $(s).html(); if (css && css.trim()) $(s).html(rtlcss.process(css)); });
+  $('[style]').each((_, e) => {
+    const v = $(e).attr('style');
+    if (/left|right|translate|margin|padding|border|radius|float|clear|text-align/i.test(v)) $(e).attr('style', flipDecls(v));
+  });
+}
+
 function buildPage(file) {
   const html = fs.readFileSync(path.join(ROOT, file), 'utf8');
   const $ = cheerio.load(html, { decodeEntities: false });
@@ -143,21 +176,32 @@ function buildPage(file) {
 
   translateInlineScripts($, file);
   rewriteUrls($);
+  mirrorStyles($);
 
-  // RTL stylesheet right after the shared one
+  // Mirrored shared stylesheet + the Arabic additions right after it
   const shared = $('link[href$="shared.css"]').first();
   const rtl = '<link rel="stylesheet" href="/assets/css/rtl.css" />';
-  if (shared.length) shared.after('\n  ' + rtl); else $('head').append(rtl);
+  if (shared.length) { shared.attr('href', '/assets/css/shared.rtl.css'); shared.after('\n  ' + rtl); }
+  else $('head').append(rtl);
+  // Arabic glyph fonts load first on Arabic pages
+  $('head').prepend('\n  <link rel="preload" href="/assets/fonts/brand/Alexandria-VF-arabic.woff2" as="font" type="font/woff2" crossorigin />'
+    + '\n  <link rel="preload" href="/assets/fonts/brand/Changa-VF-arabic.woff2" as="font" type="font/woff2" crossorigin />');
 
   // Language switch → English version of this page; hreflang alternates are already in the source head
   $('a[data-lang-switch]').each((_, a) => {
-    $(a).attr('href', '/' + file).attr('hreflang', 'en').attr('lang', 'en').text('English');
+    $(a).attr('href', file === 'index.html' ? '/' : '/' + file).attr('hreflang', 'en').attr('lang', 'en').text('English');
   });
 
   fs.writeFileSync(path.join(OUT, file), $.html());
 }
 
-if (mode === 'build') fs.mkdirSync(OUT, { recursive: true });
+if (mode === 'build') {
+  fs.mkdirSync(OUT, { recursive: true });
+  // Mirrored copy of the shared stylesheet for Arabic pages (generated — not committed)
+  const css = fs.readFileSync(path.join(ROOT, 'assets', 'css', 'shared.css'), 'utf8');
+  fs.writeFileSync(path.join(ROOT, 'assets', 'css', 'shared.rtl.css'),
+    '/* GENERATED by scripts/build-ar.js from shared.css with rtlcss — do not edit */\n' + rtlcss.process(css));
+}
 for (const f of pages) buildPage(f);
 
 if (mode === 'extract') {

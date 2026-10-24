@@ -1,0 +1,9 @@
+{
+ "'Project not found.'": "'لم نعثر على هذا المشروع.'",
+ "'Case study not found.'": "'لم نعثر على دراسة الحالة هذه.'",
+ "cs.tag || 'Case Study'": "cs.tag || 'دراسة حالة'",
+ "p.category || 'Project'": "p.category || 'مشروع'",
+ "'<i class=\"fas fa-spinner fa-spin\"></i> Sending…'": "'<i class=\"fas fa-spinner fa-spin\"></i> جارٍ الإرسال…'",
+ "'<i class=\"fa fa-paper-plane\"></i> Send Message'": "'<i class=\"fa fa-paper-plane\"></i> إرسال الرسالة'",
+ "\"Sorry, your message couldn't be sent. Please try again, or email us at hello@scalen.marketing.\"": "\"عذرًا، لم نتمكن من إرسال رسالتك. يُرجى المحاولة مرة أخرى، أو مراسلتنا على hello@scalen.marketing.\""
+}

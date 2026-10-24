@@ -8,11 +8,36 @@
   const CMS_BASE = (typeof window !== 'undefined' && window.CMS_BASE) ? window.CMS_BASE.replace(/\/$/, '') : 'http://localhost:3000';
   const SVC_ICON_CLASSES = ['si-1','si-2','si-3','si-4','si-5','si-6'];
 
+  // ─── Language ───────────────────────────────────────────────────────────────
+  // Arabic pages (/ar/…, <html lang="ar">) ask the CMS for Arabic content; the CMS falls back
+  // to English per field where no Arabic text exists yet.
+  const LANG = /^ar\b/i.test(document.documentElement.getAttribute('lang') || '') ? 'ar' : 'en';
+  function api(path) {
+    return CMS_BASE + path + (LANG === 'ar' ? (path.includes('?') ? '&' : '?') + 'lang=ar' : '');
+  }
+  // UI text this script writes itself
+  const UI_AR = {
+    'All rights reserved.': 'جميع الحقوق محفوظة.',
+    'Read More': 'اقرأ المزيد',
+    'Learn More': 'اعرف المزيد',
+    'View Project': 'عرض المشروع',
+    'Blog': 'المدونة',
+    'Custom': 'حسب الطلب'
+  };
+  function t(s) { return (LANG === 'ar' && UI_AR[s]) || s; }
+  function fmtDate(d) {
+    if (!d) return '';
+    const opts = LANG === 'ar' ? { month: 'long', day: 'numeric', year: 'numeric' } : { month: 'short', day: 'numeric', year: 'numeric' };
+    return new Date(d).toLocaleDateString(LANG === 'ar' ? 'ar-u-nu-latn' : 'en-US', opts);
+  }
+
   // ─── Helpers ────────────────────────────────────────────────────────────────
   // CMS image paths ('/uploads/x', or legacy 'http://localhost:3000/uploads/x') live on the CMS host,
   // not on the site's domain — make them absolute once, right after loading.
   function absMedia(v) {
-    if (typeof v === 'string') return v.replace(/^(?:https?:\/\/localhost:\d+)?(\/uploads\/)/, CMS_BASE + '$1');
+    if (typeof v === 'string') return v
+      .replace(/^(?:https?:\/\/localhost:\d+)?(\/uploads\/)/, CMS_BASE + '$1')
+      .replace(/^assets\//, '/assets/');   // site images referenced relatively also work from /ar/ pages
     if (Array.isArray(v)) return v.map(absMedia);
     if (v && typeof v === 'object') { const o = {}; for (const k in v) o[k] = absMedia(v[k]); return o; }
     return v;
@@ -156,11 +181,11 @@
       const fb = document.querySelector('.footer-bottom');
       if (fb) {
         const cp = fb.querySelector('p');
-        if (cp) cp.innerHTML = `&copy; ${yr} <a href="index.html" style="color:inherit">${name}</a>. All rights reserved.`;
+        if (cp) cp.innerHTML = `&copy; ${yr} <a href="index.html" style="color:inherit">${name}</a>. ${t('All rights reserved.')}`;
       }
       // Also handle any .footer-copy or .copyright elements
       document.querySelectorAll('.footer-copy, .copyright').forEach(el => {
-        el.textContent = `© ${yr} ${name}. All rights reserved.`;
+        el.textContent = `© ${yr} ${name}. ${t('All rights reserved.')}`;
       });
     }
 
@@ -176,7 +201,9 @@
     if (Array.isArray(hp.marquee) && hp.marquee.length) {
       const track = document.querySelector('.marquee-track');
       if (track) {
-        const doubled = [...hp.marquee, ...hp.marquee];
+        // Items are plain strings (admin form) or { text } objects (older data) — both render as text
+        const items = hp.marquee.map(it => (it && typeof it === 'object') ? (it.text || '') : it).filter(Boolean);
+        const doubled = [...items, ...items];
         const useSpan = track.querySelector('span') && !track.querySelector('.marquee-item');
         track.innerHTML = doubled.map(item =>
           useSpan
@@ -381,7 +408,7 @@
         const delays = ['d1','d2','d3'];
         grid.innerHTML = pr.plans.map((plan, i) => {
           const priceHtml = plan.price === 'Custom'
-            ? `<div class="price-amt" style="font-size:36px;padding-top:8px;">Custom</div>`
+            ? `<div class="price-amt" style="font-size:36px;padding-top:8px;">${t('Custom')}</div>`
             : `<div class="price-amt"><span>$</span>${esc(plan.price)}</div>`;
           const feats = (plan.features||[]).map(f =>
             `<div class="price-li${f.included?'':' off'}"><i class="fas fa-${f.included?'check':'times'}"></i> ${esc(f.text)}</div>`
@@ -556,8 +583,8 @@
       const grid = document.querySelector('.blog-grid');
       if (grid) {
         grid.innerHTML = posts.map(p => {
-          const date = p.published_at ? new Date(p.published_at).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
-          const cat  = p.category_name || 'Blog';
+          const date = fmtDate(p.published_at);
+          const cat  = p.category_name || t('Blog');
           return `<div class="blog-card reveal">
             ${p.image?`<div class="blog-img"><img src="${esc(p.image)}" alt="${esc(p.title)}"></div>`:''}
             <div class="blog-body">
@@ -567,7 +594,7 @@
               </div>
               <h3 class="blog-ttl" data-section="db:blog_posts" data-id="${p.id}" data-path="title" data-raw="${esc(p.title)}">${esc(p.title)}</h3>
               <p class="blog-exc" data-section="db:blog_posts" data-id="${p.id}" data-path="excerpt" data-raw="${esc(p.excerpt||'')}">${esc(p.excerpt||'')}</p>
-              <a href="${esc(p.slug?'post-'+p.slug+'.html':'#')}" class="blog-lnk">Read More <i class="fas fa-arrow-right"></i></a>
+              <a href="${esc(p.slug?'post-'+p.slug+'.html':'#')}" class="blog-lnk">${t('Read More')} <i class="fas fa-arrow-right"></i></a>
             </div>
           </div>`;
         }).join('');
@@ -587,7 +614,7 @@
       const recentList = document.querySelector('.recent-list');
       if (recentList) {
         recentList.innerHTML = posts.slice(0,4).map(p => {
-          const date = p.published_at ? new Date(p.published_at).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
+          const date = fmtDate(p.published_at);
           return `<div class="recent-item">
             <div class="recent-thumb">${p.image?`<img src="${esc(p.image)}" alt="">`:'<div style="width:100%;height:100%;background:#0F1FA8"></div>'}</div>
             <div>
@@ -664,7 +691,7 @@
         <div class="svc-icon ${SVC_ICON_CLASSES[i%6]}"><i class="fas ${esc(s.icon||'fa-star')}"></i></div>
         <h3 data-section="db:services" data-id="${s.id}" data-path="title" data-raw="${esc(s.title)}">${esc(s.title)}</h3>
         <p data-section="db:services" data-id="${s.id}" data-path="description" data-raw="${esc(s.description||'')}">${esc(s.description||'')}</p>
-        <a href="services.html" class="svc-link">Learn More <i class="fas fa-arrow-right"></i></a>
+        <a href="services.html" class="svc-link">${t('Learn More')} <i class="fas fa-arrow-right"></i></a>
       </div>`
     ).join('');
   }
@@ -678,7 +705,7 @@
       `<a href="project.html?id=${p.id}" class="pf-card reveal ${delays[i%3]}" data-filter="${pfFilterKey(p.category)}">
         <div class="pf-img">
           ${p.image?`<img src="${esc(p.image.startsWith('/')?CMS_BASE+p.image:p.image)}" alt="${esc(p.title)}">`:'<div style="width:100%;height:270px;background:linear-gradient(135deg,#1a1b3a,#0F1FA8)"></div>'}
-          <div class="pf-overlay"><div class="pf-view"><i class="fas fa-arrow-right"></i></div><span>View Project</span></div>
+          <div class="pf-overlay"><div class="pf-view"><i class="fas fa-arrow-right"></i></div><span>${t('View Project')}</span></div>
         </div>
         <div class="pf-info">
           <div class="pf-tag" data-section="db:portfolio" data-id="${p.id}" data-path="category" data-raw="${esc(p.category||'')}">${esc(p.category||'')}</div>
@@ -694,17 +721,17 @@
     const items  = (typeof max === 'number') ? posts.slice(0, max) : posts;
     const delays = ['d1','d2','d3'];
     grid.innerHTML = items.map((p, i) => {
-      const date = p.published_at ? new Date(p.published_at).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
+      const date = fmtDate(p.published_at);
       return `<div class="blog-card reveal ${delays[i%3]}">
         ${p.image?`<div class="blog-img"><img src="${esc(p.image)}" alt="${esc(p.title)}"></div>`:''}
         <div class="blog-body">
           <div class="blog-meta">
-            <span class="blog-cat">${esc(p.category_name||'Blog')}</span>
+            <span class="blog-cat">${esc(p.category_name||t('Blog'))}</span>
             ${date?`<span class="blog-date"><i class="far fa-calendar-alt"></i> ${date}</span>`:''}
           </div>
           <h3 class="blog-ttl" data-section="db:blog_posts" data-id="${p.id}" data-path="title" data-raw="${esc(p.title)}">${esc(p.title)}</h3>
           <p class="blog-exc" data-section="db:blog_posts" data-id="${p.id}" data-path="excerpt" data-raw="${esc(p.excerpt||'')}">${esc(p.excerpt||'')}</p>
-          <a href="${esc(p.slug?'post-'+p.slug+'.html':'#')}" class="blog-lnk">Read More <i class="fas fa-arrow-right"></i></a>
+          <a href="${esc(p.slug?'post-'+p.slug+'.html':'#')}" class="blog-lnk">${t('Read More')} <i class="fas fa-arrow-right"></i></a>
         </div>
       </div>`;
     }).join('');
@@ -1070,7 +1097,7 @@
     try {
       const r = await fetch(CMS_BASE + '/api/inline-save', {
         method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ token: editToken, changes: [change] })
+        body: JSON.stringify({ token: editToken, lang: LANG, changes: [change] })
       });
       const d = await r.json();
       if (d.ok) { showToast('Saved ✓', '#85EE00'); }
@@ -1087,7 +1114,7 @@
     try {
       const r = await fetch(CMS_BASE + '/api/inline-save', {
         method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ token: editToken, changes: savedChanges })
+        body: JSON.stringify({ token: editToken, lang: LANG, changes: savedChanges })
       });
       const d = await r.json();
       if (d.ok) { savedChanges.length = 0; showToast(`${d.saved} changes saved!`, '#85EE00'); }
@@ -1116,13 +1143,13 @@
 
       // Parallel fetch — blog.html needs categories too
       const fetches = [
-        fetch(CMS_BASE + '/api/homepage').then(r => r.json()).then(absMedia),
-        fetch(CMS_BASE + '/api/services').then(r => r.json()).then(absMedia),
-        fetch(CMS_BASE + '/api/blog' + (isHome ? '?limit=3' : '')).then(r => r.json()).then(absMedia),
-        fetch(CMS_BASE + '/api/portfolio').then(r => r.json()).then(absMedia),
-        fetch(CMS_BASE + '/api/testimonials').then(r => r.json()).then(absMedia),
-        fetch(CMS_BASE + '/api/team').then(r => r.json()).then(absMedia),
-        isBlog ? fetch(CMS_BASE + '/api/blog/categories').then(r => r.json()).then(absMedia) : Promise.resolve([])
+        fetch(api('/api/homepage')).then(r => r.json()).then(absMedia),
+        fetch(api('/api/services')).then(r => r.json()).then(absMedia),
+        fetch(api('/api/blog' + (isHome ? '?limit=3' : ''))).then(r => r.json()).then(absMedia),
+        fetch(api('/api/portfolio')).then(r => r.json()).then(absMedia),
+        fetch(api('/api/testimonials')).then(r => r.json()).then(absMedia),
+        fetch(api('/api/team')).then(r => r.json()).then(absMedia),
+        isBlog ? fetch(api('/api/blog/categories')).then(r => r.json()).then(absMedia) : Promise.resolve([])
       ];
 
       const [hpR, svcR, blogR, pfR, tstR, teamR, catR] = await Promise.allSettled(fetches);
