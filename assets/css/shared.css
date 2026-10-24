@@ -491,3 +491,7 @@ button { cursor:pointer; font-family:var(--font-b); border:none; background:none
   .footer-grid { grid-template-columns:1fr; gap:30px; }
   .footer-bottom { flex-direction:column; gap:10px; text-align:center; }
 }
+
+/* Portfolio card whose cover image is missing: brand gradient instead of a broken picture */
+.pf-img.pf-noimg { background:linear-gradient(135deg,#1a1b3a,#0F1FA8); display:flex; align-items:center; justify-content:center; padding:24px; }
+.pf-img.pf-noimg::after { content:attr(data-name); font-family:var(--font-d); font-size:40px; line-height:1.05; color:#fff; text-align:center; letter-spacing:.01em; }
