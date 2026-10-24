@@ -229,6 +229,14 @@ button { cursor:pointer; font-family:var(--font-b); border:none; background:none
 .logo .logo-on-white { display:none; }
 #header.scrolled .logo .logo-on-blue  { display:none; }
 #header.scrolled .logo .logo-on-white { display:block; }
+/* Desktop, top of the page: the full "SCALEN Marketing" lockup; it swaps to the short logo
+   once the header turns white on scroll, and on phones (too small for the word "Marketing") */
+.logo .logo-full { display:none; }
+@media(min-width:769px){
+  #header:not(.scrolled) .header-wrap { padding-top:16px; padding-bottom:16px; }
+  #header:not(.scrolled) .logo .logo-on-blue { display:none; }
+  #header:not(.scrolled) .logo .logo-full { display:block; height:58px; }
+}
 
 .nav-menu { display:flex; align-items:center; gap:32px; }
 .nav-menu a {
