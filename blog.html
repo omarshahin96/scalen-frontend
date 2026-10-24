@@ -3,56 +3,58 @@
 <head>
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title data-brand="Scalen">Blog — Scalen</title>
-  <link rel="icon" href="assets/img/favicon.webp" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Urbanist:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/svg+xml" href="assets/img/brand/favicon.svg" />
+  <link rel="apple-touch-icon" href="assets/img/brand/apple-touch-icon.png" />
+  <meta name="theme-color" content="#0F1FA8" />
+  <link rel="preload" href="assets/fonts/brand/Gobold-Regular.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/brand/Alexandria-VF-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <link rel="stylesheet" href="assets/css/shared.css" />
   <style>
-    .blog-sec  { padding:100px 0; background:var(--bg); }
-    .blog-layout{ display:grid; grid-template-columns:1fr 320px; gap:44px; align-items:start; }
-    .blog-grid { display:grid; grid-template-columns:1fr 1fr; gap:22px; }
+    .blog-sec  { padding:100px 0;background:var(--bg); }
+    .blog-layout{ display:grid;grid-template-columns:1fr 320px;gap:44px;align-items:start; }
+    .blog-grid { display:grid;grid-template-columns:1fr 1fr;gap:22px; }
 
-    .blog-card { background:var(--bg-card); border:1px solid var(--border); border-radius:20px; overflow:hidden; transition:var(--trans); }
-    .blog-card:hover { border-color:rgba(36,76,201,.4); transform:translateY(-4px); box-shadow:var(--shadow-b); }
-    .blog-img  { height:220px; overflow:hidden; }
-    .blog-img img{ width:100%; height:100%; object-fit:cover; transition:transform .55s; }
+    .blog-card { background:var(--bg-card);border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:var(--trans); }
+    .blog-card:hover { border-color:rgba(15,31,168,.4);transform:translateY(-4px);box-shadow:var(--shadow-b); }
+    .blog-img  { height:220px;overflow:hidden; }
+    .blog-img img{ width:100%;height:100%;object-fit:cover;transition:transform .55s; }
     .blog-card:hover .blog-img img { transform:scale(1.06); }
     .blog-body { padding:24px 24px 28px; }
-    .blog-meta { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:12px; }
-    .blog-cat  { font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; background:var(--blue); color:#fff; padding:4px 12px; border-radius:20px; }
-    .blog-date { font-size:12px; color:var(--grey); display:flex; align-items:center; gap:5px; }
-    .blog-ttl  { font-family:var(--font-h); font-size:18px; font-weight:700; margin-bottom:10px; line-height:1.3; transition:color .25s; }
+    .blog-meta { display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px; }
+    .blog-cat  { font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--blue);color:#fff;padding:4px 12px;border-radius:4px;--ink:#fff;--ink-2:rgba(255,255,255,.92);--grey:rgba(255,255,255,.8);--grey-lt:rgba(255,255,255,.9);--label:#fff;--line:rgba(255,255,255,.22);--border:rgba(255,255,255,.22);--tint:rgba(255,255,255,.1);--tint-2:rgba(255,255,255,.15);--blue-lt:#fff; }
+    .blog-date { font-size:12px;color:var(--grey);display:flex;align-items:center;gap:5px; }
+    .blog-ttl  { font-family:var(--font-h);font-size:18px;font-weight:700;margin-bottom:10px;line-height:1.3;transition:color .25s; }
     .blog-card:hover .blog-ttl { color:var(--blue-lt); }
-    .blog-exc  { font-size:13px; color:var(--grey); line-height:1.75; margin-bottom:18px; }
-    .blog-lnk  { display:inline-flex; align-items:center; gap:7px; font-size:13px; font-weight:700; color:var(--blue-lt); transition:gap .25s, color .25s; }
-    .blog-lnk:hover { gap:13px; color:#2DA9FF; }
+    .blog-exc  { font-size:13px;color:var(--grey);line-height:1.75;margin-bottom:18px; }
+    .blog-lnk  { display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:var(--blue-lt);transition:gap .25s, color .25s; }
+    .blog-lnk:hover { gap:13px;color:var(--blue); }
 
     /* Sidebar */
-    .sidebar   { display:flex; flex-direction:column; gap:28px; }
-    .sidebar-box{ background:var(--bg-card); border:1px solid var(--border); border-radius:18px; padding:28px 24px; }
-    .sidebar-box h3 { font-family:var(--font-h); font-size:16px; font-weight:700; margin-bottom:18px; padding-bottom:14px; border-bottom:1px solid var(--border); }
-    .cat-list  { display:flex; flex-direction:column; gap:10px; }
-    .cat-item  { display:flex; justify-content:space-between; align-items:center; font-size:14px; color:var(--grey); cursor:pointer; transition:color .25s; padding:6px 0; border-bottom:1px solid var(--border); }
+    .sidebar   { display:flex;flex-direction:column;gap:28px; }
+    .sidebar-box{ background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:28px 24px; }
+    .sidebar-box h3 { font-family:var(--font-h);font-size:16px;font-weight:700;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border); }
+    .cat-list  { display:flex;flex-direction:column;gap:10px; }
+    .cat-item  { display:flex;justify-content:space-between;align-items:center;font-size:14px;color:var(--grey);cursor:pointer;transition:color .25s;padding:6px 0;border-bottom:1px solid var(--border); }
     .cat-item:last-child { border-bottom:none; }
-    .cat-item:hover { color:#fff; }
-    .cat-item span { background:rgba(36,76,201,.2); color:var(--blue-lt); font-size:11px; font-weight:700; padding:2px 9px; border-radius:20px; }
-    .recent-list { display:flex; flex-direction:column; gap:16px; }
-    .recent-item { display:flex; gap:13px; align-items:flex-start; }
-    .recent-thumb{ width:62px; height:62px; border-radius:10px; overflow:hidden; flex-shrink:0; }
-    .recent-thumb img { width:100%; height:100%; object-fit:cover; }
-    .recent-ttl  { font-size:13px; font-weight:700; line-height:1.35; margin-bottom:5px; color:#fff; transition:color .25s; }
+    .cat-item:hover { color:var(--ink); }
+    .cat-item span { background:rgba(15,31,168,.2);color:var(--blue-lt);font-size:11px;font-weight:700;padding:2px 9px;border-radius:4px; }
+    .recent-list { display:flex;flex-direction:column;gap:16px; }
+    .recent-item { display:flex;gap:13px;align-items:flex-start; }
+    .recent-thumb{ width:62px;height:62px;border-radius:10px;overflow:hidden;flex-shrink:0; }
+    .recent-thumb img { width:100%;height:100%;object-fit:cover; }
+    .recent-ttl  { font-size:13px;font-weight:700;line-height:1.35;margin-bottom:5px;color:var(--ink);transition:color .25s; }
     .recent-ttl:hover { color:var(--blue-lt); }
-    .recent-date { font-size:11px; color:var(--grey); }
-    .tag-cloud   { display:flex; flex-wrap:wrap; gap:8px; }
-    .tag-pill    { font-size:12px; font-weight:600; padding:5px 14px; border-radius:20px; background:rgba(255,255,255,.05); border:1px solid var(--border); color:var(--grey); transition:var(--trans); cursor:pointer; }
-    .tag-pill:hover, .tag-pill.active { background:var(--blue); border-color:var(--blue); color:#fff; }
+    .recent-date { font-size:11px;color:var(--grey); }
+    .tag-cloud   { display:flex;flex-wrap:wrap;gap:8px; }
+    .tag-pill    { font-size:12px;font-weight:600;padding:5px 14px;border-radius:4px;background:var(--tint);border:1px solid var(--border);color:var(--grey);transition:var(--trans);cursor:pointer; }
+    .tag-pill:hover, .tag-pill.active { background:var(--blue);border-color:var(--blue);color:#fff;--ink:#fff;--ink-2:rgba(255,255,255,.92);--grey:rgba(255,255,255,.8);--grey-lt:rgba(255,255,255,.9);--label:#fff;--line:rgba(255,255,255,.22);--border:rgba(255,255,255,.22);--tint:rgba(255,255,255,.1);--tint-2:rgba(255,255,255,.15);--blue-lt:#fff; }
     .cat-item.active { color:var(--blue-lt); }
-    .cat-item.active span { background:var(--blue); color:#fff; }
-    .search-box  { display:flex; border:1.5px solid var(--border); border-radius:12px; overflow:hidden; }
-    .search-box input{ flex:1; background:rgba(255,255,255,.04); border:none; padding:12px 16px; font-size:14px; color:#fff; font-family:var(--font-b); outline:none; }
+    .cat-item.active span { background:var(--blue);color:#fff;--ink:#fff;--ink-2:rgba(255,255,255,.92);--grey:rgba(255,255,255,.8);--grey-lt:rgba(255,255,255,.9);--label:#fff;--line:rgba(255,255,255,.22);--border:rgba(255,255,255,.22);--tint:rgba(255,255,255,.1);--tint-2:rgba(255,255,255,.15);--blue-lt:#fff; }
+    .search-box  { display:flex;border:1.5px solid var(--border);border-radius:8px;overflow:hidden; }
+    .search-box input{ flex:1;background:var(--tint);border:none;padding:12px 16px;font-size:14px;color:var(--ink);font-family:var(--font-b);outline:none; }
     .search-box input::placeholder { color:var(--grey); }
-    .search-box button{ background:var(--blue); color:#fff; padding:12px 18px; font-size:14px; transition:background .25s; }
+    .search-box button{ background:var(--blue);color:#fff;padding:12px 18px;font-size:14px;transition:background .25s;--ink:#fff;--ink-2:rgba(255,255,255,.92);--grey:rgba(255,255,255,.8);--grey-lt:rgba(255,255,255,.9);--label:#fff;--line:rgba(255,255,255,.22);--border:rgba(255,255,255,.22);--tint:rgba(255,255,255,.1);--tint-2:rgba(255,255,255,.15);--blue-lt:#fff; }
     .search-box button:hover { background:var(--blue-lt); }
 
     @media(max-width:1024px){ .blog-layout{grid-template-columns:1fr;} .sidebar{display:grid;grid-template-columns:1fr 1fr;} }
@@ -74,7 +76,7 @@
 
 <header id="header">
   <div class="header-wrap">
-    <a href="index.html" class="logo"><img src="assets/img/logo.webp" alt="Scalen" /></a>
+    <a href="index.html" class="logo"><img class="logo-on-blue" data-brand-logo src="assets/img/brand/logo-on-blue.svg" alt="Scalen" width="61" height="40" /><img class="logo-on-white" data-brand-logo src="assets/img/brand/logo-on-white.svg" alt="Scalen" width="61" height="40" /></a>
     <nav class="nav-menu">
       <a href="index.html">Home</a><a href="about.html">About</a><a href="services.html">Services</a>
       <a href="portfolio.html">Portfolio</a>
@@ -158,7 +160,7 @@
           </div>
         </div>
         <!-- EDIT: CTA sidebar -->
-        <div class="sidebar-box" style="background:var(--blue);border-color:var(--blue);text-align:center;">
+        <div class="sidebar-box" style="background:var(--blue);border-color:var(--blue);text-align:center;--ink:#fff;--ink-2:rgba(255,255,255,.92);--grey:rgba(255,255,255,.8);--grey-lt:rgba(255,255,255,.9);--label:#fff;--line:rgba(255,255,255,.22);--border:rgba(255,255,255,.22);--tint:rgba(255,255,255,.1);--tint-2:rgba(255,255,255,.15);--blue-lt:#fff;color:#fff;">
           <h3 style="border-color:rgba(255,255,255,.2);">Get a Free Strategy Call</h3>
           <p style="font-size:14px;color:rgba(255,255,255,.8);margin-bottom:18px;line-height:1.7;">Let our experts audit your digital presence and create a custom growth plan for your business.</p>
           <a href="contact.html" class="btn" style="background:#fff;color:#000;width:100%;justify-content:center;border-radius:12px;">Book Free Call</a>
@@ -168,7 +170,7 @@
   </div>
 </section>
 
-<footer id="footer"><div class="container"><div class="footer-grid"><div class="footer-brand"><a href="index.html" class="logo"><img src="assets/img/logo.webp" alt="Scalen" /></a><p>Award-winning digital marketing agency helping businesses grow through data-driven strategies.</p><div class="footer-socs"><a href="#" class="fsoc"><i class="fab fa-linkedin-in"></i></a><a href="#" class="fsoc"><i class="fab fa-twitter"></i></a><a href="#" class="fsoc"><i class="fab fa-instagram"></i></a><a href="#" class="fsoc"><i class="fab fa-facebook-f"></i></a></div></div><div class="footer-col"><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="about.html">About Us</a></li><li><a href="services.html">Services</a></li><li><a href="portfolio.html">Portfolio</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact</a></li></ul></div><div class="footer-col"><h4>Our Services</h4><ul><li><a href="services.html">SEO Optimization</a></li><li><a href="services.html">Content Marketing</a></li><li><a href="services.html">Social Media</a></li><li><a href="services.html">PPC Advertising</a></li><li><a href="services.html">Brand Strategy</a></li><li><a href="services.html">Web Design</a></li></ul></div><div class="footer-col"><h4>Contact Info</h4><ul><li><a href="contact.html">123 Marketing Street, NY 10001</a></li><li><a href="tel:+15552349823">+1 (555) 234-9823</a></li><li><a href="mailto:hello@reliableagency.com">hello@reliableagency.com</a></li><li><a href="contact.html">Mon–Fri: 9AM – 6PM</a></li></ul></div></div><div class="footer-bottom"><p>&copy; 2026 <a href="index.html">Scalen</a>. All rights reserved.</p><p><a href="#" style="color:var(--grey);margin-right:16px;">Privacy Policy</a><a href="#" style="color:var(--grey);">Terms</a></p></div></div></footer>
+<footer id="footer"><div class="container"><div class="footer-grid"><div class="footer-brand"><a href="index.html" class="logo"><img data-brand-logo src="assets/img/brand/logo-full-on-blue.svg" alt="Scalen Marketing" width="78" height="64" /></a><p>Award-winning digital marketing agency helping businesses grow through data-driven strategies.</p><div class="footer-socs"><a href="#" class="fsoc"><i class="fab fa-linkedin-in"></i></a><a href="#" class="fsoc"><i class="fab fa-twitter"></i></a><a href="#" class="fsoc"><i class="fab fa-instagram"></i></a><a href="#" class="fsoc"><i class="fab fa-facebook-f"></i></a></div></div><div class="footer-col"><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="about.html">About Us</a></li><li><a href="services.html">Services</a></li><li><a href="portfolio.html">Portfolio</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact</a></li></ul></div><div class="footer-col"><h4>Our Services</h4><ul><li><a href="services.html">SEO Optimization</a></li><li><a href="services.html">Content Marketing</a></li><li><a href="services.html">Social Media</a></li><li><a href="services.html">PPC Advertising</a></li><li><a href="services.html">Brand Strategy</a></li><li><a href="services.html">Web Design</a></li></ul></div><div class="footer-col"><h4>Contact Info</h4><ul><li><a href="contact.html">123 Marketing Street, NY 10001</a></li><li><a href="tel:+15552349823">+1 (555) 234-9823</a></li><li><a href="mailto:hello@reliableagency.com">hello@reliableagency.com</a></li><li><a href="contact.html">Mon–Fri: 9AM – 6PM</a></li></ul></div></div><div class="footer-bottom"><p>&copy; 2026 <a href="index.html">Scalen</a>. All rights reserved.</p><p><a href="#" style="color:var(--grey);margin-right:16px;">Privacy Policy</a><a href="#" style="color:var(--grey);">Terms</a></p></div></div></footer>
 <button id="scrollTop"><i class="fas fa-arrow-up"></i></button>
 <script src="assets/js/shared.js"></script>
 <script>

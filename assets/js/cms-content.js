@@ -117,7 +117,7 @@
 
     // Logo image
     if (site.logo) {
-      document.querySelectorAll('.logo img').forEach(img => { img.src = site.logo; if (name) img.alt = name; });
+      document.querySelectorAll('.logo img:not([data-brand-logo])').forEach(img => { img.src = site.logo; if (name) img.alt = name; });
     }
     // Logo text fallback (if no img)
     if (name) {
@@ -506,7 +506,7 @@
             </div>`
           ).join('');
           return `<div class="result-card reveal ${delays[i%3]}">
-            <div class="result-img">${c.image?`<img src="${esc(c.image)}" alt="" data-section="portfolio_page" data-path="case_studies.${i}.image" data-raw="${esc(c.image)}" data-type="image">`:'<div style="width:100%;height:100%;background:linear-gradient(135deg,#1a1b3a,#244cc9)"></div>'}</div>
+            <div class="result-img">${c.image?`<img src="${esc(c.image)}" alt="" data-section="portfolio_page" data-path="case_studies.${i}.image" data-raw="${esc(c.image)}" data-type="image">`:'<div style="width:100%;height:100%;background:linear-gradient(135deg,#1a1b3a,#0F1FA8)"></div>'}</div>
             <div class="result-tag" data-section="portfolio_page" data-path="case_studies.${i}.tag" data-raw="${esc(c.tag)}">${esc(c.tag)}</div>
             <div class="result-ttl" data-section="portfolio_page" data-path="case_studies.${i}.title" data-raw="${esc(c.title)}">${esc(c.title)}</div>
             <div class="result-desc" data-section="portfolio_page" data-path="case_studies.${i}.description" data-raw="${esc(c.description)}">${esc(c.description)}</div>
@@ -581,7 +581,7 @@
         recentList.innerHTML = posts.slice(0,4).map(p => {
           const date = p.published_at ? new Date(p.published_at).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
           return `<div class="recent-item">
-            <div class="recent-thumb">${p.image?`<img src="${esc(p.image)}" alt="">`:'<div style="width:100%;height:100%;background:linear-gradient(135deg,#244cc9,#8215FF)"></div>'}</div>
+            <div class="recent-thumb">${p.image?`<img src="${esc(p.image)}" alt="">`:'<div style="width:100%;height:100%;background:#0F1FA8"></div>'}</div>
             <div>
               <a href="${esc(p.slug?'post-'+p.slug+'.html':'#')}" class="recent-ttl">${esc(p.title)}</a>
               <div class="recent-date">${date}</div>
@@ -669,7 +669,7 @@
     grid.innerHTML = items.map((p, i) =>
       `<a href="project.html?id=${p.id}" class="pf-card reveal ${delays[i%3]}" data-filter="${pfFilterKey(p.category)}">
         <div class="pf-img">
-          ${p.image?`<img src="${esc(p.image.startsWith('/')?CMS_BASE+p.image:p.image)}" alt="${esc(p.title)}">`:'<div style="width:100%;height:270px;background:linear-gradient(135deg,#1a1b3a,#244cc9)"></div>'}
+          ${p.image?`<img src="${esc(p.image.startsWith('/')?CMS_BASE+p.image:p.image)}" alt="${esc(p.title)}">`:'<div style="width:100%;height:270px;background:linear-gradient(135deg,#1a1b3a,#0F1FA8)"></div>'}
           <div class="pf-overlay"><div class="pf-view"><i class="fas fa-arrow-right"></i></div><span>View Project</span></div>
         </div>
         <div class="pf-info">
@@ -713,7 +713,7 @@
           <div class="tst-stars">${stars}</div>
           <p class="tst-txt" data-section="db:testimonials" data-id="${t.id}" data-path="quote" data-raw="${esc(t.quote)}">"${esc(t.quote)}"</p>
           <div class="tst-auth">
-            <div class="tst-av">${t.avatar?`<img src="${esc(t.avatar)}" alt="${esc(t.name)}">`:`<div style="width:100%;height:100%;background:linear-gradient(135deg,#244cc9,#8215FF);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff">${esc(t.name[0])}</div>`}</div>
+            <div class="tst-av">${t.avatar?`<img src="${esc(t.avatar)}" alt="${esc(t.name)}">`:`<div style="width:100%;height:100%;background:#0F1FA8;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff">${esc(t.name[0])}</div>`}</div>
             <div>
               <div class="tst-name" data-section="db:testimonials" data-id="${t.id}" data-path="name" data-raw="${esc(t.name)}">${esc(t.name)}</div>
               <div class="tst-role" data-section="db:testimonials" data-id="${t.id}" data-path="role" data-raw="${esc(t.role||'')}">${esc(t.role||'')}${t.company?', '+esc(t.company):''}</div>
@@ -730,7 +730,7 @@
     const delays = ['d1','d2','d3','d4'];
     grid.innerHTML = team.map((m, i) =>
       `<div class="team-card reveal ${delays[i%4]}">
-        <div class="team-photo">${m.photo?`<img src="${esc(m.photo)}" alt="${esc(m.name)}">`:`<div style="width:100%;height:100%;background:linear-gradient(135deg,#244cc9,#8215FF);display:flex;align-items:center;justify-content:center;font-size:48px;font-weight:800;color:#fff">${esc(m.name[0])}</div>`}</div>
+        <div class="team-photo">${m.photo?`<img src="${esc(m.photo)}" alt="${esc(m.name)}">`:`<div style="width:100%;height:100%;background:#0F1FA8;display:flex;align-items:center;justify-content:center;font-size:48px;font-weight:800;color:#fff">${esc(m.name[0])}</div>`}</div>
         <div class="team-info">
           <div class="team-name" data-section="db:team" data-id="${m.id}" data-path="name" data-raw="${esc(m.name)}">${esc(m.name)}</div>
           <div class="team-role" data-section="db:team" data-id="${m.id}" data-path="role" data-raw="${esc(m.role||'')}">${esc(m.role||'')}</div>
@@ -852,9 +852,9 @@
     const trigger = document.createElement('button');
     trigger.id = 'cms-trigger';
     trigger.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit Page';
-    trigger.style.cssText = 'position:fixed;bottom:80px;right:20px;z-index:9000;background:#244cc9;color:#fff;border:none;padding:11px 18px;border-radius:50px;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 4px 20px rgba(36,76,201,.5);display:flex;align-items:center;gap:8px;font-family:Urbanist,sans-serif;letter-spacing:.01em;transition:transform .2s,box-shadow .2s;';
-    trigger.addEventListener('mouseenter', () => { trigger.style.transform='translateY(-2px)'; trigger.style.boxShadow='0 8px 28px rgba(36,76,201,.6)'; });
-    trigger.addEventListener('mouseleave', () => { trigger.style.transform=''; trigger.style.boxShadow='0 4px 20px rgba(36,76,201,.5)'; });
+    trigger.style.cssText = 'position:fixed;bottom:80px;right:20px;z-index:9000;background:#0F1FA8;color:#fff;border:none;padding:11px 18px;border-radius:50px;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 4px 20px rgba(15,31,168,.5);display:flex;align-items:center;gap:8px;font-family:Alexandria,sans-serif;letter-spacing:.01em;transition:transform .2s,box-shadow .2s;';
+    trigger.addEventListener('mouseenter', () => { trigger.style.transform='translateY(-2px)'; trigger.style.boxShadow='0 8px 28px rgba(15,31,168,.6)'; });
+    trigger.addEventListener('mouseleave', () => { trigger.style.transform=''; trigger.style.boxShadow='0 4px 20px rgba(15,31,168,.5)'; });
     document.body.appendChild(trigger);
     trigger.addEventListener('click', () => {
       if (editMode) { disableEditMode(); return; }
@@ -867,22 +867,22 @@
     overlay.id = 'cms-auth-overlay';
     overlay.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);';
     overlay.innerHTML = `
-      <div style="background:#0f1128;border:1px solid rgba(36,76,201,.3);border-radius:20px;padding:40px;width:380px;max-width:90vw;font-family:Urbanist,sans-serif;box-shadow:0 24px 60px rgba(0,0,0,.6);">
-        <div style="font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#3a62e8;margin-bottom:10px;">CMS INLINE EDITOR</div>
-        <h2 style="font-family:Syne,sans-serif;font-size:22px;font-weight:800;color:#fff;margin-bottom:8px;">Unlock Edit Mode</h2>
+      <div style="background:#0f1128;border:1px solid rgba(15,31,168,.3);border-radius:20px;padding:40px;width:380px;max-width:90vw;font-family:Alexandria,sans-serif;box-shadow:0 24px 60px rgba(0,0,0,.6);">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#0F1FA8;margin-bottom:10px;">CMS INLINE EDITOR</div>
+        <h2 style="font-family:Gobold,Alexandria,sans-serif;font-size:22px;font-weight:800;color:#fff;margin-bottom:8px;">Unlock Edit Mode</h2>
         <p style="color:#9fa3b8;font-size:14px;line-height:1.6;margin-bottom:24px;">Enter your CMS admin password to edit this page directly.</p>
-        <input type="password" id="cms-pw" placeholder="Admin password…" style="width:100%;background:rgba(255,255,255,.06);border:1.5px solid rgba(36,76,201,.3);border-radius:12px;padding:13px 16px;color:#fff;font-size:15px;outline:none;margin-bottom:8px;font-family:Urbanist,sans-serif;transition:border-color .2s;">
+        <input type="password" id="cms-pw" placeholder="Admin password…" style="width:100%;background:rgba(255,255,255,.06);border:1.5px solid rgba(15,31,168,.3);border-radius:12px;padding:13px 16px;color:#fff;font-size:15px;outline:none;margin-bottom:8px;font-family:Alexandria,sans-serif;transition:border-color .2s;">
         <div id="cms-pw-err" style="color:#FF4A68;font-size:13px;margin-bottom:14px;display:none;min-height:18px;"></div>
         <div style="display:flex;gap:10px;">
-          <button id="cms-pw-ok"  style="flex:1;background:#244cc9;color:#fff;border:none;padding:13px;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:Urbanist,sans-serif;transition:background .2s;">Unlock</button>
-          <button id="cms-pw-no"  style="background:rgba(255,255,255,.06);color:#9fa3b8;border:1.5px solid rgba(255,255,255,.08);padding:13px 18px;border-radius:12px;font-size:14px;cursor:pointer;font-family:Urbanist,sans-serif;">Cancel</button>
+          <button id="cms-pw-ok"  style="flex:1;background:#0F1FA8;color:#fff;border:none;padding:13px;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:Alexandria,sans-serif;transition:background .2s;">Unlock</button>
+          <button id="cms-pw-no"  style="background:rgba(255,255,255,.06);color:#9fa3b8;border:1.5px solid rgba(255,255,255,.08);padding:13px 18px;border-radius:12px;font-size:14px;cursor:pointer;font-family:Alexandria,sans-serif;">Cancel</button>
         </div>
       </div>`;
     document.body.appendChild(overlay);
     const pw = overlay.querySelector('#cms-pw');
     pw.focus();
-    pw.addEventListener('focus', () => pw.style.borderColor = '#244cc9');
-    pw.addEventListener('blur',  () => pw.style.borderColor = 'rgba(36,76,201,.3)');
+    pw.addEventListener('focus', () => pw.style.borderColor = '#0F1FA8');
+    pw.addEventListener('blur',  () => pw.style.borderColor = 'rgba(15,31,168,.3)');
     overlay.querySelector('#cms-pw-no').addEventListener('click', () => overlay.remove());
     overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
     async function tryAuth() {
@@ -920,8 +920,8 @@
     // Top notification bar
     const bar = document.createElement('div');
     bar.id = 'cms-edit-bar';
-    bar.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:9800;background:linear-gradient(90deg,#244cc9,#3a62e8);color:#fff;padding:10px 20px;display:flex;align-items:center;gap:14px;font-size:13px;font-weight:600;font-family:Urbanist,sans-serif;box-shadow:0 2px 20px rgba(36,76,201,.4);';
-    bar.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> <span>Edit Mode — click any <strong style="color:#85EE00">highlighted element</strong> to edit it</span><span style="flex:1"></span><button id="cms-save-all" style="background:#85EE00;color:#000;border:none;padding:7px 16px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:Urbanist,sans-serif;">Save All</button><button id="cms-exit-bar" style="background:rgba(255,255,255,.18);color:#fff;border:none;padding:7px 12px;border-radius:8px;font-size:13px;cursor:pointer;font-family:Urbanist,sans-serif;">Exit</button>`;
+    bar.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:9800;background:linear-gradient(90deg,#0F1FA8,#0F1FA8);color:#fff;padding:10px 20px;display:flex;align-items:center;gap:14px;font-size:13px;font-weight:600;font-family:Alexandria,sans-serif;box-shadow:0 2px 20px rgba(15,31,168,.4);';
+    bar.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> <span>Edit Mode — click any <strong style="color:#85EE00">highlighted element</strong> to edit it</span><span style="flex:1"></span><button id="cms-save-all" style="background:#85EE00;color:#000;border:none;padding:7px 16px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:Alexandria,sans-serif;">Save All</button><button id="cms-exit-bar" style="background:rgba(255,255,255,.18);color:#fff;border:none;padding:7px 12px;border-radius:8px;font-size:13px;cursor:pointer;font-family:Alexandria,sans-serif;">Exit</button>`;
     document.body.prepend(bar);
     document.body.style.paddingTop = '42px';
     bar.querySelector('#cms-exit-bar').addEventListener('click', disableEditMode);
@@ -931,9 +931,9 @@
     const style = document.createElement('style');
     style.id = 'cms-edit-styles';
     style.textContent = `
-      [data-section]{outline:2px dashed rgba(36,76,201,.35)!important;outline-offset:3px;cursor:pointer!important;transition:outline-color .2s,background .2s!important;position:relative;}
-      [data-section]:hover{outline-color:#3a62e8!important;background:rgba(36,76,201,.06)!important;}
-      [data-section][data-type="image"]:hover::after{content:"📷 Click to change image";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.85);color:#fff;padding:8px 14px;border-radius:8px;font-size:12px;font-weight:700;white-space:nowrap;pointer-events:none;z-index:999;font-family:Urbanist,sans-serif;}
+      [data-section]{outline:2px dashed rgba(15,31,168,.35)!important;outline-offset:3px;cursor:pointer!important;transition:outline-color .2s,background .2s!important;position:relative;}
+      [data-section]:hover{outline-color:#0F1FA8!important;background:rgba(15,31,168,.06)!important;}
+      [data-section][data-type="image"]:hover::after{content:"📷 Click to change image";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.85);color:#fff;padding:8px 14px;border-radius:8px;font-size:12px;font-weight:700;white-space:nowrap;pointer-events:none;z-index:999;font-family:Alexandria,sans-serif;}
     `;
     document.head.appendChild(style);
 
@@ -944,7 +944,7 @@
   function disableEditMode() {
     editMode = false;
     const trigger = document.getElementById('cms-trigger');
-    if (trigger) { trigger.style.background='#244cc9'; trigger.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit Page'; }
+    if (trigger) { trigger.style.background='#0F1FA8'; trigger.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit Page'; }
     const bar = document.getElementById('cms-edit-bar');
     if (bar) { bar.remove(); document.body.style.paddingTop = ''; }
     const style = document.getElementById('cms-edit-styles');
@@ -987,10 +987,10 @@
     const editor = document.createElement('div');
     editor.className = 'cms-float-editor';
     const topPos = Math.max(48, rect.top + window.scrollY - (isLong ? 120 : 60));
-    editor.style.cssText = `position:absolute;top:${topPos}px;left:${Math.max(8, rect.left)}px;z-index:99999;background:#0f1128;border:1.5px solid #244cc9;border-radius:12px;padding:10px;display:flex;gap:8px;box-shadow:0 12px 40px rgba(0,0,0,.7);min-width:300px;max-width:500px;font-family:Urbanist,sans-serif;`;
+    editor.style.cssText = `position:absolute;top:${topPos}px;left:${Math.max(8, rect.left)}px;z-index:99999;background:#0f1128;border:1.5px solid #0F1FA8;border-radius:12px;padding:10px;display:flex;gap:8px;box-shadow:0 12px 40px rgba(0,0,0,.7);min-width:300px;max-width:500px;font-family:Alexandria,sans-serif;`;
     const input = document.createElement(isLong ? 'textarea' : 'input');
     input.value = currentValue;
-    input.style.cssText = `flex:1;background:rgba(255,255,255,.07);border:1px solid rgba(36,76,201,.3);border-radius:8px;padding:9px 12px;color:#fff;font-size:13px;font-family:Urbanist,sans-serif;outline:none;${isLong?'height:90px;resize:vertical;':''}`;
+    input.style.cssText = `flex:1;background:rgba(255,255,255,.07);border:1px solid rgba(15,31,168,.3);border-radius:8px;padding:9px 12px;color:#fff;font-size:13px;font-family:Alexandria,sans-serif;outline:none;${isLong?'height:90px;resize:vertical;':''}`;
     const saveBtn = document.createElement('button');
     saveBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
     saveBtn.style.cssText = 'background:#85EE00;color:#000;border:none;width:36px;border-radius:8px;font-size:16px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;';
@@ -1011,14 +1011,14 @@
     const currentSrc = el.tagName==='IMG' ? el.src : (el.querySelector('img')?.src||'');
     const modal = document.createElement('div');
     modal.className = 'cms-float-editor';
-    modal.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;font-family:Urbanist,sans-serif;';
-    modal.innerHTML = `<div style="background:#0f1128;border:1px solid rgba(36,76,201,.3);border-radius:18px;padding:32px;width:460px;max-width:92vw;box-shadow:0 24px 60px rgba(0,0,0,.7);">
-      <div style="font-family:Syne,sans-serif;font-size:18px;font-weight:700;color:#fff;margin-bottom:16px;">Change Image</div>
-      ${currentSrc?`<img src="${esc(currentSrc)}" id="img-preview" style="width:100%;height:140px;object-fit:cover;border-radius:10px;margin-bottom:14px;border:1px solid rgba(36,76,201,.2);">`:''}
-      <input type="url" id="img-url" placeholder="Paste image URL…" value="${esc(currentSrc)}" style="width:100%;background:rgba(255,255,255,.06);border:1.5px solid rgba(36,76,201,.3);border-radius:10px;padding:12px;color:#fff;font-size:14px;outline:none;margin-bottom:14px;font-family:Urbanist,sans-serif;">
+    modal.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;font-family:Alexandria,sans-serif;';
+    modal.innerHTML = `<div style="background:#0f1128;border:1px solid rgba(15,31,168,.3);border-radius:18px;padding:32px;width:460px;max-width:92vw;box-shadow:0 24px 60px rgba(0,0,0,.7);">
+      <div style="font-family:Gobold,Alexandria,sans-serif;font-size:18px;font-weight:700;color:#fff;margin-bottom:16px;">Change Image</div>
+      ${currentSrc?`<img src="${esc(currentSrc)}" id="img-preview" style="width:100%;height:140px;object-fit:cover;border-radius:10px;margin-bottom:14px;border:1px solid rgba(15,31,168,.2);">`:''}
+      <input type="url" id="img-url" placeholder="Paste image URL…" value="${esc(currentSrc)}" style="width:100%;background:rgba(255,255,255,.06);border:1.5px solid rgba(15,31,168,.3);border-radius:10px;padding:12px;color:#fff;font-size:14px;outline:none;margin-bottom:14px;font-family:Alexandria,sans-serif;">
       <div style="display:flex;gap:10px;">
-        <button id="img-save" style="flex:1;background:#244cc9;color:#fff;border:none;padding:12px;border-radius:10px;font-weight:700;cursor:pointer;font-family:Urbanist,sans-serif;">Save</button>
-        <button id="img-cancel" style="background:rgba(255,255,255,.06);color:#9fa3b8;border:1.5px solid rgba(255,255,255,.08);padding:12px 18px;border-radius:10px;cursor:pointer;font-family:Urbanist,sans-serif;">Cancel</button>
+        <button id="img-save" style="flex:1;background:#0F1FA8;color:#fff;border:none;padding:12px;border-radius:10px;font-weight:700;cursor:pointer;font-family:Alexandria,sans-serif;">Save</button>
+        <button id="img-cancel" style="background:rgba(255,255,255,.06);color:#9fa3b8;border:1.5px solid rgba(255,255,255,.08);padding:12px 18px;border-radius:10px;cursor:pointer;font-family:Alexandria,sans-serif;">Cancel</button>
       </div>
     </div>`;
     document.body.appendChild(modal);
@@ -1073,7 +1073,7 @@
 
   function showToast(msg, color) {
     const t = document.createElement('div');
-    t.style.cssText = `position:fixed;bottom:140px;right:20px;z-index:99999;background:${color};color:${color==='#85EE00'?'#000':'#fff'};padding:11px 18px;border-radius:12px;font-size:13px;font-weight:700;font-family:Urbanist,sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.4);animation:fadeInToast .3s ease;pointer-events:none;`;
+    t.style.cssText = `position:fixed;bottom:140px;right:20px;z-index:99999;background:${color};color:${color==='#85EE00'?'#000':'#fff'};padding:11px 18px;border-radius:12px;font-size:13px;font-weight:700;font-family:Alexandria,sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.4);animation:fadeInToast .3s ease;pointer-events:none;`;
     t.textContent = msg;
     document.body.appendChild(t);
     setTimeout(() => t.remove(), 3000);

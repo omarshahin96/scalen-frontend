@@ -3,55 +3,57 @@
 <head>
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title data-brand="Scalen">Services — Scalen</title>
-  <link rel="icon" href="assets/img/favicon.webp" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Urbanist:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/svg+xml" href="assets/img/brand/favicon.svg" />
+  <link rel="apple-touch-icon" href="assets/img/brand/apple-touch-icon.png" />
+  <meta name="theme-color" content="#0F1FA8" />
+  <link rel="preload" href="assets/fonts/brand/Gobold-Regular.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/brand/Alexandria-VF-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <link rel="stylesheet" href="assets/css/shared.css" />
   <style>
-    .svc-main  { padding:100px 0; background:var(--bg); }
-    .svc-grid  { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+    .svc-main  { padding:100px 0;background:var(--bg); }
+    .svc-grid  { display:grid;grid-template-columns:repeat(3,1fr);gap:22px; }
 
     /* Featured service — full-width card */
-    .svc-feature { padding:100px 0; background:var(--bg-dark); }
-    .sf-grid     { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; margin-bottom:70px; }
+    .svc-feature { padding:100px 0;background:var(--bg-dark); }
+    .sf-grid     { display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-bottom:70px; }
     .sf-grid:last-child { margin-bottom:0; }
     .sf-grid.reverse .sf-img { order:2; }
     .sf-grid.reverse .sf-text { order:1; }
-    .sf-img      { border-radius:22px; overflow:hidden; box-shadow:var(--shadow-c); border:1px solid var(--border); }
-    .sf-img img  { width:100%; height:380px; object-fit:cover; transition:transform .55s; }
+    .sf-img      { border-radius:10px;overflow:hidden;box-shadow:var(--shadow-c);border:1px solid var(--border); }
+    .sf-img img  { width:100%;height:380px;object-fit:cover;transition:transform .55s; }
     .sf-img:hover img { transform:scale(1.05); }
-    .sf-text h3  { font-family:var(--font-h); font-size:clamp(26px,3vw,38px); font-weight:800; margin-bottom:16px; letter-spacing:-.02em; }
+    .sf-text h3  { font-family:var(--font-d);font-size:clamp(26px,3vw,38px);font-weight:400;margin-bottom:16px;letter-spacing:.01em; }
     .sf-text h3 span { color:var(--blue); }
-    .sf-text p   { font-size:16px; color:var(--grey); line-height:1.8; margin-bottom:20px; }
-    .sf-list     { display:flex; flex-direction:column; gap:12px; margin-bottom:28px; }
-    .sf-li       { display:flex; align-items:center; gap:12px; font-size:15px; font-weight:600; }
-    .sf-li i     { color:var(--green); font-size:13px; }
+    .sf-text p   { font-size:16px;color:var(--grey);line-height:1.8;margin-bottom:20px; }
+    .sf-list     { display:flex;flex-direction:column;gap:12px;margin-bottom:28px; }
+    .sf-li       { display:flex;align-items:center;gap:12px;font-size:15px;font-weight:600; }
+    .sf-li i     { color:var(--blue-lt);font-size:13px; }
 
-    .pricing-sec { padding:100px 0; background:var(--bg); }
-    .pricing-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
-    .price-card  { background:var(--bg-card); border:1px solid var(--border); border-radius:22px; padding:40px 32px; text-align:center; transition:var(--trans); position:relative; overflow:hidden; }
+    .pricing-sec { padding:100px 0;background:var(--bg); }
+    .pricing-grid{ display:grid;grid-template-columns:repeat(3,1fr);gap:22px; }
+    .price-card  { background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:40px 32px;text-align:center;transition:var(--trans);position:relative;overflow:hidden; }
     .price-card.popular { border-color:var(--blue); }
-    .price-card.popular::before { content:'Most Popular'; position:absolute; top:18px; right:-28px; background:var(--blue); color:#fff; font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; padding:5px 40px; transform:rotate(45deg); }
-    .price-card:hover { transform:translateY(-6px); box-shadow:var(--shadow-b); }
-    .price-plan  { font-size:12px; font-weight:700; letter-spacing:.15em; text-transform:uppercase; color:var(--grey); margin-bottom:12px; }
-    .price-amt   { font-family:var(--font-h); font-size:52px; font-weight:800; line-height:1; margin-bottom:6px; }
-    .price-amt span { font-size:.4em; color:var(--grey); vertical-align:super; }
-    .price-per   { font-size:13px; color:var(--grey); margin-bottom:28px; }
-    .price-list  { display:flex; flex-direction:column; gap:12px; margin-bottom:32px; text-align:left; }
-    .price-li    { display:flex; align-items:center; gap:10px; font-size:14px; color:var(--grey-lt); }
-    .price-li i  { color:var(--green); font-size:12px; flex-shrink:0; }
+    .price-card.popular::before { content:'Most Popular';position:absolute;top:18px;right:-28px;background:var(--blue);color:#fff;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 40px;transform:rotate(45deg);--ink:#fff;--ink-2:rgba(255,255,255,.92);--grey:rgba(255,255,255,.8);--grey-lt:rgba(255,255,255,.9);--label:#fff;--line:rgba(255,255,255,.22);--border:rgba(255,255,255,.22);--tint:rgba(255,255,255,.1);--tint-2:rgba(255,255,255,.15);--blue-lt:#fff; }
+    .price-card:hover { transform:translateY(-6px);box-shadow:var(--shadow-b); }
+    .price-plan  { font-size:12px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--grey);margin-bottom:12px; }
+    .price-amt   { font-family:var(--font-d);font-size:52px;font-weight:400;line-height:1;margin-bottom:6px; }
+    .price-amt span { font-size:.4em;color:var(--grey);vertical-align:super; }
+    .price-per   { font-size:13px;color:var(--grey);margin-bottom:28px; }
+    .price-list  { display:flex;flex-direction:column;gap:12px;margin-bottom:32px;text-align:left; }
+    .price-li    { display:flex;align-items:center;gap:10px;font-size:14px;color:var(--grey-lt); }
+    .price-li i  { color:var(--blue-lt);font-size:12px;flex-shrink:0; }
     .price-li.off i { color:var(--grey); }
     .price-li.off  { opacity:.45; }
 
-    .cta-sec     { padding:100px 0; background:var(--bg-dark); text-align:center; }
-    .cta-inner   { max-width:640px; margin:0 auto; }
-    .cta-inner h2{ font-family:var(--font-h); font-size:clamp(32px,4vw,50px); font-weight:800; margin-bottom:18px; letter-spacing:-.02em; }
+    .cta-sec     { padding:100px 0;background:var(--brand-blue);text-align:center;--ink:#fff;--ink-2:rgba(255,255,255,.92);--grey:rgba(255,255,255,.8);--grey-lt:rgba(255,255,255,.9);--label:#fff;--line:rgba(255,255,255,.22);--border:rgba(255,255,255,.22);--tint:rgba(255,255,255,.1);--tint-2:rgba(255,255,255,.15);--blue-lt:#fff;color:#fff; }
+    .cta-inner   { max-width:640px;margin:0 auto; }
+    .cta-inner h2{ font-family:var(--font-d);font-size:clamp(32px,4vw,50px);font-weight:400;margin-bottom:18px;letter-spacing:.01em; }
     .cta-inner h2 span{ color:var(--blue); }
-    .cta-inner p { font-size:17px; color:var(--grey); line-height:1.75; margin-bottom:34px; }
-    .cta-btns    { display:flex; justify-content:center; gap:14px; flex-wrap:wrap; }
+    .cta-inner p { font-size:17px;color:var(--grey);line-height:1.75;margin-bottom:34px; }
+    .cta-btns    { display:flex;justify-content:center;gap:14px;flex-wrap:wrap; }
 
-    @media(max-width:1024px){ .svc-grid{grid-template-columns:repeat(2,1fr);} .sf-grid{grid-template-columns:1fr; gap:40px;} .sf-grid.reverse .sf-img,.sf-grid.reverse .sf-text{order:unset;} .pricing-grid{grid-template-columns:1fr;max-width:420px;margin:0 auto;} }
+    @media(max-width:1024px){ .svc-grid{grid-template-columns:repeat(2,1fr);} .sf-grid{grid-template-columns:1fr;gap:40px;} .sf-grid.reverse .sf-img,.sf-grid.reverse .sf-text{order:unset;} .pricing-grid{grid-template-columns:1fr;max-width:420px;margin:0 auto;} }
     @media(max-width:768px){ .svc-grid{grid-template-columns:1fr;} }
   </style>
   <!-- ============================================ -->
@@ -70,7 +72,7 @@
 
 <header id="header">
   <div class="header-wrap">
-    <a href="index.html" class="logo"><img src="assets/img/logo.webp" alt="Scalen" /></a>
+    <a href="index.html" class="logo"><img class="logo-on-blue" data-brand-logo src="assets/img/brand/logo-on-blue.svg" alt="Scalen" width="61" height="40" /><img class="logo-on-white" data-brand-logo src="assets/img/brand/logo-on-white.svg" alt="Scalen" width="61" height="40" /></a>
     <nav class="nav-menu">
       <a href="index.html">Home</a><a href="about.html">About</a>
       <a href="services.html" class="active">Services</a>
@@ -234,7 +236,7 @@
   </div>
 </section>
 
-<footer id="footer"><div class="container"><div class="footer-grid"><div class="footer-brand"><a href="index.html" class="logo"><img src="assets/img/logo.webp" alt="Scalen" /></a><p>Award-winning digital marketing agency helping businesses grow through data-driven strategies.</p><div class="footer-socs"><a href="#" class="fsoc"><i class="fab fa-linkedin-in"></i></a><a href="#" class="fsoc"><i class="fab fa-twitter"></i></a><a href="#" class="fsoc"><i class="fab fa-instagram"></i></a><a href="#" class="fsoc"><i class="fab fa-facebook-f"></i></a></div></div><div class="footer-col"><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="about.html">About Us</a></li><li><a href="services.html">Services</a></li><li><a href="portfolio.html">Portfolio</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact</a></li></ul></div><div class="footer-col"><h4>Our Services</h4><ul><li><a href="services.html">SEO Optimization</a></li><li><a href="services.html">Content Marketing</a></li><li><a href="services.html">Social Media</a></li><li><a href="services.html">PPC Advertising</a></li><li><a href="services.html">Brand Strategy</a></li><li><a href="services.html">Web Design</a></li></ul></div><div class="footer-col"><h4>Contact Info</h4><ul><li><a href="contact.html">123 Marketing Street, NY 10001</a></li><li><a href="tel:+15552349823">+1 (555) 234-9823</a></li><li><a href="mailto:hello@reliableagency.com">hello@reliableagency.com</a></li><li><a href="contact.html">Mon–Fri: 9AM – 6PM</a></li></ul></div></div><div class="footer-bottom"><p>&copy; 2026 <a href="index.html">Scalen</a>. All rights reserved.</p><p><a href="#" style="color:var(--grey);margin-right:16px;">Privacy Policy</a><a href="#" style="color:var(--grey);">Terms</a></p></div></div></footer>
+<footer id="footer"><div class="container"><div class="footer-grid"><div class="footer-brand"><a href="index.html" class="logo"><img data-brand-logo src="assets/img/brand/logo-full-on-blue.svg" alt="Scalen Marketing" width="78" height="64" /></a><p>Award-winning digital marketing agency helping businesses grow through data-driven strategies.</p><div class="footer-socs"><a href="#" class="fsoc"><i class="fab fa-linkedin-in"></i></a><a href="#" class="fsoc"><i class="fab fa-twitter"></i></a><a href="#" class="fsoc"><i class="fab fa-instagram"></i></a><a href="#" class="fsoc"><i class="fab fa-facebook-f"></i></a></div></div><div class="footer-col"><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="about.html">About Us</a></li><li><a href="services.html">Services</a></li><li><a href="portfolio.html">Portfolio</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact</a></li></ul></div><div class="footer-col"><h4>Our Services</h4><ul><li><a href="services.html">SEO Optimization</a></li><li><a href="services.html">Content Marketing</a></li><li><a href="services.html">Social Media</a></li><li><a href="services.html">PPC Advertising</a></li><li><a href="services.html">Brand Strategy</a></li><li><a href="services.html">Web Design</a></li></ul></div><div class="footer-col"><h4>Contact Info</h4><ul><li><a href="contact.html">123 Marketing Street, NY 10001</a></li><li><a href="tel:+15552349823">+1 (555) 234-9823</a></li><li><a href="mailto:hello@reliableagency.com">hello@reliableagency.com</a></li><li><a href="contact.html">Mon–Fri: 9AM – 6PM</a></li></ul></div></div><div class="footer-bottom"><p>&copy; 2026 <a href="index.html">Scalen</a>. All rights reserved.</p><p><a href="#" style="color:var(--grey);margin-right:16px;">Privacy Policy</a><a href="#" style="color:var(--grey);">Terms</a></p></div></div></footer>
 <button id="scrollTop"><i class="fas fa-arrow-up"></i></button>
 <script src="assets/js/shared.js"></script>
 <script src="assets/js/cms-config.js"></script>
