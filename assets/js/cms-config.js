@@ -9,4 +9,4 @@
  * If CMS is offline or URL is wrong the site falls back to
  * the hardcoded HTML content — no errors shown to visitors.
  */
-window.CMS_BASE = 'https://scalen-cms.onrender.com';
+window.CMS_BASE = 'https://scalen-cms-production.up.railway.app';

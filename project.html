@@ -220,9 +220,12 @@
 <button id="scrollTop"><i class="fas fa-arrow-up"></i></button>
 
 <script src="assets/js/shared.js"></script>
+<script src="assets/js/cms-config.js"></script>
 <script>
 (function() {
-  const CMS = 'http://localhost:3000';
+  const CMS = (window.CMS_BASE || '').replace(/\/$/, '');
+  // CMS image paths ('/uploads/x', or legacy 'http://localhost:3000/uploads/x') live on the CMS host
+  const media = u => (typeof u === 'string') ? u.replace(/^(?:https?:\/\/localhost:\d+)?(\/uploads\/)/, CMS + '$1') : u;
   const params = new URLSearchParams(location.search);
   const id = params.get('id');
   if (!id) { document.getElementById('proj-title').textContent = 'Project not found.'; return; }
@@ -258,7 +261,7 @@
 
       if (p.image) {
         const img = document.getElementById('proj-img');
-        if (img) { img.src = p.image.startsWith('/') ? CMS+p.image : p.image; img.alt = p.title; img.style.display = 'block'; }
+        if (img) { img.src = media(p.image); img.alt = p.title; img.style.display = 'block'; }
       }
 
       // Stats
@@ -286,9 +289,9 @@
         if (gg) {
           const [main, s1, s2] = imgs;
           gg.innerHTML = `
-            <div class="gallery-main">${main ? `<img src="${main.startsWith('/')?CMS+main:main}" alt="">` : ''}</div>
-            ${s1 ? `<div class="gallery-side"><img src="${s1.startsWith('/')?CMS+s1:s1}" alt=""></div>` : ''}
-            ${s2 ? `<div class="gallery-side"><img src="${s2.startsWith('/')?CMS+s2:s2}" alt=""></div>` : ''}
+            <div class="gallery-main">${main ? `<img src="${media(main)}" alt="">` : ''}</div>
+            ${s1 ? `<div class="gallery-side"><img src="${media(s1)}" alt=""></div>` : ''}
+            ${s2 ? `<div class="gallery-side"><img src="${media(s2)}" alt=""></div>` : ''}
           `;
           show('gallery-sec');
         }

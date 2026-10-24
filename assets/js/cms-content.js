@@ -9,6 +9,14 @@
   const SVC_ICON_CLASSES = ['si-1','si-2','si-3','si-4','si-5','si-6'];
 
   // ─── Helpers ────────────────────────────────────────────────────────────────
+  // CMS image paths ('/uploads/x', or legacy 'http://localhost:3000/uploads/x') live on the CMS host,
+  // not on the site's domain — make them absolute once, right after loading.
+  function absMedia(v) {
+    if (typeof v === 'string') return v.replace(/^(?:https?:\/\/localhost:\d+)?(\/uploads\/)/, CMS_BASE + '$1');
+    if (Array.isArray(v)) return v.map(absMedia);
+    if (v && typeof v === 'object') { const o = {}; for (const k in v) o[k] = absMedia(v[k]); return o; }
+    return v;
+  }
   function esc(str) {
     return String(str == null ? '' : str)
       .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -1092,13 +1100,13 @@
 
       // Parallel fetch — blog.html needs categories too
       const fetches = [
-        fetch(CMS_BASE + '/api/homepage').then(r => r.json()),
-        fetch(CMS_BASE + '/api/services').then(r => r.json()),
-        fetch(CMS_BASE + '/api/blog' + (isHome ? '?limit=3' : '')).then(r => r.json()),
-        fetch(CMS_BASE + '/api/portfolio').then(r => r.json()),
-        fetch(CMS_BASE + '/api/testimonials').then(r => r.json()),
-        fetch(CMS_BASE + '/api/team').then(r => r.json()),
-        isBlog ? fetch(CMS_BASE + '/api/blog/categories').then(r => r.json()) : Promise.resolve([])
+        fetch(CMS_BASE + '/api/homepage').then(r => r.json()).then(absMedia),
+        fetch(CMS_BASE + '/api/services').then(r => r.json()).then(absMedia),
+        fetch(CMS_BASE + '/api/blog' + (isHome ? '?limit=3' : '')).then(r => r.json()).then(absMedia),
+        fetch(CMS_BASE + '/api/portfolio').then(r => r.json()).then(absMedia),
+        fetch(CMS_BASE + '/api/testimonials').then(r => r.json()).then(absMedia),
+        fetch(CMS_BASE + '/api/team').then(r => r.json()).then(absMedia),
+        isBlog ? fetch(CMS_BASE + '/api/blog/categories').then(r => r.json()).then(absMedia) : Promise.resolve([])
       ];
 
       const [hpR, svcR, blogR, pfR, tstR, teamR, catR] = await Promise.allSettled(fetches);
