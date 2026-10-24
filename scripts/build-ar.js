@@ -14,6 +14,10 @@
  *
  * Text filled in at runtime from the CMS is translated in the CMS (Arabic fields);
  * the static text here is only the fallback shown before/without the CMS.
+ *
+ * SEO: the English heads (written by scripts/seo-heads.js) are carried over with Arabic titles and
+ * descriptions, canonical/og:url pointing at /ar/, the Arabic share image and translated JSON-LD.
+ * A build also writes sitemap.xml (English + Arabic URLs with hreflang, plus the CMS project pages).
  */
 const fs = require('fs');
 const path = require('path');
@@ -25,6 +29,8 @@ const OUT = path.join(ROOT, 'ar');
 const DICT_FILE = path.join(ROOT, 'i18n', 'ar.json');
 const SCRIPT_DICT_FILE = path.join(ROOT, 'i18n', 'ar-scripts.json');
 const SITE = 'https://scalen.marketing';
+const SEO = loadJSONSync(path.join(ROOT, 'i18n', 'seo.json'));
+function loadJSONSync(f) { try { return JSON.parse(fs.readFileSync(f, 'utf8')); } catch { return { _noindex: [], _dynamic: [] }; } }
 const mode = process.argv.includes('--check') ? 'check' : process.argv.includes('--extract') ? 'extract' : 'build';
 // --pseudo: fill untranslated text with Arabic-looking filler of similar length (layout testing only)
 const PSEUDO = process.argv.includes('--pseudo');
@@ -159,19 +165,70 @@ function mirrorStyles($) {
   });
 }
 
+// ~155 characters: whole sentences if they fit, else cut at a word boundary
+function clipText(text, max = 165) {
+  text = norm(text || '');
+  if (text.length <= max) return text;
+  const sentences = text.match(/[^.!?؟]+[.!?؟]+(\s|$)/g) || [];
+  let out = '';
+  for (const s of sentences) { if ((out + s).trim().length > max) break; out += s; }
+  if (out.trim().length >= 80) return out.trim();
+  return text.slice(0, 157).replace(/\s+\S*$/, '').replace(/[,،;:—–-]$/, '') + '…';
+}
+
+const arUrl = u => u.replace(SITE + '/', SITE + '/ar/');
+const isPageUrl = u => typeof u === 'string' && u.startsWith(SITE + '/') && !u.startsWith(SITE + '/assets/') && !u.includes('/#');
+const arImage = u => u.replace('/og-en.jpg', '/og-ar.jpg');
+
+// Canonical, og:url, share image, locale and JSON-LD for the Arabic page
+function seoHead($, file) {
+  $('link[rel="canonical"]').each((_, l) => $(l).attr('href', arUrl($(l).attr('href'))));
+  $('meta[property="og:url"]').each((_, m) => $(m).attr('content', arUrl($(m).attr('content'))));
+  $('meta[property="og:image"], meta[name="twitter:image"]').each((_, m) => $(m).attr('content', arImage($(m).attr('content'))));
+  $('meta[property="og:locale"]').attr('content', 'ar_AR');
+  $('meta[property="og:locale:alternate"]').attr('content', 'en_US');
+  const desc = $('meta[name="description"]').attr('content');
+  $('script[type="application/ld+json"]').each((_, s) => {
+    let data; try { data = JSON.parse($(s).html()); } catch { return; }
+    const fix = o => {
+      if (Array.isArray(o)) return o.map(fix);
+      if (!o || typeof o !== 'object') return o;
+      const out = {};
+      for (const [k, v] of Object.entries(o)) {
+        if (k === 'url' || k === 'mainEntityOfPage') out[k] = (isPageUrl(v) && o['@type'] !== 'Organization' && o['@type'] !== 'ProfessionalService' && o['@type'] !== 'WebSite') ? arUrl(v) : v;
+        else if (k === 'image') out[k] = typeof v === 'string' ? arImage(v) : fix(v);
+        else if (k === 'inLanguage' && typeof v === 'string') out[k] = 'ar';
+        else if (k === 'description' && typeof v === 'string') out[k] = (o['@type'] === 'BlogPosting' ? desc : lookup(norm(v), file)) || v;
+        else if (k === 'headline' && typeof v === 'string') out[k] = lookup(norm(v), file) || v;
+        else out[k] = fix(v);
+      }
+      return out;
+    };
+    $(s).html(JSON.stringify(fix(data)));
+  });
+}
+
 function buildPage(file) {
   const html = fs.readFileSync(path.join(ROOT, file), 'utf8');
   const $ = cheerio.load(html, { decodeEntities: false });
 
   $('html').attr('lang', 'ar').attr('dir', 'rtl');
+  const isPost = $('.post-body').length > 0;
   const t = $('title');
   if (t.length && LATIN.test(t.text())) { const ar = lookup(norm(t.text()), file); if (ar != null) t.text(ar); }
-  $('meta[name="description"], meta[property="og:title"], meta[property="og:description"], meta[name="twitter:title"], meta[name="twitter:description"]').each((_, m) => {
+  // Blog posts: the description is the post's first paragraph, so it is taken from the translated body below
+  const descSel = 'meta[name="description"], meta[property="og:description"], meta[name="twitter:description"]';
+  $('meta[property="og:title"], meta[name="twitter:title"], meta[property="og:image:alt"]' + (isPost ? '' : ', ' + descSel)).each((_, m) => {
     const v = $(m).attr('content'); if (v && LATIN.test(v)) { const ar = lookup(norm(v), file); if (ar != null) $(m).attr('content', ar); }
   });
-  $('meta[property="og:locale"]').attr('content', 'ar_AR');
 
   walk($, $('body'), file);
+
+  if (isPost) {
+    const ar = clipText($('.post-body p').first().text());
+    if (ar && !LATIN.test(ar.replace(/\b[A-Z0-9][A-Za-z0-9]*\b/g, ''))) $(descSel).attr('content', ar);
+  }
+  seoHead($, file);
   if (mode !== 'build') return;
 
   translateInlineScripts($, file);
@@ -189,8 +246,16 @@ function buildPage(file) {
 
   // Language switch → English version of this page; hreflang alternates are already in the source head
   $('a[data-lang-switch]').each((_, a) => {
-    $(a).attr('href', file === 'index.html' ? '/' : '/' + file).attr('hreflang', 'en').attr('lang', 'en').text('English');
+    $(a).attr('href', (file === 'index.html' || file === '404.html') ? '/' : '/' + file).attr('hreflang', 'en').attr('lang', 'en').text('English');
   });
+  // The 404 page is served at any path, so its links are absolute: point them at the Arabic pages
+  if (file === '404.html') {
+    $('a[href^="/"]:not([data-lang-switch])').each((_, a) => {
+      const h = $(a).attr('href');
+      if (h === '/') $(a).attr('href', '/ar/');
+      else if (/^\/[\w-]+\.html/.test(h)) $(a).attr('href', '/ar' + h);
+    });
+  }
 
   fs.writeFileSync(path.join(OUT, file), $.html());
 }
@@ -203,6 +268,41 @@ if (mode === 'build') {
     '/* GENERATED by scripts/build-ar.js from shared.css with rtlcss — do not edit */\n' + rtlcss.process(css));
 }
 for (const f of pages) buildPage(f);
+
+// sitemap.xml — every indexable page in both languages (with hreflang pairs), plus the CMS project
+// pages (project.html?id=…). The CMS is asked at build time; if it can't be reached the static pages
+// are still listed. Pages in seo.json "_noindex" / "_dynamic" are left out.
+async function writeSitemap() {
+  const xmlEsc = s => s.replace(/&/g, '&amp;');
+  const entries = [];   // [enUrl, arUrl, lastmod?]
+  for (const f of pages) {
+    if (SEO._noindex.includes(f) || SEO._dynamic.includes(f)) continue;
+    const html = fs.readFileSync(path.join(ROOT, f), 'utf8');
+    if (/<meta name="robots" content="noindex/.test(html)) continue;
+    const date = (html.match(/"datePublished":"(\d{4}-\d{2}-\d{2})"/) || [])[1];
+    const p = f === 'index.html' ? '' : f;
+    entries.push([SITE + '/' + p, SITE + '/ar/' + p, date]);
+  }
+  let cms = process.env.CMS_BASE || '';
+  if (!cms) try { cms = (fs.readFileSync(path.join(ROOT, 'assets', 'js', 'cms-config.js'), 'utf8').match(/CMS_BASE\s*=\s*['"]([^'"]+)['"]/) || [])[1] || ''; } catch {}
+  if (cms) {
+    try {
+      const r = await fetch(cms.replace(/\/$/, '') + '/api/portfolio', { signal: AbortSignal.timeout(10000) });
+      const list = r.ok ? await r.json() : [];
+      for (const p of list) if (p && p.id != null) entries.push([SITE + '/project.html?id=' + p.id, SITE + '/ar/project.html?id=' + p.id]);
+      console.log(`   sitemap: ${list.length} CMS projects`);
+    } catch (e) { console.warn(`⚠️  sitemap: CMS projects skipped (${e.message})`); }
+  }
+  const url = (loc, en, ar, date) => `  <url>\n    <loc>${xmlEsc(loc)}</loc>\n${date ? `    <lastmod>${date}</lastmod>\n` : ''}`
+    + `    <xhtml:link rel="alternate" hreflang="en" href="${xmlEsc(en)}"/>\n`
+    + `    <xhtml:link rel="alternate" hreflang="ar" href="${xmlEsc(ar)}"/>\n`
+    + `    <xhtml:link rel="alternate" hreflang="x-default" href="${xmlEsc(en)}"/>\n  </url>`;
+  const body = entries.flatMap(([en, ar, d]) => [url(en, en, ar, d), url(ar, en, ar, d)]).join('\n');
+  fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), '<?xml version="1.0" encoding="UTF-8"?>\n'
+    + '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n' + body + '\n</urlset>\n');
+  console.log(`✅ sitemap.xml: ${entries.length * 2} URLs`);
+}
+if (mode === 'build') writeSitemap();
 
 if (mode === 'extract') {
   const out = {};
