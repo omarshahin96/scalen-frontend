@@ -318,7 +318,10 @@ button { cursor:pointer; font-family:var(--font-b); border:none; background:none
   padding:30px 52px;
 }
 .page-hero h1 { margin-left:auto; margin-right:auto; margin-bottom:22px; }
-#hero .hero-title { width:max-content; max-width:none; }   /* lines are set by <br>; don't let the frame padding re-wrap them */
+/* Homepage title: the frame sits just outside the text column (negative margins
+   cancel the padding), so the headline wraps exactly as it would without the frame —
+   whether the lines come from <br> in the HTML or from plain CMS text. */
+#hero .hero-title { width:fit-content; max-width:none; margin-right:-44px; }
 .page-hero h1::before, .page-hero h1::after,
 #hero .hero-title::before, #hero .hero-title::after,
 .cs-hero h1::before, .cs-hero h1::after,
