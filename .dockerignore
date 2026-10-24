@@ -1,7 +1,4 @@
 .git
 .netlify
-Dockerfile
-Caddyfile
-.dockerignore
 netlify.toml
 vercel.json
