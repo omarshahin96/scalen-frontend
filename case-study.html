@@ -133,9 +133,12 @@
 <button id="scrollTop"><i class="fas fa-arrow-up"></i></button>
 
 <script src="assets/js/shared.js"></script>
+<script src="assets/js/cms-config.js"></script>
 <script>
 (function() {
-  const CMS = 'http://localhost:3000';
+  const CMS = (window.CMS_BASE || '').replace(/\/$/, '');
+  // CMS image paths ('/uploads/x', or legacy 'http://localhost:3000/uploads/x') live on the CMS host
+  const media = u => (typeof u === 'string') ? u.replace(/^(?:https?:\/\/localhost:\d+)?(\/uploads\/)/, CMS + '$1') : u;
   const params = new URLSearchParams(location.search);
   const slug = params.get('slug');
   if (!slug) { document.getElementById('cs-title').textContent = 'Case study not found.'; return; }
@@ -167,7 +170,7 @@
 
       if (cs.image) {
         const img = document.getElementById('cs-img');
-        if (img) { img.src = cs.image; img.alt = cs.title; img.style.display='block'; }
+        if (img) { img.src = media(cs.image); img.alt = cs.title; img.style.display='block'; }
       }
 
       // Stats

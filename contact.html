@@ -497,27 +497,43 @@
         const btn = form.querySelector('.btn-submit');
         btn.disabled = true;
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending…';
-        // POST to CMS backend — update URL if CMS is hosted elsewhere
-        const CMS_URL = 'http://localhost:3000';
+        // Leads go to the CMS (CMS_BASE from cms-config.js) → Dashboard → Leads.
+        const CMS_URL = (window.CMS_BASE || '').replace(/\/$/, '');
+        const phone   = form.querySelector('#cf-phone');
+        const budget  = form.querySelector('#cf-budget');
+        const service = form.querySelector('#cf-service');
+        const label   = sel => (sel && sel.value) ? sel.options[sel.selectedIndex].text : '';
+        const extra   = [label(service) && ('Service: ' + label(service)), label(budget) && ('Budget: ' + label(budget))].filter(Boolean).join(' | ');
+        let errBox = form.querySelector('.form-error');
+        if (errBox) errBox.remove();
         fetch(CMS_URL + '/leads/submit', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             name: name.value.trim(),
             email: email.value.trim(),
+            phone: phone ? phone.value.trim() : '',
             subject: subject.value.trim(),
-            message: message.value.trim()
+            message: (extra ? extra + '\n\n' : '') + message.value.trim()
           })
         })
-        .then(r => r.json())
+        .then(r => r.json().catch(() => ({})).then(d => { if (!r.ok) throw new Error(d.error || 'Request failed'); }))
         .then(() => {
           form.style.display = 'none';
           success.style.display = 'block';
         })
-        .catch(() => {
-          // Still show success even if CMS is offline
-          form.style.display = 'none';
-          success.style.display = 'block';
+        .catch(err => {
+          // Don't pretend it worked — the lead would be lost. Let the visitor retry or reach us directly.
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa fa-paper-plane"></i> Send Message';
+          errBox = document.createElement('p');
+          errBox.className = 'form-error';
+          errBox.setAttribute('role', 'alert');
+          errBox.style.cssText = 'margin-top:14px;color:#F04E2A;font-size:14px;';
+          errBox.textContent = (err && err.message && err.message !== 'Failed to fetch' && err.message !== 'Request failed')
+            ? err.message
+            : "Sorry, your message couldn't be sent. Please try again, or email us at hello@scalen.marketing.";
+          btn.insertAdjacentElement('afterend', errBox);
         });
       }
     });
