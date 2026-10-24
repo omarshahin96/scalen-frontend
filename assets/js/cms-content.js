@@ -703,8 +703,8 @@
     const delays = ['d1','d2','d3'];
     grid.innerHTML = items.map((p, i) =>
       `<a href="project.html?id=${p.id}" class="pf-card reveal ${delays[i%3]}" data-filter="${pfFilterKey(p.category)}">
-        <div class="pf-img">
-          ${p.image?`<img src="${esc(p.image)}" alt="${esc(p.title)}">`:'<div style="width:100%;height:270px;background:linear-gradient(135deg,#1a1b3a,#0F1FA8)"></div>'}
+        <div class="pf-img" data-name="${esc(p.client || '')}">
+          ${p.image?`<img src="${esc(p.image)}" alt="${esc(p.title)}" onerror="this.parentNode.classList.add('pf-noimg');this.remove()">`:'<div style="width:100%;height:270px;background:linear-gradient(135deg,#1a1b3a,#0F1FA8)"></div>'}
           <div class="pf-overlay"><div class="pf-view"><i class="fas fa-arrow-right"></i></div><span>${t('View Project')}</span></div>
         </div>
         <div class="pf-info">

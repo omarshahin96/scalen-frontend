@@ -68,6 +68,15 @@
     .gallery-main { grid-row:1/-1;border-radius:8px;overflow:hidden;background:var(--brand-blue);aspect-ratio:4/3;--ink:#fff;--ink-2:rgba(255,255,255,.92);--grey:rgba(255,255,255,.8);--grey-lt:rgba(255,255,255,.9);--label:#fff;--line:rgba(255,255,255,.22);--border:rgba(255,255,255,.22);--tint:rgba(255,255,255,.1);--tint-2:rgba(255,255,255,.15);--blue-lt:#fff;color:#fff; }
     .gallery-side { border-radius:8px;overflow:hidden;background:#1a2040;aspect-ratio:16/9; }
     .gallery-main img, .gallery-side img { width:100%;height:100%;object-fit:cover;display:block; }
+    .gallery-grid.one { grid-template-columns:1fr;grid-template-rows:auto; }
+    .gallery-grid.one .gallery-main { aspect-ratio:16/9; }
+    .gallery-grid.two { grid-template-rows:1fr; }
+    .gallery-grid.two .gallery-side { aspect-ratio:auto; }
+    .proj-img-fallback { width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:32px;position:relative; }
+    .proj-img-fallback::before, .proj-img-fallback::after { content:'';position:absolute;width:54px;height:54px;border:0 solid var(--brand-orange); }
+    .proj-img-fallback::before { top:28px;right:28px;border-top-width:7px;border-right-width:7px;border-top-right-radius:9px; }
+    .proj-img-fallback::after { bottom:28px;left:28px;border-bottom-width:7px;border-left-width:7px;border-bottom-left-radius:9px; }
+    .proj-img-fallback span { font-family:var(--font-d);font-size:clamp(34px,4vw,56px);line-height:1.05;color:#fff;text-align:center;letter-spacing:.01em; }
 
     /* ── Process ── */
     .process-sec { padding:100px 0;background:var(--tint);border-top:1px solid var(--border);border-bottom:1px solid var(--border); }
@@ -285,7 +294,11 @@
 
       if (p.image) {
         const img = document.getElementById('proj-img');
-        if (img) { img.src = media(p.image); img.alt = p.title; img.style.display = 'block'; }
+        if (img) {
+          // Missing image → a branded panel with the client's name instead of a broken picture
+          img.onerror = () => { img.remove(); const w = document.getElementById('proj-img-wrap'); if (w) w.innerHTML = `<div class="proj-img-fallback"><span>${esc(p.client || p.title)}</span></div>`; };
+          img.src = media(p.image); img.alt = p.title; img.style.display = 'block';
+        }
       }
 
       // Stats
@@ -306,20 +319,25 @@
         show('body-sec');
       }
 
-      // Gallery
-      const imgs = (d.gallery || []).filter(Boolean);
-      if (imgs.length) {
+      // Gallery — only real project images: uploads that actually load. The template's stock
+      // photos (assets/img/…) are skipped, and the section stays hidden when nothing is left.
+      const isStock = u => /^\/?assets\/img\//.test(u);
+      const loads = u => new Promise(res => { const im = new Image(); im.onload = () => res(im.naturalWidth > 0); im.onerror = () => res(false); im.src = u; });
+      const candidates = (d.gallery || []).filter(u => u && !isStock(u)).map(media);
+      Promise.all(candidates.map(loads)).then(ok => {
+        const imgs = candidates.filter((u, i) => ok[i]).slice(0, 3);
         const gg = document.getElementById('gallery-grid');
-        if (gg) {
-          const [main, s1, s2] = imgs;
-          gg.innerHTML = `
-            <div class="gallery-main">${main ? `<img src="${media(main)}" alt="">` : ''}</div>
-            ${s1 ? `<div class="gallery-side"><img src="${media(s1)}" alt=""></div>` : ''}
-            ${s2 ? `<div class="gallery-side"><img src="${media(s2)}" alt=""></div>` : ''}
-          `;
-          show('gallery-sec');
-        }
-      }
+        if (!imgs.length || !gg) return;
+        const [main, s1, s2] = imgs;
+        gg.classList.toggle('one', imgs.length === 1);
+        gg.classList.toggle('two', imgs.length === 2);
+        gg.innerHTML = `
+          <div class="gallery-main"><img src="${esc(main)}" alt="${esc(p.title)}"></div>
+          ${s1 ? `<div class="gallery-side"><img src="${esc(s1)}" alt=""></div>` : ''}
+          ${s2 ? `<div class="gallery-side"><img src="${esc(s2)}" alt=""></div>` : ''}
+        `;
+        show('gallery-sec');
+      });
 
       // Process steps
       const steps = (d.process || []).filter(s => s.title || s.desc);
