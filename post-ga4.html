@@ -3,44 +3,46 @@
 <head>
   <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title data-brand="Scalen">GA4 Mastery: The Metrics That Actually Predict Growth — Scalen</title>
-  <link rel="icon" href="assets/img/favicon.webp"/>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Urbanist:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="icon" type="image/svg+xml" href="assets/img/brand/favicon.svg" />
+  <link rel="apple-touch-icon" href="assets/img/brand/apple-touch-icon.png" />
+  <meta name="theme-color" content="#0F1FA8" />
+  <link rel="preload" href="assets/fonts/brand/Gobold-Regular.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/brand/Alexandria-VF-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
   <link rel="stylesheet" href="assets/css/shared.css"/>
   <style>
     .post-layout{display:grid;grid-template-columns:1fr 340px;gap:60px;align-items:start;padding:80px 0 100px;}
-    .post-hero-img{width:100%;height:420px;object-fit:cover;border-radius:22px;display:block;margin-bottom:44px;border:1px solid var(--border);}
+    .post-hero-img{width:100%;height:420px;object-fit:cover;border-radius:10px;display:block;margin-bottom:44px;border:1px solid var(--border);}
     .post-meta{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-bottom:28px;}
-    .post-cat{padding:5px 14px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:rgba(45,169,255,.1);border:1px solid rgba(45,169,255,.25);color:var(--cyan);}
+    .post-cat{padding:5px 14px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:rgba(15,31,168,.1);border:1px solid rgba(15,31,168,.25);color:var(--cyan);}
     .post-date,.post-read{font-size:13px;color:var(--grey);display:flex;align-items:center;gap:6px;}
-    .post-title{font-family:var(--font-h);font-size:clamp(28px,3.5vw,46px);font-weight:800;line-height:1.15;letter-spacing:-.02em;margin-bottom:24px;}
-    .post-body h2{font-family:var(--font-h);font-size:24px;font-weight:800;margin:40px 0 14px;}
+    .post-title{font-family:var(--font-d);font-size:clamp(28px,3.5vw,46px);font-weight:400;line-height:1.15;letter-spacing:.01em;margin-bottom:24px;}
+    .post-body h2{font-family:var(--font-h);font-size:24px;font-weight:700;margin:40px 0 14px;}
     .post-body p{font-size:16px;color:var(--grey);line-height:1.85;margin-bottom:18px;}
     .post-body ul{padding-left:0;list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:20px;}
     .post-body ul li{display:flex;align-items:flex-start;gap:10px;font-size:15px;color:var(--grey);line-height:1.7;}
     .post-body ul li::before{content:'◆';color:var(--cyan);font-size:9px;margin-top:6px;flex-shrink:0;}
-    .post-callout{background:rgba(45,169,255,.07);border-left:4px solid var(--cyan);border-radius:0 12px 12px 0;padding:20px 22px;margin:28px 0;font-size:15px;color:var(--grey-lt);line-height:1.75;}
-    .post-callout strong{color:#fff;}
-    .post-author{display:flex;align-items:center;gap:16px;padding:24px;background:var(--bg-card);border:1px solid var(--border);border-radius:18px;margin-top:50px;}
+    .post-callout{background:rgba(15,31,168,.07);border-left:4px solid var(--cyan);border-radius:0 8px 8px 0;padding:20px 22px;margin:28px 0;font-size:15px;color:var(--grey-lt);line-height:1.75;}
+    .post-callout strong{color:var(--ink);}
+    .post-author{display:flex;align-items:center;gap:16px;padding:24px;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;margin-top:50px;}
     .pa-avatar{width:64px;height:64px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2px solid var(--cyan);}
     .pa-avatar img{width:100%;height:100%;object-fit:cover;}
     .pa-name{font-family:var(--font-h);font-size:16px;font-weight:700;margin-bottom:2px;}
     .pa-role{font-size:13px;color:var(--grey);margin-bottom:8px;}
     .pa-bio{font-size:14px;color:var(--grey);line-height:1.7;}
     .sidebar{position:sticky;top:100px;display:flex;flex-direction:column;gap:22px;}
-    .sb-box{background:var(--bg-card);border:1px solid var(--border);border-radius:18px;padding:22px;}
+    .sb-box{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:22px;}
     .sb-box h4{font-family:var(--font-h);font-size:15px;font-weight:700;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border);}
     .sb-post{display:flex;gap:12px;align-items:flex-start;padding-bottom:12px;border-bottom:1px solid var(--border);margin-bottom:12px;}
     .sb-post:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
     .sb-thumb{width:60px;height:60px;border-radius:10px;overflow:hidden;flex-shrink:0;}
     .sb-thumb img{width:100%;height:100%;object-fit:cover;}
-    .sb-ttl{font-size:13px;font-weight:600;line-height:1.5;color:#fff;text-decoration:none;display:block;margin-bottom:4px;}
+    .sb-ttl{font-size:13px;font-weight:600;line-height:1.5;color:var(--ink);text-decoration:none;display:block;margin-bottom:4px;}
     .sb-ttl:hover{color:var(--blue-lt);}
     .sb-date{font-size:11px;color:var(--grey);}
     .tag-cloud{display:flex;flex-wrap:wrap;gap:8px;}
-    .tag-pill{padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--grey);cursor:pointer;transition:var(--trans);}
-    .tag-pill:hover{background:var(--cyan);border-color:var(--cyan);color:#000;}
+    .tag-pill{padding:5px 14px;border-radius:4px;font-size:12px;font-weight:600;background:var(--tint);border:1px solid var(--border);color:var(--grey);cursor:pointer;transition:var(--trans);}
+    .tag-pill:hover{background:var(--cyan);border-color:var(--cyan);color:#fff;--ink:#fff;--ink-2:rgba(255,255,255,.92);--grey:rgba(255,255,255,.8);--grey-lt:rgba(255,255,255,.9);--label:#fff;--line:rgba(255,255,255,.22);--border:rgba(255,255,255,.22);--tint:rgba(255,255,255,.1);--tint-2:rgba(255,255,255,.15);--blue-lt:#fff;}
     @media(max-width:1024px){.post-layout{grid-template-columns:1fr;padding:60px 0 80px;}.sidebar{position:static;}}
     @media(max-width:600px){.post-hero-img{height:260px;}.post-title{font-size:26px;}}
   </style>
@@ -59,7 +61,7 @@
 <div id="loader"><div class="loader-ring"></div></div>
 <header id="header">
   <div class="header-wrap">
-    <a href="index.html" class="logo"><img src="assets/img/logo.webp" alt="Scalen"/></a>
+    <a href="index.html" class="logo"><img class="logo-on-blue" data-brand-logo src="assets/img/brand/logo-on-blue.svg" alt="Scalen" width="61" height="40" /><img class="logo-on-white" data-brand-logo src="assets/img/brand/logo-on-white.svg" alt="Scalen" width="61" height="40" /></a>
     <nav class="nav-menu">
       <a href="index.html">Home</a><a href="about.html">About</a><a href="services.html">Services</a>
       <a href="portfolio.html">Portfolio</a><a href="blog.html" class="active">Blog</a><a href="contact.html">Contact</a>
@@ -71,7 +73,7 @@
 <div class="mob-overlay" id="mobOverlay" onclick="closeNav()"></div>
 <div class="mob-nav" id="mobNav">
   <button class="mob-close" onclick="closeNav()"><i class="fa fa-times"></i></button>
-  <a href="index.html"><img src="assets/img/logo.webp" alt="Scalen" style="height:32px;margin-bottom:28px;display:block;"/></a>
+  <a href="index.html"><img data-brand-logo src="assets/img/brand/logo-on-white.svg" alt="Scalen" style="height:32px;width:auto;margin-bottom:28px;display:block;"/></a>
   <a href="index.html">Home</a><a href="about.html">About</a><a href="services.html">Services</a>
   <a href="portfolio.html">Portfolio</a><a href="blog.html">Blog</a><a href="contact.html">Contact</a>
   <a href="contact.html" class="btn btn-blue" style="margin-top:18px;text-align:center;border-radius:12px;">Free Consultation</a>
@@ -168,7 +170,7 @@
             <span class="tag-pill">Analytics</span><span class="tag-pill">GA4</span><span class="tag-pill">Attribution</span><span class="tag-pill">Data</span><span class="tag-pill">Conversion</span><span class="tag-pill">Predictive</span>
           </div>
         </div>
-        <div class="sb-box" style="background:var(--blue);border-color:var(--blue);text-align:center;">
+        <div class="sb-box" style="background:var(--blue);border-color:var(--blue);text-align:center;--ink:#fff;--ink-2:rgba(255,255,255,.92);--grey:rgba(255,255,255,.8);--grey-lt:rgba(255,255,255,.9);--label:#fff;--line:rgba(255,255,255,.22);--border:rgba(255,255,255,.22);--tint:rgba(255,255,255,.1);--tint-2:rgba(255,255,255,.15);--blue-lt:#fff;color:#fff;">
           <h4 style="border-color:rgba(255,255,255,.2);">GA4 Setup & Audit</h4>
           <p style="font-size:14px;color:rgba(255,255,255,.85);margin-bottom:18px;line-height:1.7;">Let us audit your GA4 setup and make sure you're measuring what actually drives revenue.</p>
           <a href="contact.html" class="btn" style="background:#fff;color:#000;width:100%;justify-content:center;border-radius:12px;">Book Analytics Audit</a>
@@ -181,7 +183,7 @@
 <footer id="footer">
   <div class="container">
     <div class="footer-grid">
-      <div class="footer-brand"><a href="index.html" class="logo"><img src="assets/img/logo.webp" alt="Scalen"/></a><p>Award-winning digital marketing agency helping businesses grow through data-driven strategies.</p><div class="footer-socs"><a href="#" class="fsoc"><i class="fab fa-linkedin-in"></i></a><a href="#" class="fsoc"><i class="fab fa-twitter"></i></a><a href="#" class="fsoc"><i class="fab fa-instagram"></i></a><a href="#" class="fsoc"><i class="fab fa-facebook-f"></i></a></div></div>
+      <div class="footer-brand"><a href="index.html" class="logo"><img data-brand-logo src="assets/img/brand/logo-full-on-blue.svg" alt="Scalen Marketing" width="78" height="64" /></a><p>Award-winning digital marketing agency helping businesses grow through data-driven strategies.</p><div class="footer-socs"><a href="#" class="fsoc"><i class="fab fa-linkedin-in"></i></a><a href="#" class="fsoc"><i class="fab fa-twitter"></i></a><a href="#" class="fsoc"><i class="fab fa-instagram"></i></a><a href="#" class="fsoc"><i class="fab fa-facebook-f"></i></a></div></div>
       <div class="footer-col"><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="about.html">About Us</a></li><li><a href="services.html">Services</a></li><li><a href="portfolio.html">Portfolio</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact</a></li></ul></div>
       <div class="footer-col"><h4>Our Services</h4><ul><li><a href="services.html">SEO Optimization</a></li><li><a href="services.html">Content Marketing</a></li><li><a href="services.html">Social Media</a></li><li><a href="services.html">PPC Advertising</a></li><li><a href="services.html">Brand Strategy</a></li><li><a href="services.html">Web Design</a></li></ul></div>
       <div class="footer-col"><h4>Contact Info</h4><ul><li><a href="contact.html">123 Marketing Street, NY 10001</a></li><li><a href="tel:+15552349823">+1 (555) 234-9823</a></li><li><a href="mailto:hello@reliableagency.com">hello@reliableagency.com</a></li></ul></div>
