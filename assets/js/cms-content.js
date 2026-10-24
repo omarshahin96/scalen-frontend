@@ -854,8 +854,24 @@
   let editToken = null;
   const savedChanges = [];
 
+  // The Edit Page button is for the site owner only — visitors never see it.
+  // Open any page with ?edit once to turn it on in that browser (it stays on
+  // across pages), and ?edit=off to turn it off and forget the edit token.
+  function inlineEditorEnabled() {
+    try {
+      const p = new URLSearchParams(location.search);
+      if (p.get('edit') === 'off') {
+        localStorage.removeItem('cms_edit_enabled');
+        localStorage.removeItem('cms_edit_token');
+        return false;
+      }
+      if (p.has('edit')) localStorage.setItem('cms_edit_enabled', '1');
+      return localStorage.getItem('cms_edit_enabled') === '1';
+    } catch { return false; }
+  }
+
   function setupInlineEditor() {
-    // Only show if CMS API was reachable (check if we injected anything)
+    if (!inlineEditorEnabled()) return;
     editToken = localStorage.getItem('cms_edit_token') || null;
     const trigger = document.createElement('button');
     trigger.id = 'cms-trigger';
@@ -912,7 +928,7 @@
           btn.textContent='Unlock'; btn.disabled=false; pw.focus();
         }
       } catch {
-        errEl.textContent = 'Could not reach CMS. Is it running on localhost:3000?'; errEl.style.display='block';
+        errEl.textContent = 'Could not reach the CMS. Please try again in a moment.'; errEl.style.display='block';
         btn.textContent='Unlock'; btn.disabled=false;
       }
     }
