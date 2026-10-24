@@ -27,5 +27,8 @@
 	# Same as the old Netlify rule: /home serves the homepage
 	rewrite /home /index.html
 
-	file_server
+	# Build/config files sit in /srv next to the site — never serve them
+	file_server {
+		hide Caddyfile Dockerfile .dockerignore .git
+	}
 }
