@@ -244,3 +244,31 @@ window.scalenSeo = function (title, description) {
     }
   });
 })();
+
+/* --- Focus frame hugs the headline ---
+   A heading that wraps is as wide as its column, so the logo brackets drifted away from the
+   text. Size each framed heading to its longest line; re-run when the CMS fills it in,
+   when the fonts arrive and when the window is resized. */
+(function () {
+  const SEL = '#hero .hero-title, .page-hero h1, .cs-hero h1, .proj-hero h1';
+  function fit(h) {
+    h.style.width = '';
+    const range = document.createRange();
+    range.selectNodeContents(h);
+    const rects = [...range.getClientRects()].filter(r => r.width > 0);
+    if (!rects.length) return;
+    const left = Math.min(...rects.map(r => r.left));
+    const right = Math.max(...rects.map(r => r.right));
+    const cs = getComputedStyle(h);
+    h.style.width = Math.ceil(right - left + parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight)) + 2 + 'px';
+  }
+  function fitAll() { document.querySelectorAll(SEL).forEach(fit); }
+  let queued = 0;
+  function later() { cancelAnimationFrame(queued); queued = requestAnimationFrame(fitAll); }
+  const mo = new MutationObserver(later);
+  document.querySelectorAll(SEL).forEach(h => mo.observe(h, { childList: true, characterData: true, subtree: true }));
+  window.addEventListener('resize', later);
+  window.addEventListener('load', later);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(later);
+  later();
+})();
