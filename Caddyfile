@@ -1,0 +1,31 @@
+{
+	admin off
+	auto_https off
+}
+
+:{$PORT:8080} {
+	root * /srv
+	encode zstd gzip
+
+	header {
+		X-Frame-Options "DENY"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		-Server
+	}
+
+	# Pages always revalidate so edits show immediately
+	@pages path / *.html
+	header @pages Cache-Control "public, max-age=0, must-revalidate"
+	# CSS/JS change with redesigns; keep their cache short
+	@code path *.css *.js
+	header @code Cache-Control "public, max-age=3600"
+	# Fonts and images rarely change
+	@media path /assets/fonts/* /assets/img/*
+	header @media Cache-Control "public, max-age=2592000"
+
+	# Same as the old Netlify rule: /home serves the homepage
+	rewrite /home /index.html
+
+	file_server
+}
