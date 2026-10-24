@@ -50,3 +50,6 @@ html[dir="rtl"] .fa-paper-plane, html[dir="rtl"] .fa-quote-left, html[dir="rtl"]
 
 /* Email / phone fields are typed left-to-right */
 html[dir="rtl"] input[type="email"], html[dir="rtl"] input[type="tel"], html[dir="rtl"] input[type="url"] { direction:ltr; text-align:right; }
+
+/* Changa sets taller lines than condensed Gobold — keep the homepage headline to ~3 lines */
+html[dir="rtl"] #hero .hero-title { font-size:clamp(36px,4.1vw,56px); }

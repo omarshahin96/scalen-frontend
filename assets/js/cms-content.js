@@ -704,7 +704,7 @@
     grid.innerHTML = items.map((p, i) =>
       `<a href="project.html?id=${p.id}" class="pf-card reveal ${delays[i%3]}" data-filter="${pfFilterKey(p.category)}">
         <div class="pf-img">
-          ${p.image?`<img src="${esc(p.image.startsWith('/')?CMS_BASE+p.image:p.image)}" alt="${esc(p.title)}">`:'<div style="width:100%;height:270px;background:linear-gradient(135deg,#1a1b3a,#0F1FA8)"></div>'}
+          ${p.image?`<img src="${esc(p.image)}" alt="${esc(p.title)}">`:'<div style="width:100%;height:270px;background:linear-gradient(135deg,#1a1b3a,#0F1FA8)"></div>'}
           <div class="pf-overlay"><div class="pf-view"><i class="fas fa-arrow-right"></i></div><span>${t('View Project')}</span></div>
         </div>
         <div class="pf-info">
@@ -751,7 +751,7 @@
             <div class="tst-av">${t.avatar?`<img src="${esc(t.avatar)}" alt="${esc(t.name)}">`:`<div style="width:100%;height:100%;background:#0F1FA8;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff">${esc(t.name[0])}</div>`}</div>
             <div>
               <div class="tst-name" data-section="db:testimonials" data-id="${t.id}" data-path="name" data-raw="${esc(t.name)}">${esc(t.name)}</div>
-              <div class="tst-role" data-section="db:testimonials" data-id="${t.id}" data-path="role" data-raw="${esc(t.role||'')}">${esc(t.role||'')}${t.company?', '+esc(t.company):''}</div>
+              <div class="tst-role" data-section="db:testimonials" data-id="${t.id}" data-path="role" data-raw="${esc(t.role||'')}">${esc(t.role||'')}${t.company?(LANG==='ar'?'، ':', ')+esc(t.company):''}</div>
             </div>
           </div>
         </div>
