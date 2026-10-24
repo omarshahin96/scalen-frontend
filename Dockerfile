@@ -4,7 +4,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev
 COPY . .
-RUN npm run build:ar && rm -rf node_modules
+RUN npm run build && rm -rf node_modules
 
 # 2) Static site server for Railway: Caddy serves the HTML/CSS/JS as-is.
 # Railway injects $PORT; Caddy listens on it (see Caddyfile).

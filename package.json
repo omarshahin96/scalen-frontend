@@ -3,6 +3,7 @@
   "private": true,
   "description": "SCALEN marketing site. Static HTML; the Arabic site (/ar/) is generated from the English pages at build time.",
   "scripts": {
+    "build": "node scripts/build-ar.js && node scripts/version-assets.js",
     "build:ar": "node scripts/build-ar.js",
     "check:ar": "node scripts/build-ar.js --check",
     "seo": "node scripts/seo-heads.js"

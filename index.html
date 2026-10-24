@@ -96,6 +96,15 @@
     .fl-card-1 { bottom:60px;left:-65px;width:215px;animation:floatY 5s ease-in-out infinite; }
     .fl-card-2 { top:50px;right:-55px;width:195px;animation:floatY 5s ease-in-out infinite 2.5s; }
     @keyframes floatY { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+    /* Large screens: use the extra width instead of leaving it empty around the hero */
+    @media(min-width:1440px){
+      #hero > .container { max-width:1400px; }
+      .hero-inner { grid-template-columns:1.1fr .9fr; gap:48px; }
+      #hero .hero-title { font-size:clamp(66px,4.3vw,86px); }
+      .hero-sub { font-size:18px; max-width:540px; }
+      .hero-right { height:640px; }
+      .hero-img-wrap { width:400px; height:550px; }
+    }
     .fc-lbl  { font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);margin-bottom:6px; }
     .fc-ttl  { font-family:var(--font-h);font-size:14px;font-weight:700;color:var(--ink);line-height:1.35;margin-bottom:10px; }
     .fc-stars { display:flex;gap:3px;margin-bottom:8px; }
