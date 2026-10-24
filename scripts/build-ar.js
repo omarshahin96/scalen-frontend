@@ -1,0 +1,221 @@
+#!/usr/bin/env node
+/**
+ * Builds the Arabic site (/ar/*.html) from the English pages.
+ *
+ *   node scripts/build-ar.js            → writes ar/*.html (used by the Dockerfile)
+ *   node scripts/build-ar.js --check    → lists English text with no Arabic translation, exits 1 if any
+ *   node scripts/build-ar.js --extract  → writes i18n/_strings.json (every translatable unit, for translators)
+ *   node scripts/build-ar.js --pseudo   → like build, but untranslated text becomes Arabic filler (RTL layout testing)
+ *
+ * Translations live in i18n/ar.json: { "<English text or inline HTML>": "<Arabic>" }.
+ * A "unit" is a block whose content is text plus inline tags (a, strong, span, i, br…),
+ * so sentences are translated whole and inline markup is kept in the Arabic.
+ * Whitespace inside keys is collapsed to single spaces.
+ *
+ * Text filled in at runtime from the CMS is translated in the CMS (Arabic fields);
+ * the static text here is only the fallback shown before/without the CMS.
+ */
+const fs = require('fs');
+const path = require('path');
+const cheerio = require('cheerio');
+const rtlcss = require('rtlcss');
+
+const ROOT = path.join(__dirname, '..');
+const OUT = path.join(ROOT, 'ar');
+const DICT_FILE = path.join(ROOT, 'i18n', 'ar.json');
+const SCRIPT_DICT_FILE = path.join(ROOT, 'i18n', 'ar-scripts.json');
+const SITE = 'https://scalen.marketing';
+const mode = process.argv.includes('--check') ? 'check' : process.argv.includes('--extract') ? 'extract' : 'build';
+// --pseudo: fill untranslated text with Arabic-looking filler of similar length (layout testing only)
+const PSEUDO = process.argv.includes('--pseudo');
+
+const INLINE = new Set(['a', 'abbr', 'b', 'br', 'code', 'em', 'i', 'mark', 'small', 'span', 'strong', 'sub', 'sup', 'u', 'time']);
+const SKIP = new Set(['script', 'style', 'noscript', 'svg', 'template', 'iframe', 'code', 'pre']);
+const ATTRS = ['alt', 'title', 'placeholder', 'aria-label'];
+const LATIN = /[A-Za-z]{2,}/;
+
+const norm = s => s.replace(/\s+/g, ' ').trim();
+const loadJSON = (f, d) => { try { return JSON.parse(fs.readFileSync(f, 'utf8')); } catch { return d; } };
+const dict = loadJSON(DICT_FILE, {});
+const scriptDict = loadJSON(SCRIPT_DICT_FILE, {});
+
+const pages = fs.readdirSync(ROOT).filter(f => f.endsWith('.html')).sort();
+const missing = new Map();   // key -> Set(pages)
+const strings = new Map();   // key -> { count, pages:Set }
+
+function note(map, key, page) {
+  if (!map.has(key)) map.set(key, { count: 0, pages: new Set() });
+  const e = map.get(key); e.count++; e.pages.add(page);
+}
+
+function lookup(key, page) {
+  note(strings, key, page);
+  if (Object.prototype.hasOwnProperty.call(dict, key) && dict[key] !== '') return dict[key];
+  if (!missing.has(key)) missing.set(key, new Set());
+  missing.get(key).add(page);
+  return PSEUDO ? pseudo(key) : null;
+}
+
+const FILL = 'هذا نص تجريبي عربي يملأ المساحة لاختبار اتجاه الصفحة من اليمين إلى اليسار في التصميم الجديد للموقع '.split(' ');
+function pseudoText(t) {
+  const lead = t.match(/^\s*/)[0], trail = t.match(/\s*$/)[0], core = t.trim();
+  if (!LATIN.test(core)) return t;
+  let out = '', i = 0;
+  while (out.length < core.length * 0.9) out += (out ? ' ' : '') + FILL[i++ % FILL.length];
+  return lead + out + trail;
+}
+// keep inline tags, replace only the text between them
+const pseudo = key => key.split(/(<[^>]+>)/).map(p => p.startsWith('<') ? p : pseudoText(p)).join('');
+
+// Is this element made only of text and inline tags (recursively)?
+function isInlineOnly($, el) {
+  return $(el).contents().toArray().every(n => {
+    if (n.type === 'text') return true;
+    if (n.type === 'comment') return true;
+    if (n.type !== 'tag') return false;
+    if (!INLINE.has(n.name)) return false;
+    return isInlineOnly($, n);
+  });
+}
+
+function translateText(node, page) {
+  const raw = node.data;
+  const key = norm(raw);
+  if (!key || !LATIN.test(key)) return;
+  const ar = lookup(key, page);
+  if (ar == null) return;
+  const lead = raw.match(/^\s*/)[0], trail = raw.match(/\s*$/)[0];
+  node.data = lead + ar + trail;
+}
+
+function walk($, el, page) {
+  for (const n of $(el).contents().toArray()) {
+    if (n.type === 'text') { translateText(n, page); continue; }
+    if (n.type !== 'tag' || SKIP.has(n.name)) continue;
+    if ($(n).attr('translate') === 'no' || $(n).hasClass('notranslate')) continue;
+    translateAttrs($, n, page);
+    // A block of text + inline tags is translated as one unit (keeps sentences whole)
+    // Unit = the block's own text continues inside inline tags (<p>We help <strong>brands</strong> grow</p>).
+    // Containers of links/spans with no text of their own (nav menus) and text + icon (<a><i></i> Go</a>) are walked instead.
+    const kids = $(n).children().toArray();
+    const ownText = $(n).contents().toArray().some(c => c.type === 'text' && LATIN.test(c.data));
+    const textyKids = kids.filter(k => LATIN.test($(k).text()));
+    if (ownText && textyKids.length && isInlineOnly($, n)) {
+      const key = norm($(n).html());
+      const ar = lookup(key, page);
+      if (ar != null) { $(n).html(ar); continue; }
+      // fall through: still translate attributes of inline children
+      $(n).find('*').each((_, c) => translateAttrs($, c, page));
+      continue;
+    }
+    walk($, n, page);
+  }
+}
+
+function translateAttrs($, el, page) {
+  for (const a of ATTRS) {
+    const v = $(el).attr(a);
+    if (v && LATIN.test(v)) { const ar = lookup(norm(v), page); if (ar != null) $(el).attr(a, ar); }
+  }
+  if (el.name === 'input' && /^(submit|button)$/i.test($(el).attr('type') || '')) {
+    const v = $(el).attr('value');
+    if (v && LATIN.test(v)) { const ar = lookup(norm(v), page); if (ar != null) $(el).attr('value', ar); }
+  }
+}
+
+function translateInlineScripts($, page) {
+  $('script:not([src])').each((_, s) => {
+    let code = $(s).html();
+    if (!code) return;
+    for (const [en, ar] of Object.entries(scriptDict)) {
+      if (code.includes(en)) code = code.split(en).join(ar);
+    }
+    $(s).html(code);
+  });
+}
+
+function rewriteUrls($) {
+  // Pages live one level down (/ar/x.html): make asset paths absolute; page links stay relative (→ /ar/…)
+  const fix = v => (v && /^(assets\/|favicon|site\.webmanifest)/.test(v)) ? '/' + v : v;
+  $('[src]').each((_, e) => $(e).attr('src', fix($(e).attr('src'))));
+  $('link[href]').each((_, e) => $(e).attr('href', fix($(e).attr('href'))));
+  $('[style*="url("]').each((_, e) => $(e).attr('style', $(e).attr('style').replace(/url\((['"]?)assets\//g, 'url($1/assets/')));
+  $('img[srcset], source[srcset]').each((_, e) => $(e).attr('srcset', $(e).attr('srcset').replace(/(^|,\s*)assets\//g, '$1/assets/')));
+  $('style').each((_, s) => $(s).html($(s).html().replace(/url\((['"]?)(\.\.\/)?assets\//g, 'url($1/assets/')));
+}
+
+// Mirror left/right in page CSS: <style> blocks and style="" attributes (rtlcss also flips
+// margins, paddings, borders, radii, positions and translateX). Add /*rtl:ignore*/ before a
+// declaration in the English source to keep it as-is.
+function flipDecls(decls) {
+  const out = rtlcss.process('x{' + decls + '}');
+  return out.slice(out.indexOf('{') + 1, out.lastIndexOf('}'));
+}
+function mirrorStyles($) {
+  $('style').each((_, s) => { const css = $(s).html(); if (css && css.trim()) $(s).html(rtlcss.process(css)); });
+  $('[style]').each((_, e) => {
+    const v = $(e).attr('style');
+    if (/left|right|translate|margin|padding|border|radius|float|clear|text-align/i.test(v)) $(e).attr('style', flipDecls(v));
+  });
+}
+
+function buildPage(file) {
+  const html = fs.readFileSync(path.join(ROOT, file), 'utf8');
+  const $ = cheerio.load(html, { decodeEntities: false });
+
+  $('html').attr('lang', 'ar').attr('dir', 'rtl');
+  const t = $('title');
+  if (t.length && LATIN.test(t.text())) { const ar = lookup(norm(t.text()), file); if (ar != null) t.text(ar); }
+  $('meta[name="description"], meta[property="og:title"], meta[property="og:description"], meta[name="twitter:title"], meta[name="twitter:description"]').each((_, m) => {
+    const v = $(m).attr('content'); if (v && LATIN.test(v)) { const ar = lookup(norm(v), file); if (ar != null) $(m).attr('content', ar); }
+  });
+  $('meta[property="og:locale"]').attr('content', 'ar_AR');
+
+  walk($, $('body'), file);
+  if (mode !== 'build') return;
+
+  translateInlineScripts($, file);
+  rewriteUrls($);
+  mirrorStyles($);
+
+  // Mirrored shared stylesheet + the Arabic additions right after it
+  const shared = $('link[href$="shared.css"]').first();
+  const rtl = '<link rel="stylesheet" href="/assets/css/rtl.css" />';
+  if (shared.length) { shared.attr('href', '/assets/css/shared.rtl.css'); shared.after('\n  ' + rtl); }
+  else $('head').append(rtl);
+  // Arabic glyph fonts load first on Arabic pages
+  $('head').prepend('\n  <link rel="preload" href="/assets/fonts/brand/Alexandria-VF-arabic.woff2" as="font" type="font/woff2" crossorigin />'
+    + '\n  <link rel="preload" href="/assets/fonts/brand/Changa-VF-arabic.woff2" as="font" type="font/woff2" crossorigin />');
+
+  // Language switch → English version of this page; hreflang alternates are already in the source head
+  $('a[data-lang-switch]').each((_, a) => {
+    $(a).attr('href', file === 'index.html' ? '/' : '/' + file).attr('hreflang', 'en').attr('lang', 'en').text('English');
+  });
+
+  fs.writeFileSync(path.join(OUT, file), $.html());
+}
+
+if (mode === 'build') {
+  fs.mkdirSync(OUT, { recursive: true });
+  // Mirrored copy of the shared stylesheet for Arabic pages (generated — not committed)
+  const css = fs.readFileSync(path.join(ROOT, 'assets', 'css', 'shared.css'), 'utf8');
+  fs.writeFileSync(path.join(ROOT, 'assets', 'css', 'shared.rtl.css'),
+    '/* GENERATED by scripts/build-ar.js from shared.css with rtlcss — do not edit */\n' + rtlcss.process(css));
+}
+for (const f of pages) buildPage(f);
+
+if (mode === 'extract') {
+  const out = {};
+  for (const [k, v] of [...strings.entries()].sort((a, b) => b[1].count - a[1].count)) out[k] = { count: v.count, pages: [...v.pages] };
+  fs.mkdirSync(path.join(ROOT, 'i18n'), { recursive: true });
+  fs.writeFileSync(path.join(ROOT, 'i18n', '_strings.json'), JSON.stringify(out, null, 1));
+  console.log(`${strings.size} unique units across ${pages.length} pages → i18n/_strings.json`);
+} else {
+  if (missing.size) {
+    console.warn(`⚠️  ${missing.size} English strings have no Arabic translation:`);
+    for (const [k, p] of [...missing.entries()].slice(0, 40)) console.warn(`   - ${JSON.stringify(k).slice(0, 110)}  (${[...p].slice(0, 3).join(', ')})`);
+    if (mode === 'check') process.exit(1);
+  } else {
+    console.log(mode === 'check' ? '✅ every string has an Arabic translation' : `✅ built ${pages.length} Arabic pages → ar/`);
+  }
+}

@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title data-brand="Scalen">Contact Us — Scalen</title><!-- EDIT: page title -->
+  <link rel="alternate" hreflang="en" href="https://scalen.marketing/contact.html" />
+  <link rel="alternate" hreflang="ar" href="https://scalen.marketing/ar/contact.html" />
+  <link rel="alternate" hreflang="x-default" href="https://scalen.marketing/contact.html" />
   <link rel="icon" type="image/svg+xml" href="assets/img/brand/favicon.svg" />
   <link rel="apple-touch-icon" href="assets/img/brand/apple-touch-icon.png" />
   <meta name="theme-color" content="#0F1FA8" />
@@ -157,7 +160,9 @@
       <a href="blog.html">Blog</a>
       <a href="contact.html" class="active">Contact</a>
       <a href="contact.html" class="nav-cta">Free Consultation</a>
+      <a data-lang-switch class="lang-switch" href="/ar/contact.html" hreflang="ar" lang="ar">العربية</a>
     </nav>
+    <a data-lang-switch class="lang-switch lang-switch--mob" href="/ar/contact.html" hreflang="ar" lang="ar">العربية</a>
     <button class="hamburger" onclick="openNav()" aria-label="Menu"><span></span><span></span><span></span></button>
   </div>
 </header>
@@ -503,7 +508,8 @@
         const budget  = form.querySelector('#cf-budget');
         const service = form.querySelector('#cf-service');
         const label   = sel => (sel && sel.value) ? sel.options[sel.selectedIndex].text : '';
-        const extra   = [label(service) && ('Service: ' + label(service)), label(budget) && ('Budget: ' + label(budget))].filter(Boolean).join(' | ');
+        const isAr    = document.documentElement.lang === 'ar';
+        const extra   = [label(service) && ('Service: ' + label(service)), label(budget) && ('Budget: ' + label(budget)), isAr && 'Language: Arabic'].filter(Boolean).join(' | ');
         let errBox = form.querySelector('.form-error');
         if (errBox) errBox.remove();
         fetch(CMS_URL + '/leads/submit', {

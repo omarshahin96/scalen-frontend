@@ -1,0 +1,13 @@
+{
+  "name": "scalen-frontend",
+  "private": true,
+  "description": "SCALEN marketing site. Static HTML; the Arabic site (/ar/) is generated from the English pages at build time.",
+  "scripts": {
+    "build:ar": "node scripts/build-ar.js",
+    "check:ar": "node scripts/build-ar.js --check"
+  },
+  "dependencies": {
+    "cheerio": "1.0.0",
+    "rtlcss": "^4.3.0"
+  }
+}

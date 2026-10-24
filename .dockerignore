@@ -2,3 +2,6 @@
 .netlify
 netlify.toml
 vercel.json
+node_modules
+ar
+assets/css/shared.rtl.css

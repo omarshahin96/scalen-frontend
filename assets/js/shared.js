@@ -28,7 +28,8 @@ if (scrollTopBtn) {
 }
 
 /* --- Mobile nav --- */
-const ham    = document.getElementById('ham');
+// Pages use either <button class="ham" id="ham"> or <button class="hamburger" onclick="openNav()">
+const ham    = document.getElementById('ham') || document.querySelector('.hamburger');
 const mobNav = document.getElementById('mobNav');
 const mobOv  = document.getElementById('mobOverlay');
 
@@ -46,11 +47,16 @@ function closeNav() {
   mobOv.classList.remove('open');
   document.body.style.overflow = '';
 }
-if (ham) ham.addEventListener('click', () => mobNav.classList.contains('open') ? closeNav() : openNav());
+if (ham && !ham.hasAttribute('onclick')) ham.addEventListener('click', () => mobNav.classList.contains('open') ? closeNav() : openNav());
 if (mobOv) mobOv.addEventListener('click', closeNav);
 
 /* Expose closeNav globally for onclick in mobile links */
 window.closeNav = closeNav;
+
+/* --- Language switch keeps the current query string (e.g. project.html?id=3) --- */
+document.querySelectorAll('a[data-lang-switch]').forEach(a => {
+  if (location.search || location.hash) a.href = a.getAttribute('href').split(/[?#]/)[0] + location.search + location.hash;
+});
 
 /* --- Set active nav link based on current page --- */
 (function () {

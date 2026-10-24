@@ -1,0 +1,55 @@
+/* =============================================
+   ARABIC (RTL) — loaded only on /ar/ pages, after shared.rtl.css
+   The mirroring itself (margins, positions, borders, corner brackets…) is done at
+   build time: scripts/build-ar.js runs every stylesheet, <style> block and style=""
+   through rtlcss. This file only adds what Arabic needs on top of a mirrored layout.
+   Brand type for Arabic: Changa (display headlines) · Alexandria (body / UI);
+   Latin words inside Arabic text keep Gobold / Alexandria.
+============================================= */
+
+@font-face {
+  font-family:'Changa';
+  src:url('../fonts/brand/Changa-VF-arabic.woff2') format('woff2');
+  font-weight:200 800; font-style:normal; font-display:swap;
+  unicode-range:U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0897-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC;
+}
+
+html[dir="rtl"] {
+  --font-d: 'Changa', 'Gobold', 'Alexandria', sans-serif;
+  --font-h: 'Alexandria', sans-serif;
+  --font-b: 'Alexandria', sans-serif;
+}
+
+/* Arabic letters join — tracking and case transforms break them */
+html[dir="rtl"] body * { letter-spacing:0 !important; text-transform:none !important; }
+
+/* Display headlines: Changa needs more line height than condensed Gobold */
+html[dir="rtl"] h1, html[dir="rtl"] h2, html[dir="rtl"] .hero-title, html[dir="rtl"] .sec-title { line-height:1.3 !important; }
+html[dir="rtl"] h1, html[dir="rtl"] h2 { font-weight:700; }
+html[dir="rtl"] h3, html[dir="rtl"] h4 { line-height:1.45; }
+html[dir="rtl"] p, html[dir="rtl"] li { line-height:1.85; }
+
+/* Numbers, phone numbers and emails keep Latin order (500+, 4K+, 98%, $1,500, +1 (555)…) */
+html[dir="rtl"] .stat-num, html[dir="rtl"] .res-num, html[dir="rtl"] .rb-num, html[dir="rtl"] .rs-num,
+html[dir="rtl"] .cs-stat-num, html[dir="rtl"] .step-num, html[dir="rtl"] .price-amt, html[dir="rtl"] .fc-num,
+html[dir="rtl"] .skill-pct, html[dir="rtl"] .counter,
+html[dir="rtl"] a[href^="tel:"], html[dir="rtl"] a[href^="mailto:"] {
+  direction:ltr; unicode-bidi:isolate;
+}
+
+/* Directional icons point the other way (icon fonts aren't mirrored by the CSS flip) */
+html[dir="rtl"] .fa-arrow-right, html[dir="rtl"] .fa-arrow-left,
+html[dir="rtl"] .fa-chevron-right, html[dir="rtl"] .fa-chevron-left,
+html[dir="rtl"] .fa-angle-right, html[dir="rtl"] .fa-angle-left,
+html[dir="rtl"] .fa-angle-double-right, html[dir="rtl"] .fa-angles-right,
+html[dir="rtl"] .fa-long-arrow-right, html[dir="rtl"] .fa-long-arrow-alt-right,
+html[dir="rtl"] .fa-arrow-right-long, html[dir="rtl"] .fa-caret-right,
+html[dir="rtl"] .fa-paper-plane, html[dir="rtl"] .fa-quote-left, html[dir="rtl"] .fa-quote-right {
+  transform:scaleX(-1);
+}
+
+/* Email / phone fields are typed left-to-right */
+html[dir="rtl"] input[type="email"], html[dir="rtl"] input[type="tel"], html[dir="rtl"] input[type="url"] { direction:ltr; text-align:right; }
+
+/* Changa sets taller lines than condensed Gobold — keep the homepage headline to ~3 lines */
+html[dir="rtl"] #hero .hero-title { font-size:clamp(36px,4.1vw,56px); }

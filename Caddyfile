@@ -15,7 +15,7 @@
 	}
 
 	# Pages always revalidate so edits show immediately
-	@pages path / *.html
+	@pages path / /ar/ *.html
 	header @pages Cache-Control "public, max-age=0, must-revalidate"
 	# CSS/JS change with redesigns; keep their cache short
 	@code path *.css *.js
@@ -24,11 +24,17 @@
 	@media path /assets/fonts/* /assets/img/*
 	header @media Cache-Control "public, max-age=2592000"
 
-	# Same as the old Netlify rule: /home serves the homepage
+	# Same as the old Netlify rule: /home serves the homepage (Arabic too)
 	rewrite /home /index.html
+	rewrite /ar/home /ar/index.html
+	redir /ar /ar/ 308
+
+	# Arabic pages live in /ar/; a relative asset path resolved from there still finds /assets/
+	@arAssets path /ar/assets/*
+	uri @arAssets strip_prefix /ar
 
 	# Build/config files sit in /srv next to the site — never serve them
 	file_server {
-		hide Caddyfile Dockerfile .dockerignore .git
+		hide Caddyfile Dockerfile .dockerignore .git package.json package-lock.json node_modules scripts i18n
 	}
 }
