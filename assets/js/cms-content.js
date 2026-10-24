@@ -234,6 +234,20 @@
     }
   }
 
+  // Footer "Our Services" column → the real services, each linking to its page
+  function applyFooterServices(services) {
+    const list = (services || []).filter(s => s && s.slug && s.title);
+    if (!list.length) return;
+    const ul = [...document.querySelectorAll('#footer .footer-col ul')].find(u => {
+      const links = [...u.querySelectorAll('a')];
+      return links.length && links.every(a => /(^|\/)services\.html$/.test(a.getAttribute('href') || ''));
+    });
+    if (!ul) return;
+    const absolute = (ul.querySelector('a').getAttribute('href') || '').startsWith('/');   // 404 page
+    const base = absolute ? (LANG === 'ar' ? '/ar/' : '/') : '';
+    ul.innerHTML = list.map(s => `<li><a href="${base}services/${esc(s.slug)}">${esc(s.title)}</a></li>`).join('');
+  }
+
   // ─── Homepage (index.html) ──────────────────────────────────────────────────
   function applyHomepage(hp, services, blog, portfolio, testimonials, team) {
     if (hp.hero) {
@@ -686,12 +700,14 @@
     if (!grid) return;
     const items = max ? services.slice(0, max) : services;
     const delays = ['d1','d2','d3'];
+    // Each card opens its service page (/services/<slug>); the whole card is clickable except in ?edit mode
+    const editing = new URLSearchParams(location.search).has('edit');
     grid.innerHTML = items.map((s, i) =>
-      `<div class="svc-card reveal ${delays[i%3]}">
+      `<div class="svc-card reveal ${delays[i%3]}${s.slug && !editing ? ' svc-card--link' : ''}">
         <div class="svc-icon ${SVC_ICON_CLASSES[i%6]}"><i class="fas ${esc(s.icon||'fa-star')}"></i></div>
         <h3 data-section="db:services" data-id="${s.id}" data-path="title" data-raw="${esc(s.title)}">${esc(s.title)}</h3>
         <p data-section="db:services" data-id="${s.id}" data-path="description" data-raw="${esc(s.description||'')}">${esc(s.description||'')}</p>
-        <a href="services.html" class="svc-link">${t('Learn More')} <i class="fas fa-arrow-right"></i></a>
+        <a href="${s.slug ? 'services/' + esc(s.slug) : 'services.html'}" class="svc-link">${t('Learn More')} <i class="fas fa-arrow-right"></i></a>
       </div>`
     ).join('');
   }
@@ -1166,6 +1182,7 @@
       applySite(hp.site);
       applyTracking(hp.tracking);
       applyShared(hp);
+      applyFooterServices(services);
 
       if (isHome)      applyHomepage(hp, services, blog, portfolio, testimonials, team);
       if (isAbout)     applyAboutPage(hp, team);

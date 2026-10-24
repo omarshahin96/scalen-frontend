@@ -63,9 +63,9 @@ document.querySelectorAll('a[data-lang-switch]').forEach(a => {
 window.scalenSeo = function (title, description) {
   const SITE = 'https://scalen.marketing';
   const ar = document.documentElement.lang === 'ar';
-  const file = location.pathname.split('/').pop() || '';
+  const path = location.pathname.replace(/^\/ar(?=\/)/, '');   // /project.html, /services/<slug>
   const q = location.search;
-  const en = SITE + '/' + file + q, arUrl = SITE + '/ar/' + file + q;
+  const en = SITE + path + q, arUrl = SITE + '/ar' + path + q;
   const head = document.head;
   const meta = (attr, key, val) => {
     if (!val) return;
@@ -91,8 +91,9 @@ window.scalenSeo = function (title, description) {
 
 /* --- Set active nav link based on current page --- */
 (function () {
-  const page = window.location.pathname.split('/').pop() || 'index.html';
-  document.querySelectorAll('.nav-menu a, .mob-nav a').forEach(a => {
+  // Pages served from a deeper path (/services/<slug>) name their menu item with <body data-nav>
+  const page = document.body.dataset.nav || window.location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.nav-menu a:not([data-lang-switch]), .mob-nav a:not([data-lang-switch])').forEach(a => {
     const href = a.getAttribute('href') || '';
     const hPage = href.split('/').pop();
     if (hPage === page || (page === '' && hPage === 'index.html')) {
@@ -217,8 +218,10 @@ window.scalenSeo = function (title, description) {
     e.preventDefault();
     const name = val('name'), email = val('email');
     if (!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { say(T.required, 'err'); return; }
+    // Service: a <select> (homepage) or a hidden field (service pages)
     const sel = form.elements.service;
-    const service = sel && sel.value ? sel.options[sel.selectedIndex].text : '';
+    const service = !sel || !sel.value ? '' : sel.tagName === 'SELECT' ? sel.options[sel.selectedIndex].text : sel.value;
+    const where = form.dataset.leadForm || 'website';
     const extra = [service && 'Service: ' + service, AR && 'Language: Arabic'].filter(Boolean).join(' | ');
     const orig = btn.innerHTML;
     btn.disabled = true; btn.textContent = T.sending; say('');
@@ -228,7 +231,7 @@ window.scalenSeo = function (title, description) {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name, email, phone: val('phone'),
-          subject: 'Website enquiry (homepage)',
+          subject: 'Website enquiry (' + (where === 'service' ? 'service page' : where) + ')',
           message: (extra ? extra + '\n\n' : '') + val('message')
         })
       });
@@ -236,7 +239,7 @@ window.scalenSeo = function (title, description) {
       if (!r.ok) throw new Error(d.error || '');
       form.reset();
       say(T.sent, 'ok');
-      if (window.dataLayer) window.dataLayer.push({ event: 'generate_lead', form: 'homepage' });
+      if (window.dataLayer) window.dataLayer.push({ event: 'generate_lead', form: where, service: service || undefined });
     } catch (err) {
       say(err && err.message && !/fetch/i.test(err.message) ? err.message : T.failed, 'err');
     } finally {
@@ -250,7 +253,7 @@ window.scalenSeo = function (title, description) {
    text. Size each framed heading to its longest line; re-run when the CMS fills it in,
    when the fonts arrive and when the window is resized. */
 (function () {
-  const SEL = '#hero .hero-title, .page-hero h1, .cs-hero h1, .proj-hero h1';
+  const SEL = '#hero .hero-title, .page-hero h1, .cs-hero h1, .proj-hero h1, .svc-hero h1';
   function fit(h) {
     h.style.width = '';
     const range = document.createRange();

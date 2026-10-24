@@ -16,8 +16,9 @@
     "project-techcorp.html"
   ],
   "_dynamic": [
+    "case-study.html",
     "project.html",
-    "case-study.html"
+    "service.html"
   ],
   "pages": {
     "index.html": {
@@ -55,6 +56,10 @@
     "404.html": {
       "title": "Page Not Found | SCALEN",
       "description": "The page you're looking for doesn't exist or has moved."
+    },
+    "service.html": {
+      "title": "Services | SCALEN",
+      "description": "Performance marketing services from SCALEN: paid media buying, marketing management, tracking and CRM setup, content, branding and conversion-focused websites."
     }
   },
   "org_description": "SCALEN is a performance marketing and lead generation agency in Istanbul that plans and manages paid advertising for real estate, medical tourism and education brands."
