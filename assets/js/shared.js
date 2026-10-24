@@ -58,6 +58,37 @@ document.querySelectorAll('a[data-lang-switch]').forEach(a => {
   if (location.search || location.hash) a.href = a.getAttribute('href').split(/[?#]/)[0] + location.search + location.hash;
 });
 
+/* --- SEO for pages filled from the CMS (project.html?id=…, case-study.html?slug=…) ---
+   Sets title, description, canonical, og/twitter tags and hreflang to this exact URL. */
+window.scalenSeo = function (title, description) {
+  const SITE = 'https://scalen.marketing';
+  const ar = document.documentElement.lang === 'ar';
+  const file = location.pathname.split('/').pop() || '';
+  const q = location.search;
+  const en = SITE + '/' + file + q, arUrl = SITE + '/ar/' + file + q;
+  const head = document.head;
+  const meta = (attr, key, val) => {
+    if (!val) return;
+    let m = head.querySelector('meta[' + attr + '="' + key + '"]');
+    if (!m) { m = document.createElement('meta'); m.setAttribute(attr, key); head.appendChild(m); }
+    m.setAttribute('content', val);
+  };
+  const link = (rel, href, hreflang) => {
+    let l = head.querySelector('link[rel="' + rel + '"]' + (hreflang ? '[hreflang="' + hreflang + '"]' : ''));
+    if (!l) { l = document.createElement('link'); l.rel = rel; if (hreflang) l.hreflang = hreflang; head.appendChild(l); }
+    l.href = href;
+  };
+  if (title) { document.title = title + ' | SCALEN'; meta('property', 'og:title', document.title); meta('name', 'twitter:title', document.title); }
+  if (description) {
+    let d = String(description).replace(/\s+/g, ' ').trim();
+    if (d.length > 160) d = d.slice(0, 157).replace(/\s+\S*$/, '') + '…';
+    meta('name', 'description', d); meta('property', 'og:description', d); meta('name', 'twitter:description', d);
+  }
+  link('canonical', ar ? arUrl : en);
+  meta('property', 'og:url', ar ? arUrl : en);
+  link('alternate', en, 'en'); link('alternate', arUrl, 'ar'); link('alternate', en, 'x-default');
+};
+
 /* --- Set active nav link based on current page --- */
 (function () {
   const page = window.location.pathname.split('/').pop() || 'index.html';

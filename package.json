@@ -4,7 +4,8 @@
   "description": "SCALEN marketing site. Static HTML; the Arabic site (/ar/) is generated from the English pages at build time.",
   "scripts": {
     "build:ar": "node scripts/build-ar.js",
-    "check:ar": "node scripts/build-ar.js --check"
+    "check:ar": "node scripts/build-ar.js --check",
+    "seo": "node scripts/seo-heads.js"
   },
   "dependencies": {
     "cheerio": "1.0.0",

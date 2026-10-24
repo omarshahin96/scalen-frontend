@@ -1,0 +1,61 @@
+{
+  "_site": "https://scalen.marketing",
+  "_noindex": [
+    "404.html",
+    "case-fashionbrand.html",
+    "case-financehub.html",
+    "case-techcorp.html",
+    "project-ecommerce.html",
+    "project-eduplatform.html",
+    "project-fashionbrand.html",
+    "project-financehub.html",
+    "project-foodbrand.html",
+    "project-healthbrand.html",
+    "project-retailchain.html",
+    "project-saas.html",
+    "project-techcorp.html"
+  ],
+  "_dynamic": [
+    "project.html",
+    "case-study.html"
+  ],
+  "pages": {
+    "index.html": {
+      "title": "SCALEN | Performance Marketing & Lead Generation Agency in Istanbul",
+      "description": "SCALEN runs Google, Meta and TikTok ads that turn ad budget into qualified leads and revenue for real estate, medical tourism and education brands."
+    },
+    "about.html": {
+      "title": "About SCALEN | Performance Marketing Agency in Istanbul",
+      "description": "Meet SCALEN, an Istanbul performance marketing and lead generation agency building paid-media systems that make customer acquisition predictable and profitable."
+    },
+    "services.html": {
+      "title": "Services | Paid Ads, Lead Generation & Marketing Systems — SCALEN",
+      "description": "Performance media buying, tracking and CRM setup, conversion-focused websites, brand and content — everything needed to turn ad spend into revenue."
+    },
+    "portfolio.html": {
+      "title": "Case Studies & Results | SCALEN",
+      "description": "Real campaigns and real numbers: how SCALEN lowered cost per lead and scaled revenue for clinics, real estate companies and education brands."
+    },
+    "blog.html": {
+      "title": "Blog | Performance Marketing Insights — SCALEN",
+      "description": "Practical guides on Google Ads, Meta ads, GA4 tracking and lead generation from the SCALEN team."
+    },
+    "contact.html": {
+      "title": "Contact SCALEN | Free Marketing Consultation",
+      "description": "Tell us about your goals and budget — SCALEN replies within 24 hours with a clear plan to grow your leads and revenue."
+    },
+    "project.html": {
+      "title": "Case Study | SCALEN",
+      "description": "How SCALEN planned and scaled a performance marketing campaign — the challenge, the strategy and the results."
+    },
+    "case-study.html": {
+      "title": "Case Study | SCALEN",
+      "description": "How SCALEN planned and scaled a performance marketing campaign — the challenge, the strategy and the results."
+    },
+    "404.html": {
+      "title": "Page Not Found | SCALEN",
+      "description": "The page you're looking for doesn't exist or has moved."
+    }
+  },
+  "org_description": "SCALEN is a performance marketing and lead generation agency in Istanbul that plans and manages paid advertising for real estate, medical tourism and education brands."
+}
