@@ -29,6 +29,12 @@
 	rewrite /ar/home /ar/index.html
 	redir /ar /ar/ 308
 
+	# Service pages: /services/<slug> is one template filled from the CMS (Arabic: /ar/services/<slug>)
+	@svcAr path_regexp ^/ar/services/[a-z0-9-]+/?$
+	rewrite @svcAr /ar/service.html
+	@svc path_regexp ^/services/[a-z0-9-]+/?$
+	rewrite @svc /service.html
+
 	# Arabic pages live in /ar/; a relative asset path resolved from there still finds /assets/
 	@arAssets path /ar/assets/*
 	uri @arAssets strip_prefix /ar

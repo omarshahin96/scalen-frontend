@@ -248,6 +248,8 @@ function buildPage(file) {
   $('a[data-lang-switch]').each((_, a) => {
     $(a).attr('href', (file === 'index.html' || file === '404.html') ? '/' : '/' + file).attr('hreflang', 'en').attr('lang', 'en').text('English');
   });
+  // Pages served from deeper paths (/services/<slug>) resolve relative links from <base href="/">
+  $('base[href="/"]').attr('href', '/ar/');
   // The 404 page is served at any path, so its links are absolute: point them at the Arabic pages
   if (file === '404.html') {
     $('a[href^="/"]:not([data-lang-switch])').each((_, a) => {
@@ -292,6 +294,12 @@ async function writeSitemap() {
       for (const p of list) if (p && p.id != null) entries.push([SITE + '/project.html?id=' + p.id, SITE + '/ar/project.html?id=' + p.id]);
       console.log(`   sitemap: ${list.length} CMS projects`);
     } catch (e) { console.warn(`⚠️  sitemap: CMS projects skipped (${e.message})`); }
+    try {
+      const r = await fetch(cms.replace(/\/$/, '') + '/api/services', { signal: AbortSignal.timeout(10000) });
+      const list = (r.ok ? await r.json() : []).filter(s => s && s.slug);
+      for (const s of list) entries.push([SITE + '/services/' + s.slug, SITE + '/ar/services/' + s.slug]);
+      console.log(`   sitemap: ${list.length} service pages`);
+    } catch (e) { console.warn(`⚠️  sitemap: service pages skipped (${e.message})`); }
   }
   const url = (loc, en, ar, date) => `  <url>\n    <loc>${xmlEsc(loc)}</loc>\n${date ? `    <lastmod>${date}</lastmod>\n` : ''}`
     + `    <xhtml:link rel="alternate" hreflang="en" href="${xmlEsc(en)}"/>\n`

@@ -343,7 +343,7 @@ button { cursor:pointer; font-family:var(--font-b); border:none; background:none
 .breadcrumb span { opacity:0.5; }
 
 /* Focus frame — the logo's two corner brackets around each hero headline */
-.page-hero h1, #hero .hero-title, .cs-hero h1, .proj-hero h1 {
+.page-hero h1, #hero .hero-title, .cs-hero h1, .proj-hero h1, .svc-hero h1 {
   display:block; width:fit-content; max-width:100%; position:relative;
   padding:30px 52px;
 }
@@ -355,18 +355,18 @@ button { cursor:pointer; font-family:var(--font-b); border:none; background:none
 .page-hero h1::before, .page-hero h1::after,
 #hero .hero-title::before, #hero .hero-title::after,
 .cs-hero h1::before, .cs-hero h1::after,
-.proj-hero h1::before, .proj-hero h1::after {
+.proj-hero h1::before, .proj-hero h1::after, .svc-hero h1::before, .svc-hero h1::after {
   content:''; position:absolute; width:58px; height:58px;
   border:0 solid var(--brand-orange); pointer-events:none;
 }
-.page-hero h1::before, #hero .hero-title::before, .cs-hero h1::before, .proj-hero h1::before {
+.page-hero h1::before, #hero .hero-title::before, .cs-hero h1::before, .proj-hero h1::before, .svc-hero h1::before {
   top:0; right:0; border-top-width:7px; border-right-width:7px; border-top-right-radius:9px;
 }
-.page-hero h1::after, #hero .hero-title::after, .cs-hero h1::after, .proj-hero h1::after {
+.page-hero h1::after, #hero .hero-title::after, .cs-hero h1::after, .proj-hero h1::after, .svc-hero h1::after {
   bottom:0; left:0; border-bottom-width:7px; border-left-width:7px; border-bottom-left-radius:9px;
 }
 /* Left-aligned heroes: keep the text on the column edge, let the bracket sit outside it */
-#hero .hero-title, .cs-hero h1, .proj-hero h1 { padding:28px 44px 28px 34px; margin-left:-34px; }
+#hero .hero-title, .cs-hero h1, .proj-hero h1, .svc-hero h1 { padding:28px 44px 28px 34px; margin-left:-34px; }
 .cs-hero, .proj-hero { position:relative; }
 .cs-hero > *, .proj-hero > * { position:relative; z-index:1; }
 #hero > .container { position:relative; z-index:2; }
@@ -480,14 +480,14 @@ button { cursor:pointer; font-family:var(--font-b); border:none; background:none
   .logo img { height:34px; }
   .container { padding:0 20px; }
   .page-hero { padding:140px 0 70px; }
-  .page-hero h1, #hero .hero-title, .cs-hero h1, .proj-hero h1 { padding:20px 28px; }
-  .cs-hero h1, .proj-hero h1 { margin-left:0; }
+  .page-hero h1, #hero .hero-title, .cs-hero h1, .proj-hero h1, .svc-hero h1 { padding:20px 28px; }
+  .cs-hero h1, .proj-hero h1, .svc-hero h1 { margin-left:0; }
   .page-hero h1::before, .page-hero h1::after,
   #hero .hero-title::before, #hero .hero-title::after,
   .cs-hero h1::before, .cs-hero h1::after,
-  .proj-hero h1::before, .proj-hero h1::after { width:38px; height:38px; border-width:0; }
-  .page-hero h1::before, #hero .hero-title::before, .cs-hero h1::before, .proj-hero h1::before { border-top-width:5px; border-right-width:5px; }
-  .page-hero h1::after, #hero .hero-title::after, .cs-hero h1::after, .proj-hero h1::after { border-bottom-width:5px; border-left-width:5px; }
+  .proj-hero h1::before, .proj-hero h1::after, .svc-hero h1::before, .svc-hero h1::after { width:38px; height:38px; border-width:0; }
+  .page-hero h1::before, #hero .hero-title::before, .cs-hero h1::before, .proj-hero h1::before, .svc-hero h1::before { border-top-width:5px; border-right-width:5px; }
+  .page-hero h1::after, #hero .hero-title::after, .cs-hero h1::after, .proj-hero h1::after, .svc-hero h1::after { border-bottom-width:5px; border-left-width:5px; }
   .footer-grid { grid-template-columns:1fr; gap:30px; }
   .footer-bottom { flex-direction:column; gap:10px; text-align:center; }
 }
@@ -495,3 +495,7 @@ button { cursor:pointer; font-family:var(--font-b); border:none; background:none
 /* Portfolio card whose cover image is missing: brand gradient instead of a broken picture */
 .pf-img.pf-noimg { background:linear-gradient(135deg,#1a1b3a,#0F1FA8); display:flex; align-items:center; justify-content:center; padding:24px; }
 .pf-img.pf-noimg::after { content:attr(data-name); font-family:var(--font-d); font-size:40px; line-height:1.05; color:#fff; text-align:center; letter-spacing:.01em; }
+
+/* Service cards open their service page: the "Learn more" link covers the whole card */
+.svc-card--link { position:relative; cursor:pointer; }
+.svc-card--link .svc-link::after { content:''; position:absolute; inset:0; }
