@@ -292,11 +292,13 @@
       document.getElementById('proj-year').textContent   = p.year   || '—';
       document.getElementById('proj-cat2').textContent   = p.category || '—';
 
-      if (p.image) {
+      const fallbackCover = () => { const w = document.getElementById('proj-img-wrap'); if (w) w.innerHTML = `<div class="proj-img-fallback"><span>${esc((p.client || p.title || '').trim())}</span></div>`; };
+      if (!p.image || /^\/?assets\/img\//.test(p.image)) fallbackCover();   // no cover, or a template stock photo
+      else {
         const img = document.getElementById('proj-img');
         if (img) {
           // Missing image → a branded panel with the client's name instead of a broken picture
-          img.onerror = () => { img.remove(); const w = document.getElementById('proj-img-wrap'); if (w) w.innerHTML = `<div class="proj-img-fallback"><span>${esc(p.client || p.title)}</span></div>`; };
+          img.onerror = fallbackCover;
           img.src = media(p.image); img.alt = p.title; img.style.display = 'block';
         }
       }
