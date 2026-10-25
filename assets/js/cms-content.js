@@ -209,6 +209,7 @@
             ? `<span>${esc(item)} <span class="mdiamond">◆</span></span>`
             : `<div class="marquee-item">${esc(item)} <span class="dot">◆</span></div>`
         ).join('');
+        if (window.scalenMarquee) window.scalenMarquee();
       }
     }
     // Footer tagline + copyright
