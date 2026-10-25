@@ -2,13 +2,31 @@
    SHARED JS — runs on every page
 ============================================= */
 
-/* --- Loader --- */
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    const loader = document.getElementById('loader');
-    if (loader) loader.classList.add('hidden');
-  }, 400);
-});
+/* --- Loader: switched off in CSS; mark it hidden so nothing waits on it --- */
+{ const loader = document.getElementById('loader'); if (loader) loader.classList.add('hidden'); }
+
+/* --- Hero brackets lock in once, on the headline that stays ---
+   Most heroes are filled in by the CMS a moment after the page opens. The lock-in (CSS) is
+   held until that text is in — or the CMS has answered, or 2s have passed — so the brackets
+   focus once, on the final words. Headings marked data-brk-wait (filled by the page's own
+   script) wait for their text. */
+(function () {
+  const h = document.querySelector('#hero .hero-title, .page-hero h1, .cs-hero h1, .proj-hero h1, .svc-hero h1');
+  if (!h) return;
+  const root = document.documentElement;
+  root.classList.add('brk-hold');
+  let done = false;
+  const mo = new MutationObserver(() => go());
+  function go() {
+    if (done) return;
+    done = true; mo.disconnect();
+    // two frames: the frame-fit (below) sizes the heading to its new text first
+    requestAnimationFrame(() => requestAnimationFrame(() => root.classList.remove('brk-hold')));
+  }
+  mo.observe(h, { childList: true, characterData: true, subtree: true });
+  if (!h.hasAttribute('data-brk-wait')) document.addEventListener('scalen:content', () => setTimeout(go, 30), { once: true });
+  setTimeout(go, 2000);
+})();
 
 /* --- Sticky header --- */
 const header = document.getElementById('header');
@@ -124,49 +142,12 @@ window.scalenSeo = function (title, description) {
   }, 3000);
 })();
 
-/* --- Counter animation --- */
-(function () {
-  const counters = document.querySelectorAll('.counter');
-  if (!counters.length) return;
-
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const el     = entry.target;
-        const target = +el.dataset.target;
-        const dur    = 1800;
-        const step   = 16;
-        const inc    = target / (dur / step);
-        let cur      = 0;
-        const timer  = setInterval(() => {
-          cur += inc;
-          if (cur >= target) { el.textContent = target.toLocaleString(); clearInterval(timer); }
-          else               { el.textContent = Math.floor(cur).toLocaleString(); }
-        }, step);
-        obs.unobserve(el);
-      }
-    });
-  }, { threshold: 0.5 });
-
-  counters.forEach(el => obs.observe(el));
-})();
-
-/* --- Skill bars --- */
-(function () {
-  const bars = document.querySelectorAll('.skill-fill');
-  if (!bars.length) return;
-
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.style.width = entry.target.dataset.w || entry.target.style.getPropertyValue('--w');
-        obs.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.3 });
-
-  bars.forEach(el => obs.observe(el));
-})();
+/* --- Numbers and skill bars show their final value (no count-up, no fill animation) --- */
+document.querySelectorAll('.counter[data-target]').forEach(el => { el.textContent = (+el.dataset.target).toLocaleString(); });
+document.querySelectorAll('.skill-fill').forEach(el => {
+  const w = el.dataset.w || el.style.getPropertyValue('--w');
+  if (w) el.style.setProperty('--w', w);
+});
 
 /* --- Portfolio filter (if exists) --- */
 (function () {
@@ -181,16 +162,7 @@ window.scalenSeo = function (title, description) {
       const f = btn.dataset.filter;
 
       cards.forEach(card => {
-        const show = f === 'all' || card.dataset.filter === f;
-        card.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
-        if (show) {
-          card.style.display = '';
-          setTimeout(() => { card.style.opacity = '1'; card.style.transform = 'translateY(0)'; }, 10);
-        } else {
-          card.style.opacity = '0';
-          card.style.transform = 'translateY(20px)';
-          setTimeout(() => { card.style.display = 'none'; }, 360);
-        }
+        card.style.display = (f === 'all' || card.dataset.filter === f) ? '' : 'none';
       });
     });
   });
@@ -253,7 +225,7 @@ window.scalenSeo = function (title, description) {
    text. Size each framed heading to its longest line; re-run when the CMS fills it in,
    when the fonts arrive and when the window is resized. */
 (function () {
-  const SEL = '#hero .hero-title, .page-hero h1, .cs-hero h1, .proj-hero h1, .svc-hero h1';
+  const SEL = '#hero .hero-title, .page-hero h1, .cs-hero h1, .proj-hero h1, .svc-hero h1, .sec-title';
   function fit(h) {
     h.style.width = '';
     const range = document.createRange();
@@ -269,9 +241,35 @@ window.scalenSeo = function (title, description) {
   let queued = 0;
   function later() { cancelAnimationFrame(queued); queued = requestAnimationFrame(fitAll); }
   const mo = new MutationObserver(later);
-  document.querySelectorAll(SEL).forEach(h => mo.observe(h, { childList: true, characterData: true, subtree: true }));
+  const watch = h => mo.observe(h, { childList: true, characterData: true, subtree: true });
+  document.querySelectorAll(SEL).forEach(watch);
+  window.scalenFitWatch = root => (root || document).querySelectorAll(SEL).forEach(watch);
   window.addEventListener('resize', later);
   window.addEventListener('load', later);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(later);
   later();
+})();
+
+/* --- Section titles: the logo brackets close in on the title when it scrolls into view (once) ---
+   Titles start "waiting" only when JS runs and the browser can observe; otherwise the brackets
+   are simply there. Reduced motion is handled in CSS (the brackets appear without travelling). */
+(function () {
+  if (!('IntersectionObserver' in window)) return;
+  const root = document.documentElement;
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('brk-in'); obs.unobserve(e.target); } });
+  }, { threshold: 0.6, rootMargin: '0px 0px -8% 0px' });
+  function arm(scope) {
+    (scope || document).querySelectorAll('.sec-title:not(.brk-in)').forEach(t => obs.observe(t));
+  }
+  root.classList.add('brk-wait');
+  arm();
+  // Titles the CMS adds later are picked up too
+  new MutationObserver(muts => {
+    if (muts.some(m => [...m.addedNodes].some(n => n.nodeType === 1 && (n.matches('.sec-title') || n.querySelector('.sec-title'))))) arm();
+  }).observe(document.body, { childList: true, subtree: true });
+  // Safety: never leave a title without its brackets
+  setTimeout(() => document.querySelectorAll('.sec-title').forEach(t => {
+    const r = t.getBoundingClientRect(); if (r.bottom < innerHeight && r.top > -r.height) t.classList.add('brk-in');
+  }), 2500);
 })();
