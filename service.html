@@ -365,7 +365,7 @@
       if (projects.length) {
         $('svc-projects').innerHTML = projects.map(p => `
           <a class="svc-proj" href="project.html?id=${encodeURIComponent(p.id)}">
-            <div class="svc-proj-img">${p.image ? `<img src="${esc(media(p.image))}" alt="${esc(p.title)}" loading="lazy" data-name="${esc(p.client || '')}" onerror="var s=document.createElement('span');s.textContent=this.dataset.name;this.parentNode.replaceChild(s,this)">` : `<span>${esc(p.client || '')}</span>`}</div>
+            <div class="svc-proj-img">${p.image && !/^\/?assets\/img\//.test(p.image) ? `<img src="${esc(media(p.image))}" alt="${esc(p.title)}" loading="lazy" data-name="${esc(p.client || '')}" onerror="var s=document.createElement('span');s.textContent=this.dataset.name;this.parentNode.replaceChild(s,this)">` : `<span>${esc(p.client || '')}</span>`}</div>
             <div class="svc-proj-body">
               ${p.category ? `<div class="svc-proj-cat">${esc(p.category)}</div>` : ''}
               <h3>${esc(p.title)}</h3>
