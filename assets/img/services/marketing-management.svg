@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 800" width="1000" height="800">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2236D6"/><stop offset="1" stop-color="#0B1890"/></linearGradient>
+<pattern id="dots" width="34" height="34" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="2.2" fill="#fff" fill-opacity=".09"/></pattern>
+<filter id="sh" x="-25%" y="-25%" width="150%" height="170%"><feDropShadow dx="0" dy="18" stdDeviation="20" flood-color="#030838" flood-opacity=".38"/></filter>
+<linearGradient id="post" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2E44E4"/><stop offset="1" stop-color="#0F1FA8"/></linearGradient>
+</defs>
+<rect width="1000" height="800" fill="url(#bg)"/><rect width="1000" height="800" fill="url(#dots)"/>
+<rect x="110" y="140" width="780" height="340" rx="18" fill="#fff" filter="url(#sh)"/>
+<rect x="150" y="180" width="190" height="16" rx="8.0" fill="#C7CCEA"/>
+<rect x="150" y="208" width="120" height="10" rx="5.0" fill="#E3E6F5"/>
+<line x1="170" y1="360" x2="830" y2="360" stroke="#E3E6F5" stroke-width="8" stroke-linecap="round"/>
+<line x1="170" y1="360" x2="500" y2="360" stroke="#0F1FA8" stroke-width="8" stroke-linecap="round"/>
+<circle cx="170" cy="360" r="20" fill="#0F1FA8" />
+<path d="M163.25 360.375l4.5 4.5 9.0 -9.75" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="125" y="278" width="90" height="12" rx="6.0" fill="#C7CCEA"/>
+<rect x="140" y="412" width="60" height="9" rx="4.5" fill="#E3E6F5"/>
+<circle cx="335" cy="360" r="20" fill="#0F1FA8" />
+<path d="M328.25 360.375l4.5 4.5 9.0 -9.75" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="290" y="278" width="90" height="12" rx="6.0" fill="#C7CCEA"/>
+<rect x="305" y="412" width="60" height="9" rx="4.5" fill="#E3E6F5"/>
+<circle cx="500" cy="360" r="36" fill="#FDECE7" />
+<circle cx="500" cy="360" r="22" fill="#F04E2A" />
+<rect x="445" y="278" width="110" height="12" rx="6.0" fill="#0B1033"/>
+<rect x="470" y="412" width="60" height="9" rx="4.5" fill="#E3E6F5"/>
+<circle cx="665" cy="360" r="18" fill="#fff" stroke="#D5DAF2" stroke-width="5"/>
+<rect x="620" y="278" width="90" height="12" rx="6.0" fill="#E3E6F5"/>
+<rect x="635" y="412" width="60" height="9" rx="4.5" fill="#E3E6F5"/>
+<circle cx="830" cy="360" r="18" fill="#fff" stroke="#D5DAF2" stroke-width="5"/>
+<rect x="785" y="278" width="90" height="12" rx="6.0" fill="#E3E6F5"/>
+<rect x="800" y="412" width="60" height="9" rx="4.5" fill="#E3E6F5"/>
+<path d="M522 312H542Q548 312 548 318V338" fill="none" stroke="#F04E2A" stroke-width="7"/>
+<path d="M478 408H458Q452 408 452 402V382" fill="none" stroke="#F04E2A" stroke-width="7"/>
+<rect x="150" y="440" width="380" height="240" rx="18" fill="#fff" filter="url(#sh)"/>
+<rect x="190" y="480" width="32" height="32" rx="8" fill="#0F1FA8"/><path d="M200.6 496.3l3.5999999999999996 3.5999999999999996 7.199999999999999 -7.8" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="242" y="489" width="200" height="14" rx="7.0" fill="#C7CCEA"/>
+<rect x="190" y="540" width="32" height="32" rx="8" fill="#F04E2A"/><path d="M200.6 556.3l3.5999999999999996 3.5999999999999996 7.199999999999999 -7.8" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="242" y="549" width="170" height="14" rx="7.0" fill="#C7CCEA"/>
+<rect x="192" y="602" width="28" height="28" rx="7" fill="#fff" stroke="#D5DAF2" stroke-width="4"/>
+<rect x="242" y="609" width="150" height="14" rx="7.0" fill="#E3E6F5"/>
+<rect x="570" y="500" width="320" height="190" rx="18" fill="#fff" filter="url(#sh)"/>
+<circle cx="602" cy="556" r="7" fill="#0F1FA8" />
+<rect x="622" y="550" width="236" height="12" rx="6.0" fill="#E3E6F5"/>
+<rect x="622" y="550" width="190" height="12" rx="6.0" fill="#0F1FA8"/>
+<circle cx="602" cy="606" r="7" fill="#F04E2A" />
+<rect x="622" y="600" width="236" height="12" rx="6.0" fill="#E3E6F5"/>
+<rect x="622" y="600" width="130" height="12" rx="6.0" fill="#F04E2A"/>
+<circle cx="602" cy="656" r="7" fill="#0F1FA8" />
+<rect x="622" y="650" width="236" height="12" rx="6.0" fill="#E3E6F5"/>
+<rect x="622" y="650" width="215" height="12" rx="6.0" fill="#0F1FA8"/>
+</svg>

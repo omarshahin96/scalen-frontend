@@ -44,7 +44,7 @@
     .svc-hero .svc-sub { font-size:18px;line-height:1.75;color:var(--grey-lt);max-width:560px;margin-bottom:34px; }
     .svc-btns { display:flex;gap:14px;flex-wrap:wrap; }
     .svc-btns .btn-ghost { border-color:rgba(255,255,255,.45);color:#fff; }
-    /* Hero photo: per service from the CMS, else a default photo for that service */
+    /* Hero picture: the photo uploaded in the CMS, else the service's brand illustration (assets/img/services/) */
     .svc-hero-media { margin:0;border-radius:12px;overflow:hidden;aspect-ratio:5/4;background:rgba(255,255,255,.08);box-shadow:0 40px 70px -24px rgba(3,8,56,.7), 0 18px 30px -18px rgba(3,8,56,.5); }
     .svc-hero-media img { width:100%;height:100%;object-fit:cover;display:block; }
 
@@ -52,8 +52,9 @@
     .svc-incl { padding:72px 0;border-bottom:1px solid var(--line); }
     .svc-incl h2 { font-family:var(--font-h);font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--brand-blue);margin-bottom:28px; }
     .svc-incl ul { list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:22px 40px; }
-    .svc-incl li { display:flex;gap:12px;align-items:flex-start;font-size:16px;font-weight:600;line-height:1.5;color:var(--ink); }
-    .svc-incl li i { color:var(--brand-orange);font-size:14px;margin-top:5px;flex-shrink:0; }
+    .svc-incl li { display:flex;gap:14px;align-items:flex-start;font-size:16px;font-weight:600;line-height:1.5;color:var(--ink); }
+    /* Orange check drawn in CSS, so it never depends on the icon font */
+    .svc-incl li::before { content:'';flex-shrink:0;width:24px;height:24px;margin-top:-1px;border-radius:50%;background:var(--brand-orange) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 12.4l3.2 3.2L17 8.8' fill='none' stroke='%23fff' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/24px 24px no-repeat; }
 
     .svc-sec { padding:110px 0; }
     .svc-sec.alt { background:var(--bg-dark); }
@@ -351,23 +352,17 @@
       $('svc-title').textContent = s.title;
       $('svc-sub').textContent = d.hero_subtitle || s.description || '';
       if (s.icon) $('svc-icon').className = 'fas ' + s.icon;
-      // Hero photo: uploaded in the CMS, else the default photo for this service
-      const DEFAULT_PHOTO = {
-        'performance-media-buying': '/assets/img/hr1.3.webp',
-        'marketing-management': '/assets/img/wc4.webp',
-        'marketing-infrastructure': '/assets/img/hr1.2.webp',
-        'social-media-management': '/assets/img/wc5.webp',
-        'branding-identity': '/assets/img/blg2.webp',
-        'conversion-web-development': '/assets/img/ab-ft1.webp'
-      };
+      // Hero picture: the photo uploaded in the CMS, else this service's brand illustration
+      const ART = ['performance-media-buying', 'marketing-management', 'marketing-infrastructure', 'social-media-management', 'branding-identity', 'conversion-web-development'];
+      const art = '/assets/img/services/' + (ART.includes(slug) ? slug : 'marketing-management') + '.svg';
       const photo = $('svc-hero-img');
       photo.alt = s.title;
-      photo.onerror = () => { photo.onerror = null; photo.src = DEFAULT_PHOTO[slug] || '/assets/img/hr1.3.webp'; };
-      photo.src = d.hero_image ? media(d.hero_image) : (DEFAULT_PHOTO[slug] || '/assets/img/hr1.3.webp');
+      photo.onerror = () => { photo.onerror = null; photo.src = art; };
+      photo.src = d.hero_image ? media(d.hero_image) : art;
       $('svc-form-service').value = s.title;
 
       const feats = String(s.features || '').split(/\r?\n/).map(x => x.trim()).filter(Boolean);
-      if (feats.length) { $('svc-features').innerHTML = feats.map(f => `<li><i class="fas fa-check"></i><span>${esc(f)}</span></li>`).join(''); showSec('svc-incl'); }
+      if (feats.length) { $('svc-features').innerHTML = feats.map(f => `<li><span>${esc(f)}</span></li>`).join(''); showSec('svc-incl'); }
 
       if (d.problem_heading || d.problem_body) { $('svc-problem-h').textContent = d.problem_heading || ''; $('svc-problem-p').textContent = d.problem_body || ''; showSec('svc-problem'); }
 

@@ -142,6 +142,21 @@ window.scalenSeo = function (title, description) {
   }, 3000);
 })();
 
+/* --- Services strip loops sideways ---
+   The items are drawn twice so the loop is seamless (the copy is hidden from screen readers).
+   cms-content.js calls this again after it fills the strip from the CMS. */
+window.scalenMarquee = function () {
+  document.querySelectorAll('.marquee-track').forEach(track => {
+    track.querySelectorAll('[data-dup]').forEach(n => n.remove());
+    const items = [...track.children];
+    if (!items.length) return;
+    items.forEach(n => { const c = n.cloneNode(true); c.setAttribute('data-dup', ''); c.setAttribute('aria-hidden', 'true'); track.appendChild(c); });
+    // Same speed (about 45px a second) however many items there are
+    requestAnimationFrame(() => track.style.setProperty('--marq-dur', Math.max(20, Math.round(track.scrollWidth / 2 / 45)) + 's'));
+  });
+};
+window.scalenMarquee();
+
 /* --- Numbers and skill bars show their final value (no count-up, no fill animation) --- */
 document.querySelectorAll('.counter[data-target]').forEach(el => { el.textContent = (+el.dataset.target).toLocaleString(); });
 document.querySelectorAll('.skill-fill').forEach(el => {

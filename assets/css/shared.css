@@ -165,7 +165,7 @@ button { cursor:pointer; font-family:var(--font-b); border:none; background:none
 .btn-green:hover { background:var(--brand-orange-dk); }
 
 /* =============================================
-   MOTION — the logo brackets are the only thing that moves on the site.
+   MOTION — the logo brackets, plus the services strip that loops sideways.
    (.reveal is kept as a hook in the markup but no longer fades or slides content in.)
 ============================================= */
 .reveal { opacity:1; transform:none; }
@@ -286,14 +286,15 @@ button { cursor:pointer; font-family:var(--font-b); border:none; background:none
    MARQUEE STRIP
 ============================================= */
 .marquee-wrap { background:var(--brand-blue); padding:16px 0; overflow:hidden; border-top:1px solid rgba(255,255,255,0.12); }
-.marquee-track { display:flex; flex-wrap:wrap; justify-content:center; row-gap:8px; max-width:1260px; margin:0 auto; padding:0 20px; }
+.marquee-track { display:flex; width:max-content; animation:marq var(--marq-dur, 40s) linear infinite; }
+.marquee-wrap:hover .marquee-track, .marquee-strip:hover .marquee-track { animation-play-state:paused; }
+@keyframes marq { from { transform:translateX(0); } to { transform:translateX(-50%); } }
 .marquee-item {
   display:flex; align-items:center; gap:20px; padding:0 20px;
   white-space:nowrap; font-size:13px; font-weight:600;
   letter-spacing:0.12em; text-transform:uppercase; color:#fff;
 }
 .marquee-item .dot { color:var(--brand-orange); font-size:9px; }
-.marquee-track > :last-child .dot, .marquee-track > :last-child .mdiamond { display:none; }
 /* Contact page strip uses .marquee-strip with <span> items — same look as .marquee-wrap */
 .marquee-strip { background:var(--brand-blue); padding:16px 0; overflow:hidden; border-top:1px solid rgba(255,255,255,0.12); }
 .marquee-strip .marquee-track > span {
@@ -477,7 +478,8 @@ button { cursor:pointer; font-family:var(--font-b); border:none; background:none
    1. Hero titles: the brackets lock onto the headline once, when the page opens.
    2. Section titles: the brackets close in on the title when it scrolls into view.
    3. Service and project cards: the brackets draw into the corners on hover / focus.
-   Nothing else moves. Reduced motion: brackets appear in place, without travel.
+   Besides these, only the services strip moves (it loops sideways). Reduced motion: brackets
+   appear in place, without travel, and the strip stands still.
 ============================================= */
 @keyframes brkLockTR { from { opacity:0; transform:translate(18px,-18px); } }
 @keyframes brkLockBL { from { opacity:0; transform:translate(-18px,18px); } }
@@ -538,7 +540,7 @@ html.brk-hold .svc-hero h1::before, html.brk-hold .svc-hero h1::after { animatio
 .pf-card:hover .pf-img img, .blog-card:hover .blog-img img, .team-card:hover .team-photo img,
 .gallery-img:hover img, .sf-img:hover img, .hero-img-wrap:hover img, .pf-card .pf-view { transform:none !important; }
 .pf-overlay { display:none !important; }
-.fl-card, .hero-badge i, .marquee-track, .loader-ring { animation:none !important; }
+.fl-card, .hero-badge i, .loader-ring { animation:none !important; }
 .map-wrap::after { animation:none !important; }
 .skill-fill { width:var(--w, 0%) !important; transition:none !important; }
 
@@ -552,4 +554,10 @@ html.brk-hold .svc-hero h1::before, html.brk-hold .svc-hero h1::after { animatio
 @media (max-width: 640px) {
   .sec-title::before { top:-9px; right:-12px; width:22px; height:22px; border-top-width:4px; border-right-width:4px; }
   .sec-title::after  { bottom:-6px; left:-12px; width:22px; height:22px; border-bottom-width:4px; border-left-width:4px; }
+}
+
+/* Services strip: with reduced motion it stands still as a centred, wrapping row */
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation:none; width:auto; flex-wrap:wrap; justify-content:center; row-gap:8px; max-width:1260px; margin:0 auto; padding:0 20px; }
+  .marquee-track [data-dup] { display:none; }
 }
