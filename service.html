@@ -44,7 +44,7 @@
     .svc-hero .svc-sub { font-size:18px;line-height:1.75;color:var(--grey-lt);max-width:560px;margin-bottom:34px; }
     .svc-btns { display:flex;gap:14px;flex-wrap:wrap; }
     .svc-btns .btn-ghost { border-color:rgba(255,255,255,.45);color:#fff; }
-    /* Hero picture: the photo uploaded in the CMS, else the service's brand illustration (assets/img/services/) */
+    /* Hero photo: uploaded in the CMS, else a photo from the site's original set */
     .svc-hero-media { margin:0;border-radius:12px;overflow:hidden;aspect-ratio:5/4;background:rgba(255,255,255,.08);box-shadow:0 40px 70px -24px rgba(3,8,56,.7), 0 18px 30px -18px rgba(3,8,56,.5); }
     .svc-hero-media img { width:100%;height:100%;object-fit:cover;display:block; }
 
@@ -352,13 +352,20 @@
       $('svc-title').textContent = s.title;
       $('svc-sub').textContent = d.hero_subtitle || s.description || '';
       if (s.icon) $('svc-icon').className = 'fas ' + s.icon;
-      // Hero picture: the photo uploaded in the CMS, else this service's brand illustration
-      const ART = ['performance-media-buying', 'marketing-management', 'marketing-infrastructure', 'social-media-management', 'branding-identity', 'conversion-web-development'];
-      const art = '/assets/img/services/' + (ART.includes(slug) ? slug : 'marketing-management') + '.svg';
+      // Hero photo: uploaded in the CMS, else a photo from the site's original set
+      const DEFAULT_PHOTO = {
+        'performance-media-buying': '/assets/img/hr1.3.webp',
+        'marketing-management': '/assets/img/wc4.webp',
+        'marketing-infrastructure': '/assets/img/hr1.2.webp',
+        'social-media-management': '/assets/img/wc5.webp',
+        'branding-identity': '/assets/img/blg2.webp',
+        'conversion-web-development': '/assets/img/ab-ft1.webp'
+      };
+      const fallback = DEFAULT_PHOTO[slug] || '/assets/img/hr1.3.webp';
       const photo = $('svc-hero-img');
       photo.alt = s.title;
-      photo.onerror = () => { photo.onerror = null; photo.src = art; };
-      photo.src = d.hero_image ? media(d.hero_image) : art;
+      photo.onerror = () => { photo.onerror = null; photo.src = fallback; };
+      photo.src = d.hero_image ? media(d.hero_image) : fallback;
       $('svc-form-service').value = s.title;
 
       const feats = String(s.features || '').split(/\r?\n/).map(x => x.trim()).filter(Boolean);
