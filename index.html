@@ -81,39 +81,83 @@
     .client-txt { font-size:14px;color:var(--grey); }
     .client-txt strong { display:block;font-size:16px;font-weight:700;color:var(--ink); }
 
-    /* Hero right */
-    .hero-right { position:relative;height:560px;display:flex;align-items:center;justify-content:center; }
-    .hero-img-wrap {
-      width:340px;height:470px;border-radius:10px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-c);
-    }
-    .hero-img-wrap img { width:100%;height:100%;object-fit:cover;transition:transform 7s ease; }
-    .hero-img-wrap:hover img { transform:scale(1.06); }
+    /* Hero right — "campaign console": real case results drawn as a live dashboard.
+       Default state is the final frame; the intro plays with CSS keyframes, hero-console.js
+       counts the number and cycles the lead feed (both skip on reduced motion). */
+    .hero-right { position:relative;display:flex;justify-content:center;align-items:center;min-height:560px;padding-top:70px; }
+    .hero-console { position:relative;width:min(100%,470px);text-align:start;--ink:#0B1033;--ink-2:#23284A;--grey:#5A6078;--line:rgba(15,31,168,.12); }
+    .hc-card { position:relative;background:#fff;color:var(--ink);border-radius:16px;padding:26px 26px 18px;
+      box-shadow:0 40px 80px -30px rgba(0,0,0,.55), 0 18px 36px -18px rgba(0,0,0,.4);
+      animation:hcRise .8s cubic-bezier(.16,1,.3,1) .15s both; }
+    .hc-top { display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px; }
+    .hc-client { display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;color:var(--ink); }
+    .hc-client small { display:block;font-size:12px;font-weight:500;color:var(--grey);margin-top:2px; }
+    .hc-mark { width:34px;height:34px;border-radius:9px;background:var(--brand-blue);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:17px;flex-shrink:0; }
+    .hc-platform { display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:var(--grey);padding:6px 10px;border:1px solid var(--line);border-radius:999px;white-space:nowrap; }
+    .hc-platform i { color:#0866FF;font-size:13px; }
+    .hc-live { width:7px;height:7px;border-radius:50%;background:#1BB46A; }
+    .hc-label { font-size:13px;font-weight:600;color:var(--grey); }
+    .hc-value { display:flex;align-items:flex-end;gap:12px;margin:4px 0 6px; }
+    .hc-num { font-family:var(--font-d);font-size:64px;line-height:.9;color:var(--ink);font-variant-numeric:tabular-nums;letter-spacing:.01em; }
+    .hc-delta { display:inline-flex;align-items:center;gap:6px;margin-bottom:6px;padding:6px 10px;border-radius:7px;background:rgba(240,78,42,.1);color:#B3341A;font-size:13px;font-weight:700;
+      animation:hcPop .5s cubic-bezier(.16,1,.3,1) 2.15s both; }
+    .hc-from { font-size:12px;color:var(--grey);margin-bottom:4px; }
+    .hc-from s { color:var(--ink-2);text-decoration-thickness:1.5px; }
+    .hc-chart { display:block;width:100%;height:auto;margin-top:6px;overflow:visible; }
+    .hc-grid line { stroke:rgba(15,31,168,.08);stroke-width:1; }
+    .hc-area { fill:url(#hcFill);animation:hcFade .9s ease-out 1.2s both; }
+    .hc-line { fill:none;stroke:var(--brand-blue);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:640;stroke-dashoffset:0;
+      animation:hcDraw 1.5s cubic-bezier(.65,0,.35,1) .45s both; }
+    .hc-dot { fill:var(--brand-orange);animation:hcPop .4s cubic-bezier(.16,1,.3,1) 1.9s both;transform-box:fill-box;transform-origin:center; }
+    .hc-lock { fill:none;stroke:var(--brand-orange);stroke-width:4;stroke-linecap:round;stroke-linejoin:round;transform-box:view-box;
+      animation:hcLock .55s cubic-bezier(.16,1,.3,1) 1.95s both; }
+    .hc-axis { /*rtl:ignore*/direction:ltr; display:flex;justify-content:space-between;font-size:11px;font-weight:600;color:var(--grey);margin-top:2px; }
 
-    /* Floating cards */
-    .fl-card {
-      position:absolute;background:#fff;backdrop-filter:none;border:1px solid var(--line);border-radius:10px;padding:18px 22px;box-shadow:var(--shadow-c);--ink:#0B1033;--ink-2:#23284A;--grey:#5A6078;--grey-lt:#3F4560;--label:var(--brand-blue);--line:rgba(15,31,168,.12);--border:rgba(15,31,168,.12);--tint:rgba(15,31,168,.04);--tint-2:rgba(15,31,168,.08);--blue:var(--brand-blue);--blue-lt:var(--brand-blue);--blue-hover:var(--brand-blue-dk);color:var(--ink);
+    .hc-feed { position:absolute;/*rtl:ignore*/left:-70px;bottom:-46px;width:262px;display:flex;flex-direction:column;gap:10px;z-index:2; }
+    .hc-toast { display:flex;align-items:center;gap:12px;background:#fff;border-radius:12px;padding:12px 14px;color:var(--ink);
+      box-shadow:0 22px 40px -20px rgba(0,0,0,.5), 0 6px 14px -8px rgba(0,0,0,.3);animation:hcIn .6s cubic-bezier(.16,1,.3,1) both; }
+    .hc-toast:nth-child(1) { animation-delay:2.4s; } .hc-toast:nth-child(2) { animation-delay:2.55s; }
+    .hc-toast.is-new { animation:hcIn .55s cubic-bezier(.16,1,.3,1) both; }
+    .hc-toast.is-out { animation:hcOut .35s ease-in both; }
+    .hc-ico { width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px; }
+    .hc-ico.wa { background:rgba(37,211,102,.12);color:#128C4A; }
+    .hc-ico.form { background:rgba(15,31,168,.08);color:var(--brand-blue); }
+    .hc-ico.cal { background:rgba(240,78,42,.12);color:var(--brand-orange-dk); }
+    .hc-t { font-size:13px;font-weight:700;line-height:1.3; }
+    .hc-s { font-size:12px;color:var(--grey);line-height:1.35; }
+
+    .hc-roas { position:absolute;right:-34px;top:-112px;width:196px;background:var(--brand-orange-dk);color:#fff;border-radius:14px;padding:16px 18px 14px;z-index:2;
+      box-shadow:0 26px 44px -22px rgba(0,0,0,.55);animation:hcRise .7s cubic-bezier(.16,1,.3,1) .9s both; }
+    .hc-roas-k { font-size:12px;font-weight:600; }
+    .hc-roas-v { /*rtl:ignore*/direction:ltr; font-family:var(--font-d);font-size:40px;line-height:1;margin:6px 0 10px;display:flex;align-items:baseline;gap:8px; }
+    .hc-roas-v small { font-size:24px;opacity:.85; }
+    .hc-bars { display:flex;align-items:flex-end;gap:6px;height:34px; }
+    .hc-bars span { flex:1;border-radius:3px 3px 0 0;background:rgba(255,255,255,.45);transform-origin:bottom;animation:hcGrow .7s cubic-bezier(.16,1,.3,1) both; }
+    .hc-bars span:last-child { background:#fff; }
+    .hc-bars span:nth-child(1){height:40%;animation-delay:1.3s} .hc-bars span:nth-child(2){height:52%;animation-delay:1.38s} .hc-bars span:nth-child(3){height:68%;animation-delay:1.46s} .hc-bars span:nth-child(4){height:100%;animation-delay:1.54s}
+
+    html[dir="rtl"] .hc-roas-v { justify-content:flex-end; }
+    html[dir="rtl"] .hc-num, html[dir="rtl"] .hc-roas-v, html[dir="rtl"] .hc-from s { font-family:'Gobold','Alexandria',sans-serif; /*rtl:ignore*/direction:ltr; unicode-bidi:isolate; }
+    @keyframes hcRise { from { opacity:0; transform:translateY(28px); } }
+    @keyframes hcFade { from { opacity:0; } }
+    @keyframes hcDraw { from { stroke-dashoffset:640; } }
+    @keyframes hcPop  { from { opacity:0; transform:scale(.6); } }
+    @keyframes hcLock { from { opacity:0; transform:scale(1.9); } }
+    @keyframes hcGrow { from { transform:scaleY(0); } }
+    @keyframes hcIn   { from { opacity:0; transform:translateY(-14px) scale(.97); } }
+    @keyframes hcOut  { to { opacity:0; transform:translateY(12px) scale(.97); } }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-console *, .hero-console { animation:none !important; }
     }
-    .fl-card-1 { bottom:60px;left:-65px;width:215px;animation:floatY 5s ease-in-out infinite; }
-    .fl-card-2 { top:50px;right:-55px;width:195px;animation:floatY 5s ease-in-out infinite 2.5s; }
-    @keyframes floatY { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+
     /* Large screens: use the extra width instead of leaving it empty around the hero */
     @media(min-width:1440px){
       #hero > .container { max-width:1400px; }
       .hero-inner { grid-template-columns:1.1fr .9fr; gap:48px; }
       #hero .hero-title { font-size:clamp(66px,4.3vw,86px); }
       .hero-sub { font-size:18px; max-width:540px; }
-      .hero-right { height:640px; }
-      .hero-img-wrap { width:400px; height:550px; }
+      .hero-console { width:min(100%,500px); }
     }
-    .fc-lbl  { font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);margin-bottom:6px; }
-    .fc-ttl  { font-family:var(--font-h);font-size:14px;font-weight:700;color:var(--ink);line-height:1.35;margin-bottom:10px; }
-    .fc-stars { display:flex;gap:3px;margin-bottom:8px; }
-    .fc-stars i { font-size:10px;color:var(--blue-lt); }
-    .fc-stat { display:flex;align-items:center;gap:8px;margin-top:8px; }
-    .fc-num  { font-family:var(--font-d);font-size:30px;font-weight:400;color:var(--green);line-height:1; }
-    .fc-sub  { font-size:11px;color:var(--grey);line-height:1.4; }
-    .fc-icon { width:38px;height:38px;border-radius:10px;background:var(--blue);display:flex;align-items:center;justify-content:center;margin-bottom:10px;--ink:#fff;--ink-2:rgba(255,255,255,.92);--grey:rgba(255,255,255,.8);--grey-lt:rgba(255,255,255,.9);--label:#fff;--line:rgba(255,255,255,.22);--border:rgba(255,255,255,.22);--tint:rgba(255,255,255,.1);--tint-2:rgba(255,255,255,.15);--blue-lt:#fff;color:#fff; }
-    .fc-icon i { color:var(--ink);font-size:15px; }
 
     /* ── SERVICES ────────────────────────────── */
     #services { padding:120px 0;background:var(--bg); }
@@ -288,7 +332,9 @@
     @media(max-width:1100px){ .team-grid{grid-template-columns:repeat(2,1fr);} }
     @media(max-width:1024px){
       .hero-inner{grid-template-columns:1fr;text-align:center;}
-      .hero-right{display:none;}
+      .hero-right{min-height:0;margin-top:24px;padding:100px 40px 40px;}
+      .hc-roas{right:-16px;}
+      .hc-feed{/*rtl:ignore*/left:-24px;}
       .hero-btns,.hero-clients{justify-content:center;}
       .hero-sub{max-width:100%;}
       .about-grid{grid-template-columns:1fr;gap:60px;}
@@ -299,6 +345,12 @@
       .contact-grid{grid-template-columns:1fr;gap:50px;}
     }
     @media(max-width:768px){
+      .hero-right{padding:0 0 36px;margin-top:48px;}
+      .hc-roas{display:none;}
+      .hc-card{padding-bottom:34px;}
+      .hc-feed{position:relative;left:auto;bottom:auto;width:auto;margin:-18px 16px 0;}
+      .hc-toast:nth-child(n+2){display:none;}
+      .hc-num{font-size:54px;}
       .svc-grid,.pf-grid,.blog-grid{grid-template-columns:1fr;}
       .stats-grid{grid-template-columns:repeat(2,1fr);}
       .stat-box{border-right:none;border-bottom:1px solid var(--border);}
@@ -392,21 +444,51 @@
         </div>
       </div>
       <div class="hero-right">
-        <div class="hero-img-wrap">
-          <!-- EDIT: hero main image -->
-          <img src="assets/img/ab6.webp" alt="Agency team" />
-        </div>
-        <div class="fl-card fl-card-1">
-          <!-- EDIT: floating card 1 -->
-          <div class="fc-lbl">Customer Support</div>
-          <div class="fc-ttl">Complete Customer Assistance</div>
-          <div class="fc-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-          <div class="fc-stat"><div class="fc-num">4.9</div><div class="fc-sub">Average<br>Rating Score</div></div>
-        </div>
-        <div class="fl-card fl-card-2">
-          <!-- EDIT: floating card 2 -->
-          <div class="fc-icon"><i class="fas fa-lightbulb"></i></div>
-          <div class="fc-ttl">Generation Cutting Edge Digital Creative</div>
+        <!-- Campaign console: real results from our case studies (Medinova, Zeroday Academy) -->
+        <div class="hero-console" id="heroConsole" aria-label="Campaign results from SCALEN case studies">
+          <div class="hc-roas">
+            <div class="hc-roas-k">Zeroday Academy · ROAS</div>
+            <div class="hc-roas-v"><small>2.5x →</small> 4x</div>
+            <div class="hc-bars" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+          </div>
+          <div class="hc-card">
+            <div class="hc-top">
+              <div class="hc-client"><span class="hc-mark" aria-hidden="true">M</span><span>Medinova<small>Hair &amp; dental implants</small></span></div>
+              <span class="hc-platform"><span class="hc-live" aria-hidden="true"></span><i class="fab fa-meta" aria-hidden="true"></i> Meta Ads</span>
+            </div>
+            <div class="hc-label">Cost per qualified lead</div>
+            <div class="hc-value">
+              <span class="hc-num" id="hcNum">$3.80</span>
+              <span class="hc-delta"><i class="fas fa-arrow-down" aria-hidden="true"></i> 77%</span>
+            </div>
+            <div class="hc-from">from <s>$17.00</s></div>
+            <svg class="hc-chart" viewBox="0 0 420 150" role="img" aria-label="Cost per lead falling from $17 to $3.80">
+              <defs>
+                <linearGradient id="hcFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#0F1FA8" stop-opacity=".16"/>
+                  <stop offset="1" stop-color="#0F1FA8" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <g class="hc-grid"><line x1="0" y1="20" x2="420" y2="20"/><line x1="0" y1="65" x2="420" y2="65"/><line x1="0" y1="110" x2="420" y2="110"/></g>
+              <path class="hc-area" d="M6 18 L44 26 L82 22 L120 44 L158 52 L196 70 L234 66 L272 88 L310 96 L348 108 L386 114 L396 116 L396 150 L6 150 Z"/>
+              <path class="hc-line" d="M6 18 L44 26 L82 22 L120 44 L158 52 L196 70 L234 66 L272 88 L310 96 L348 108 L386 114 L396 116"/>
+              <circle class="hc-dot" cx="396" cy="116" r="6"/>
+              <g class="hc-lock" style="transform-origin:396px 116px">
+                <path d="M406 98 L414 98 L414 106"/>
+                <path d="M386 134 L378 134 L378 126"/>
+              </g>
+            </svg>
+            <div class="hc-axis"><span>Week 1</span><span>Week 12</span></div>
+          </div>
+          <div class="hc-feed" id="hcFeed" aria-hidden="true">
+            <div class="hc-toast"><span class="hc-ico wa"><i class="fab fa-whatsapp"></i></span><span><span class="hc-t">New lead · Hair transplant</span><br><span class="hc-s">via WhatsApp · just now</span></span></div>
+            <div class="hc-toast"><span class="hc-ico cal"><i class="fas fa-calendar-check"></i></span><span><span class="hc-t">Consultation booked</span><br><span class="hc-s">Dental implants · 2 min ago</span></span></div>
+          </div>
+          <div id="hcMore" hidden aria-hidden="true">
+            <div class="hc-toast"><span class="hc-ico form"><i class="fas fa-file-lines"></i></span><span><span class="hc-t">New lead · Dental implants</span><br><span class="hc-s">Lead form · just now</span></span></div>
+            <div class="hc-toast"><span class="hc-ico wa"><i class="fab fa-whatsapp"></i></span><span><span class="hc-t">New lead · Hair transplant</span><br><span class="hc-s">via WhatsApp · just now</span></span></div>
+            <div class="hc-toast"><span class="hc-ico cal"><i class="fas fa-calendar-check"></i></span><span><span class="hc-t">Consultation booked</span><br><span class="hc-s">Hair transplant · just now</span></span></div>
+          </div>
         </div>
       </div>
     </div>
@@ -692,6 +774,7 @@
   });
 </script>
 <script src="assets/js/cms-config.js"></script>
+<script src="assets/js/hero-console.js"></script>
 <script src="assets/js/cms-content.js"></script>
 </body>
 </html>

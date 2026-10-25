@@ -35,7 +35,7 @@ const mode = process.argv.includes('--check') ? 'check' : process.argv.includes(
 // --pseudo: fill untranslated text with Arabic-looking filler of similar length (layout testing only)
 const PSEUDO = process.argv.includes('--pseudo');
 
-const INLINE = new Set(['a', 'abbr', 'b', 'br', 'code', 'em', 'i', 'mark', 'small', 'span', 'strong', 'sub', 'sup', 'u', 'time']);
+const INLINE = new Set(['a', 'abbr', 'b', 'br', 'code', 'em', 'i', 'mark', 's', 'small', 'span', 'strong', 'sub', 'sup', 'u', 'time']);
 const SKIP = new Set(['script', 'style', 'noscript', 'svg', 'template', 'iframe', 'code', 'pre']);
 const ATTRS = ['alt', 'title', 'placeholder', 'aria-label'];
 const LATIN = /[A-Za-z]{2,}/;

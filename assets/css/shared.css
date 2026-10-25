@@ -376,17 +376,6 @@ button { cursor:pointer; font-family:var(--font-b); border:none; background:none
   border-color:rgba(255,255,255,0.22); border-radius:4px;
 }
 #hero .hero-badge i { color:var(--brand-orange); }
-/* Hero photo: lifted off the blue with a layered deep-navy shadow (soft, not heavy) */
-#hero .hero-img-wrap {
-  border:none;
-  box-shadow:0 38px 70px -20px rgba(3,8,56,0.70), 0 16px 30px -16px rgba(3,8,56,0.55);
-  transition:transform 0.5s cubic-bezier(0.25,1,0.5,1), box-shadow 0.5s ease;
-}
-#hero .hero-img-wrap:hover {
-  transform:translateY(-6px);
-  box-shadow:0 48px 80px -22px rgba(3,8,56,0.75), 0 20px 34px -16px rgba(3,8,56,0.55);
-}
-#hero .fl-card { box-shadow:0 22px 44px -16px rgba(3,8,56,0.55); }
 /* Flat brand look: drop the template's photo washes behind blue sections */
 #hero .hero-bg, #stats .stats-bg { display:none; }
 
