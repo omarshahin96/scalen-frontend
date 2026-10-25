@@ -156,40 +156,24 @@ button { cursor:pointer; font-family:var(--font-b); border:none; background:none
   white-space:nowrap; cursor:pointer; border:1.5px solid transparent;
 }
 .btn-blue, .btn-primary { background:var(--blue); color:#fff; }
-.btn-blue:hover, .btn-primary:hover { background:var(--blue-hover); transform:translateY(-2px); }
+.btn-blue:hover, .btn-primary:hover { background:var(--blue-hover); }
 .btn-ghost { background:transparent; color:var(--ink); border-color:var(--line); }
-.btn-ghost:hover { border-color:var(--ink); background:var(--tint); transform:translateY(-2px); }
+.btn-ghost:hover { border-color:var(--ink); background:var(--tint); }
 #hero .btn-ghost, .page-hero .btn-ghost, .cs-hero .btn-ghost, .proj-hero .btn-ghost,
 .cta-sec .btn-ghost, .proj-cta .btn-ghost, .cs-cta .btn-ghost, .on-blue .btn-ghost { border-color:rgba(255,255,255,0.45); }
 .btn-green { background:var(--brand-orange); color:#fff; }
-.btn-green:hover { background:var(--brand-orange-dk); transform:translateY(-2px); }
+.btn-green:hover { background:var(--brand-orange-dk); }
 
 /* =============================================
-   SCROLL REVEAL — CSS + IntersectionObserver
-   Elements start hidden, class 'in-view' shows them
+   MOTION — the logo brackets are the only thing that moves on the site.
+   (.reveal is kept as a hook in the markup but no longer fades or slides content in.)
 ============================================= */
-.reveal {
-  opacity:0;
-  transform:translateY(36px);
-  transition:opacity 0.75s cubic-bezier(0.25,1,0.5,1),
-             transform 0.75s cubic-bezier(0.25,1,0.5,1);
-}
-.reveal.from-left  { transform:translateX(-44px); }
-.reveal.from-right { transform:translateX(44px); }
-.reveal.from-scale { transform:scale(0.88); }
-.reveal.d1 { transition-delay:0.1s; }
-.reveal.d2 { transition-delay:0.2s; }
-.reveal.d3 { transition-delay:0.3s; }
-.reveal.d4 { transition-delay:0.4s; }
-.reveal.d5 { transition-delay:0.5s; }
-.reveal.d6 { transition-delay:0.6s; }
-
-.reveal.in-view { opacity:1; transform:none; }
+.reveal { opacity:1; transform:none; }
 
 /* =============================================
    PAGE LOADER
 ============================================= */
-#loader {
+#loader { display:none !important;
   position:fixed; inset:0; z-index:9999;
   background:#fff;
   display:flex; align-items:center; justify-content:center;
@@ -260,7 +244,7 @@ button { cursor:pointer; font-family:var(--font-b); border:none; background:none
   border-radius:6px; font-weight:600; font-size:13px; transition:var(--trans);
 }
 .nav-cta::after { display:none !important; }
-.nav-cta:hover { background:var(--brand-orange-dk); transform:translateY(-2px); }
+.nav-cta:hover { background:var(--brand-orange-dk); }
 
 /* Language switch (English ⇄ العربية) — desktop: after the CTA; mobile: next to the menu button */
 .lang-switch {
@@ -302,15 +286,14 @@ button { cursor:pointer; font-family:var(--font-b); border:none; background:none
    MARQUEE STRIP
 ============================================= */
 .marquee-wrap { background:var(--brand-blue); padding:16px 0; overflow:hidden; border-top:1px solid rgba(255,255,255,0.12); }
-.marquee-track { display:flex; width:max-content; animation:marq 28s linear infinite; }
-.marquee-track:hover { animation-play-state:paused; }
-@keyframes marq { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+.marquee-track { display:flex; flex-wrap:wrap; justify-content:center; row-gap:8px; max-width:1260px; margin:0 auto; padding:0 20px; }
 .marquee-item {
   display:flex; align-items:center; gap:20px; padding:0 20px;
   white-space:nowrap; font-size:13px; font-weight:600;
   letter-spacing:0.12em; text-transform:uppercase; color:#fff;
 }
 .marquee-item .dot { color:var(--brand-orange); font-size:9px; }
+.marquee-track > :last-child .dot, .marquee-track > :last-child .mdiamond { display:none; }
 /* Contact page strip uses .marquee-strip with <span> items — same look as .marquee-wrap */
 .marquee-strip { background:var(--brand-blue); padding:16px 0; overflow:hidden; border-top:1px solid rgba(255,255,255,0.12); }
 .marquee-strip .marquee-track > span {
@@ -380,11 +363,6 @@ button { cursor:pointer; font-family:var(--font-b); border:none; background:none
 #hero .hero-img-wrap {
   border:none;
   box-shadow:0 38px 70px -20px rgba(3,8,56,0.70), 0 16px 30px -16px rgba(3,8,56,0.55);
-  transition:transform 0.5s cubic-bezier(0.25,1,0.5,1), box-shadow 0.5s ease;
-}
-#hero .hero-img-wrap:hover {
-  transform:translateY(-6px);
-  box-shadow:0 48px 80px -22px rgba(3,8,56,0.75), 0 20px 34px -16px rgba(3,8,56,0.55);
 }
 #hero .fl-card { box-shadow:0 22px 44px -16px rgba(3,8,56,0.55); }
 /* Flat brand look: drop the template's photo washes behind blue sections */
@@ -408,7 +386,7 @@ button { cursor:pointer; font-family:var(--font-b); border:none; background:none
   display:flex; align-items:center; justify-content:center;
   font-size:13px; color:#fff; transition:var(--trans);
 }
-.fsoc:hover { background:var(--brand-orange); border-color:var(--brand-orange); color:#fff; transform:translateY(-2px); }
+.fsoc:hover { background:var(--brand-orange); border-color:var(--brand-orange); color:#fff; }
 .footer-col h4 { font-family:var(--font-h); font-size:15px; font-weight:600; margin-bottom:20px; color:#fff; }
 .footer-col ul { display:flex; flex-direction:column; gap:11px; }
 .footer-col ul a { font-size:14px; color:var(--grey); transition:color 0.25s, padding-left 0.25s; }
@@ -431,7 +409,7 @@ button { cursor:pointer; font-family:var(--font-b); border:none; background:none
   opacity:0; visibility:hidden; transition:var(--trans);
 }
 #scrollTop.show { opacity:1; visibility:visible; }
-#scrollTop:hover { transform:translateY(-4px); background:var(--brand-orange); }
+#scrollTop:hover { background:var(--brand-orange); }
 
 /* =============================================
    CARDS — reused across pages
@@ -441,19 +419,12 @@ button { cursor:pointer; font-family:var(--font-b); border:none; background:none
   border-radius:var(--radius); padding:34px 30px; transition:var(--trans);
   position:relative; overflow:hidden;
 }
-.svc-card::before {
-  content:''; position:absolute; top:0; left:0; right:0; height:3px;
-  background:var(--brand-orange);
-  transform:scaleX(0); transform-origin:left; transition:transform 0.35s;
-}
-.svc-card:hover { border-color:rgba(15,31,168,0.35); transform:translateY(-6px); box-shadow:var(--shadow-b); }
-.svc-card:hover::before { transform:scaleX(1); }
+.svc-card:hover { border-color:rgba(15,31,168,0.35); }
 .svc-icon {
   width:56px; height:56px; border-radius:8px;
   display:flex; align-items:center; justify-content:center;
-  font-size:21px; margin-bottom:22px; transition:transform 0.35s;
+  font-size:21px; margin-bottom:22px;
 }
-.svc-card:hover .svc-icon { transform:translateY(-2px); }
 .si-1, .si-3, .si-5 { background:rgba(15,31,168,0.08); color:var(--brand-blue); }
 .si-2, .si-4, .si-6 { background:rgba(240,78,42,0.10); color:var(--brand-orange); }
 .svc-card h3 { font-family:var(--font-h); font-size:19px; font-weight:600; margin-bottom:10px; color:var(--ink); }
@@ -499,3 +470,86 @@ button { cursor:pointer; font-family:var(--font-b); border:none; background:none
 /* Service cards open their service page: the "Learn more" link covers the whole card */
 .svc-card--link { position:relative; cursor:pointer; }
 .svc-card--link .svc-link::after { content:''; position:absolute; inset:0; }
+
+
+/* =============================================
+   LOGO BRACKETS IN MOTION
+   1. Hero titles: the brackets lock onto the headline once, when the page opens.
+   2. Section titles: the brackets close in on the title when it scrolls into view.
+   3. Service and project cards: the brackets draw into the corners on hover / focus.
+   Nothing else moves. Reduced motion: brackets appear in place, without travel.
+============================================= */
+@keyframes brkLockTR { from { opacity:0; transform:translate(18px,-18px); } }
+@keyframes brkLockBL { from { opacity:0; transform:translate(-18px,18px); } }
+.page-hero h1::before, #hero .hero-title::before, .cs-hero h1::before, .proj-hero h1::before, .svc-hero h1::before {
+  animation:brkLockTR .8s cubic-bezier(.16,1,.3,1) .25s both;
+}
+.page-hero h1::after, #hero .hero-title::after, .cs-hero h1::after, .proj-hero h1::after, .svc-hero h1::after {
+  animation:brkLockBL .8s cubic-bezier(.16,1,.3,1) .25s both;
+}
+
+html.brk-hold .page-hero h1::before, html.brk-hold .page-hero h1::after,
+html.brk-hold #hero .hero-title::before, html.brk-hold #hero .hero-title::after,
+html.brk-hold .cs-hero h1::before, html.brk-hold .cs-hero h1::after,
+html.brk-hold .proj-hero h1::before, html.brk-hold .proj-hero h1::after,
+html.brk-hold .svc-hero h1::before, html.brk-hold .svc-hero h1::after { animation-play-state:paused; }
+
+/* Section titles: small brackets just outside the text (the width is fitted to the text by shared.js) */
+.sec-title { position:relative; width:fit-content; max-width:100%; }
+.sec-head .sec-title { margin-left:auto; margin-right:auto; }
+.sec-title::before, .sec-title::after {
+  content:''; position:absolute; width:30px; height:30px; pointer-events:none;
+  border:0 solid var(--brand-orange);
+  transition:opacity .45s ease, transform .7s cubic-bezier(.16,1,.3,1);
+}
+.sec-title::before { top:-12px; right:-22px; border-top-width:5px; border-right-width:5px; border-top-right-radius:7px; }
+.sec-title::after  { bottom:-8px; left:-22px; border-bottom-width:5px; border-left-width:5px; border-bottom-left-radius:7px; }
+.brk-wait .sec-title:not(.brk-in)::before { opacity:0; transform:translate(16px,-16px); }
+.brk-wait .sec-title:not(.brk-in)::after  { opacity:0; transform:translate(-16px,16px); }
+
+/* Cards: brackets draw into the corners on hover / keyboard focus (replaces the hover lift) */
+.svc-card, .pf-card, .svc-proj, .svc-other { position:relative; }
+.svc-card::before, .svc-card::after, .pf-card::before, .pf-card::after,
+.svc-proj::before, .svc-proj::after, .svc-other::before, .svc-other::after {
+  content:''; position:absolute; z-index:3; width:26px; height:26px; pointer-events:none;
+  border:0 solid var(--brand-orange); opacity:0;
+  transition:opacity .2s ease, transform .45s cubic-bezier(.16,1,.3,1);
+}
+.svc-card::before, .pf-card::before, .svc-proj::before, .svc-other::before {
+  top:12px; right:12px; border-top-width:4px; border-right-width:4px; border-top-right-radius:6px; transform:translate(10px,-10px);
+}
+.svc-card::after, .pf-card::after, .svc-proj::after, .svc-other::after {
+  bottom:12px; left:12px; border-bottom-width:4px; border-left-width:4px; border-bottom-left-radius:6px; transform:translate(-10px,10px);
+}
+.svc-other::before, .svc-other::after { width:18px; height:18px; border-width:0; }
+.svc-other::before { top:8px; right:8px; border-top-width:3px; border-right-width:3px; }
+.svc-other::after  { bottom:8px; left:8px; border-bottom-width:3px; border-left-width:3px; }
+.svc-card:hover::before, .svc-card:hover::after, .svc-card:focus-within::before, .svc-card:focus-within::after,
+.pf-card:hover::before, .pf-card:hover::after, .pf-card:focus-visible::before, .pf-card:focus-visible::after,
+.svc-proj:hover::before, .svc-proj:hover::after, .svc-proj:focus-visible::before, .svc-proj:focus-visible::after,
+.svc-other:hover::before, .svc-other:hover::after, .svc-other:focus-visible::before, .svc-other:focus-visible::after {
+  opacity:1; transform:none;
+}
+
+/* Page styles written for the old template still lift, zoom, float or loop things: switch those off */
+.pf-card:hover, .blog-card:hover, .val-card:hover, .team-card:hover, .svc-proj:hover, .svc-other:hover,
+.result-card:hover, .proc-card:hover, .price-card:hover, .info-card:hover,
+.form-submit:hover, .btn-submit:hover, .tsoc:hover, .soc-link:hover,
+.pf-card:hover .pf-img img, .blog-card:hover .blog-img img, .team-card:hover .team-photo img,
+.gallery-img:hover img, .sf-img:hover img, .hero-img-wrap:hover img, .pf-card .pf-view { transform:none !important; }
+.pf-overlay { display:none !important; }
+.fl-card, .hero-badge i, .marquee-track, .loader-ring { animation:none !important; }
+.map-wrap::after { animation:none !important; }
+.skill-fill { width:var(--w, 0%) !important; transition:none !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  .page-hero h1::before, .page-hero h1::after, #hero .hero-title::before, #hero .hero-title::after,
+  .cs-hero h1::before, .cs-hero h1::after, .proj-hero h1::before, .proj-hero h1::after, .svc-hero h1::before, .svc-hero h1::after { animation:none !important; }
+  .sec-title::before, .sec-title::after,
+  .svc-card::before, .svc-card::after, .pf-card::before, .pf-card::after,
+  .svc-proj::before, .svc-proj::after, .svc-other::before, .svc-other::after { transition:opacity .2s ease; transform:none !important; }
+}
+@media (max-width: 640px) {
+  .sec-title::before { top:-9px; right:-12px; width:22px; height:22px; border-top-width:4px; border-right-width:4px; }
+  .sec-title::after  { bottom:-6px; left:-12px; width:22px; height:22px; border-bottom-width:4px; border-left-width:4px; }
+}

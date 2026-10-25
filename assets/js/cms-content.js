@@ -203,9 +203,8 @@
       if (track) {
         // Items are plain strings (admin form) or { text } objects (older data) — both render as text
         const items = hp.marquee.map(it => (it && typeof it === 'object') ? (it.text || '') : it).filter(Boolean);
-        const doubled = [...items, ...items];
         const useSpan = track.querySelector('span') && !track.querySelector('.marquee-item');
-        track.innerHTML = doubled.map(item =>
+        track.innerHTML = items.map(item =>
           useSpan
             ? `<span>${esc(item)} <span class="mdiamond">◆</span></span>`
             : `<div class="marquee-item">${esc(item)} <span class="dot">◆</span></div>`
@@ -802,24 +801,13 @@
   function initCounters() {
     const counters = document.querySelectorAll('.counter[data-target]');
     if (!counters.length) return;
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        const el = entry.target, target = parseFloat(el.dataset.target), step = target / (2000/16);
-        let cur = 0;
-        const t = setInterval(() => { cur += step; if (cur >= target) { cur = target; clearInterval(t); } el.textContent = Number.isInteger(target) ? Math.floor(cur) : cur.toFixed(1); }, 16);
-        obs.unobserve(el);
-      });
-    }, { threshold: 0.3 });
-    counters.forEach(c => obs.observe(c));
+    // Final value straight away: the logo brackets are the only thing that animates on the site
+    counters.forEach(el => { const t = parseFloat(el.dataset.target); el.textContent = Number.isInteger(t) ? t : t.toFixed(1); });
   }
 
   function initSkillBars() {
-    document.querySelectorAll('.skill-fill').forEach(el => { const w = el.style.getPropertyValue('--w')||el.dataset.w||'0%'; el.dataset.w = w; el.style.setProperty('--w','0%'); });
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (!e.isIntersecting) return; e.target.style.setProperty('--w', e.target.dataset.w); obs.unobserve(e.target); });
-    }, { threshold: 0.2 });
-    document.querySelectorAll('.skill-fill').forEach(el => obs.observe(el));
+    // Bars show their value straight away (no fill animation)
+    document.querySelectorAll('.skill-fill').forEach(el => { const w = el.dataset.w || el.style.getPropertyValue('--w') || '0%'; el.dataset.w = w; el.style.setProperty('--w', w); });
   }
 
   // Re-initialize portfolio filter after CMS injection (clones buttons to clear stale refs)
@@ -836,9 +824,7 @@
         document.querySelectorAll('.pf-card').forEach(card => {
           const cf = (card.dataset.filter || '').toLowerCase();
           const show = f === 'all' || cf === f;
-          card.style.transition = 'opacity .35s ease, transform .35s ease';
-          if (show) { card.style.display = ''; setTimeout(() => { card.style.opacity='1'; card.style.transform=''; }, 10); }
-          else { card.style.opacity='0'; card.style.transform='translateY(20px)'; setTimeout(() => { card.style.display='none'; }, 360); }
+          card.style.display = show ? '' : 'none';
         });
       });
     });
@@ -1200,6 +1186,8 @@
     } catch (_) {
       // CMS offline — hardcoded HTML stays
     }
+    // Content is final now (from the CMS, or the hardcoded HTML if it did not answer)
+    document.dispatchEvent(new Event('scalen:content'));
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
